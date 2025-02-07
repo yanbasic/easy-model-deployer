@@ -160,6 +160,7 @@ class Model(ModelBase,Generic[T]):
     supported_services: List[Service] = Field(description="supported services")
     supported_frameworks: List[Framework] = Field(description="supported frameworks")
     allow_china_region: bool = False
+    model_files_s3_path: Union[str,None] = None
     # allow_china_region_ecs: bool = False
     huggingface_model_id: str = ""
     huggingface_endpoints: List[str] =  ["https://huggingface.co","https://hf-mirror.com"]
