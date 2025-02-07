@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import lmdeploy_intervl2d5_awq_engine064
 from ..services import (
     sagemaker_service,

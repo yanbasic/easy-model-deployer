@@ -15,7 +15,7 @@ from typing import (
 
 import os
 import json
-from operator import itemgetter 
+from operator import itemgetter
 
 from langchain_core.callbacks import (
     AsyncCallbackManagerForLLMRun,
@@ -24,7 +24,7 @@ from langchain_core.callbacks import (
 from langchain_core.language_models import BaseChatModel, SimpleChatModel,LanguageModelInput
 from langchain_core.messages import (
     AIMessageChunk,
-    BaseMessage, 
+    BaseMessage,
     HumanMessage,
     AIMessage,
     SystemMessage,
@@ -208,12 +208,12 @@ def _convert_delta_to_message_chunk(
         return ChatMessageChunk(content=content, role=role)  # type: ignore[arg-type]
     else:
         return default_class(content=content)  # type: ignore[call-arg]
-    
+
 
 class SageMakerVllmChatModelBase(BaseChatModel):
 
     sagemaker_client: Union[SageMakerClient,None] = None
-    
+
     model_id: Union[str,None] = None
     """The model id deployed by dmaa."""
 
@@ -249,18 +249,18 @@ class SageMakerVllmChatModelBase(BaseChatModel):
 
     default_bucket: str = None
     """Default bucket to use for async inference if not specified in the request"""
-    
+
     default_bucket_prefix: str = None
     """Default bucket prefix to use for async inference if not specified in the request"""
-    
-    s3_client: Any = None 
+
+    s3_client: Any = None
     """Boto3 client for s3"""
 
     class Config:
         """Configuration for this pydantic object."""
         extra = "allow"
 
-    
+
     @model_validator(mode='before')
     def validate_environment(cls, values: Dict) -> Dict:
         """Dont do anything if client provided externally"""
@@ -280,11 +280,11 @@ class SageMakerVllmChatModelBase(BaseChatModel):
             )
         return values
 
-    
+
     def prepare_input_body(self,model_kwargs,messages: List[BaseMessage]) -> Dict:
         raise NotImplementedError
 
-    
+
     def _sagemaker_endpoint_invoke(self,request_options:dict,stream=False):
         enable_print_messages = os.getenv("ENABLE_PRINT_MESSAGES", 'False').lower() in ('true', '1', 't')
         if enable_print_messages:
@@ -295,7 +295,7 @@ class SageMakerVllmChatModelBase(BaseChatModel):
             )
         else:
             return self.client.invoke_endpoint(**request_options)
-    
+
 
     def _generate(
         self,
@@ -350,7 +350,7 @@ class SageMakerVllmChatModelBase(BaseChatModel):
             "system_fingerprint": response_dict.get("system_fingerprint", ""),
         }
         return ChatResult(generations=generations, llm_output=llm_output)
-    
+
     def _stream(
         self,
         messages: List[BaseMessage],
@@ -368,7 +368,7 @@ class SageMakerVllmChatModelBase(BaseChatModel):
 
         for chunk_dict in iterator:
             if not chunk_dict:
-                continue 
+                continue
             if len(chunk_dict["choices"]) == 0:
                 continue
             choice = chunk_dict["choices"][0]
@@ -419,7 +419,7 @@ class SageMakerVllmChatModelBase(BaseChatModel):
             print("json error: ",message)
             raise
         return schema(**data)
-    
+
     def bind_tools(
         self,
         tools: Sequence[Union[Dict[str, Any], Type, Callable, BaseTool]],
@@ -499,8 +499,8 @@ class SageMakerVllmChatModelBase(BaseChatModel):
                 )
             kwargs["tool_choice"] = tool_choice
         return super().bind(tools=formatted_tools, **kwargs)
-    
-    
+
+
     def with_structured_output(
         self,
         schema: Union[pydantic_basemodel,BaseModel],
@@ -555,28 +555,3 @@ class SageMakerVllmChatModel(SageMakerVllmChatModelBase):
         return {
             **model_kwargs,"messages":_messages
         }
-
-
-
-
- 
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-        
-        
-
-
-        
-        

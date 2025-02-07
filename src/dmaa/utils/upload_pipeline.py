@@ -1,7 +1,7 @@
 import boto3
 import zipfile
 import io
-import os 
+import os
 import importlib.util
 from dmaa.revision import VERSION
 from .logger_utils import get_logger
@@ -30,15 +30,15 @@ def ziped_pipeline():
         for root, dirs, files in os.walk(dmaa_package_dir):
             for file in files:
                 if file == "pipeline.zip":
-                    continue 
+                    continue
                 file_path = os.path.join(root, file)
                 arcname = os.path.relpath(file_path, dmaa_package_dir)
                 if file_path.startswith("pipeline"):
-                    continue 
+                    continue
                 arcname = os.path.join("pipeline","dmaa",arcname)
                 zipf.write(file_path, arcname)
         # Add cfn folder
-        cfn_dir = os.path.join(dmaa_package_dir, "cfn") 
+        cfn_dir = os.path.join(dmaa_package_dir, "cfn")
         if os.path.exists(cfn_dir):
             for root, dirs, files in os.walk(cfn_dir):
                 for file in files:

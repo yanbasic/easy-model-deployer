@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import (
     vllm_qwen2d5_engine064,
     vllm_qwen2d5_128k_engine064,
@@ -46,7 +46,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -81,7 +81,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -112,7 +112,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -142,7 +142,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -172,7 +172,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -282,7 +282,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -317,7 +317,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -346,7 +346,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -377,7 +377,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service

@@ -7,12 +7,12 @@ from dmaa.utils.logger_utils import get_logger
 logger = get_logger(__name__)
 
 class VLLMBackend(OpenAICompitableProxyBackendBase):
-    
+
     def create_proxy_server_start_command(self,model_path):
         serve_command = f'vllm serve {model_path} --port {self.server_port} --trust-remote-code --served-model-name={self.model_id} --tensor_parallel_size={self.gpu_num} {self.default_cli_args} {self.cli_args}'
         if self.environment_variables:
             serve_command = f'{self.environment_variables} && {serve_command}'
-    
+
         if self.model_type == ModelType.RERANK:
             serve_command += " --task score"
         if self.api_key:
@@ -35,7 +35,7 @@ class VLLMBackend(OpenAICompitableProxyBackendBase):
                 "Accept-Type": "application/json",
             }
             response = httpx.post(
-                f'{self.base_url}/score', 
+                f'{self.base_url}/score',
                 json=request,
                 headers=headers
             ).json()

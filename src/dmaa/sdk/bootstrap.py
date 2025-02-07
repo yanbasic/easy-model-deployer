@@ -8,8 +8,8 @@ import json
 from dmaa.utils.aws_service_utils import get_current_region
 
 from dmaa.constants import (
-    VERSION, 
-    ENV_STACK_NAME, 
+    VERSION,
+    ENV_STACK_NAME,
     CODEPIPELINE_NAME,
     CODEBUILD_ROLE_NAME_TEMPLATE,
     CODEPIPELINE_ROLE_NAME_TEMPLATE,
@@ -43,7 +43,7 @@ def get_bucket_name(
     """
     get bucket name
     """
-    assert region is not None,region 
+    assert region is not None,region
     version_md5_value = get_version_md5_value()
     bucket_name = f"{bucket_prefix}-{version_md5_value}-{region}"
     return bucket_name
@@ -73,7 +73,7 @@ def create_env_stack(
     """
     if check_stack_exist_and_complete(stack_name) and not force_update:
         logger.info(f"env stack: {stack_name} exists...")
-        return 
+        return
     logger.info(f"create env stack: {stack_name}...")
     # version_md5_value = get_version_md5_value()
     if bucket_name is None:
@@ -81,7 +81,7 @@ def create_env_stack(
             bucket_prefix=bucket_prefix,
             region=region
         )
-    
+
     # upload source to s3
     logger.info(f'upload pipeline source to s3://{bucket_name}/{pipeline_zip_s3_key}...')
     pipeline_s3_path = upload_pipeline_source_to_s3(
@@ -97,7 +97,7 @@ def create_env_stack(
     cfn_template_path = os.path.join(dmaa_package_dir, "cfn", "codepipeline", "template.yaml")
     with open(cfn_template_path, 'r') as f:
         template_body = f.read()
-    
+
     stack_params =[
                 {'ParameterKey': 'ArtifactBucketName', 'ParameterValue': bucket_name},
                 {'ParameterKey': 'ArtifactVersion', 'ParameterValue': VERSION},
@@ -135,7 +135,7 @@ def create_env_stack(
                     time.sleep(2)
                     continue
         else:
-            try: 
+            try:
                 response = cloudformation.update_stack(
                     StackName=stack_name,
                     TemplateBody=template_body,

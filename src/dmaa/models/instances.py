@@ -93,7 +93,7 @@ inf2dxlarge_instance = Instance(
     vcpu=4,
     memory=16,
     description="Amazon Inferentia2 chips.",
-    support_cn_region=False 
+    support_cn_region=False
 )
 
 inf2d8xlarge_instance = Instance(
@@ -102,7 +102,7 @@ inf2d8xlarge_instance = Instance(
     vcpu=32,
     memory=128,
     description="Amazon Inferentia2 chips.",
-    support_cn_region=False 
+    support_cn_region=False
 )
 
 inf2d24xlarge_instance = Instance(
@@ -111,7 +111,7 @@ inf2d24xlarge_instance = Instance(
     vcpu=96,
     memory=384,
     description="Amazon Inferentia2 chips.",
-    support_cn_region=False 
+    support_cn_region=False
 )
 
 inf2d48xlarge_instance = Instance(
@@ -120,7 +120,7 @@ inf2d48xlarge_instance = Instance(
     vcpu=192,
     memory=768,
     description="Amazon Inferentia2 chips.",
-    support_cn_region=False 
+    support_cn_region=False
 )
 
 local_instance = Instance(

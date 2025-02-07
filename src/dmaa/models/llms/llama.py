@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..services import (
     sagemaker_service,
     sagemaker_async_service,
@@ -32,7 +32,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service

@@ -81,9 +81,9 @@ Resources:
           VariantName: AllTraffic
           ContainerStartupHealthCheckTimeoutInSeconds: 600
       AsyncInferenceConfig:
-        ClientConfig: 
-          MaxConcurrentInvocationsPerInstance: 1 
-        OutputConfig: 
+        ClientConfig:
+          MaxConcurrentInvocationsPerInstance: 1
+        OutputConfig:
           S3OutputPath: !Ref S3OutputPath
 
   SageMakerEndpoint:

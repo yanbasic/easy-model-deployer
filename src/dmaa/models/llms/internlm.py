@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..services import (
     sagemaker_service,
     sagemaker_async_service,

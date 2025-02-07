@@ -23,7 +23,7 @@ sequenceDiagram
     DB-->>Core API: Task results
     Core API-->>Application API: No available model/image/deploy task status
     Application API->>Core API: Call dmaa.core.model_prepare(Text2SQL_config)
-    Core API->>Batch: Initilize batch job for preparing model file 
+    Core API->>Batch: Initilize batch job for preparing model file
     Batch-->>Core API: Batch job launched
     Core API-->>Application API: Batch job launched
     Application API->>Core API: Call dmaa.core.image_build(Text2SQL_config)

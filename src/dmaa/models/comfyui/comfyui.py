@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..utils.constants import ModelType
 from ..engines import comfyui_engine
 from ..services import sagemaker_service, sagemaker_async_service

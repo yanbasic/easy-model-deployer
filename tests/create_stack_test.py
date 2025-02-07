@@ -1,6 +1,6 @@
 import boto3
 import json
-import time 
+import time
 # 创建 CloudFormation 客户端
 client = boto3.client('cloudformation')
 
@@ -50,4 +50,3 @@ while True:
         print(stack_status)
         break
     time.sleep(0.1)
-    

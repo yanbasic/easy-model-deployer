@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import (
     huggingface_baichuan_engine_4d41d2
 )
@@ -38,7 +38,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service

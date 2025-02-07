@@ -17,7 +17,7 @@ from dmaa.utils.aws_service_utils import (
 )
 from dmaa.models.utils.constants import ServiceType
 from dmaa.constants import VERSION_MODIFY
-from dmaa.models import Model 
+from dmaa.models import Model
 
 logger = get_logger(__name__)
 
@@ -37,8 +37,8 @@ def stop_pipeline_execution(
     cur_uuid = Model.get_model_stack_name_prefix(model_id,model_tag)
     if cur_uuid in active_executuion_infos_d:
         pipeline_execution_id = active_executuion_infos_d[cur_uuid]['pipeline_execution_id']
-        client = boto3.client('codepipeline') 
-        try: 
+        client = boto3.client('codepipeline')
+        try:
             client.stop_pipeline_execution(
                 pipelineName=pipeline_name,
                 pipelineExecutionId=pipeline_execution_id
@@ -87,10 +87,9 @@ def destroy(model_id:str,model_tag=MODEL_DEFAULT_TAG,waiting_until_complete=True
             status = status_info['status']
             status_code = status_info['status_code']
             if status_code == 0:
-                break 
+                break
             logger.info(f'stack delete status: {status}')
             time.sleep(5)
         if status == DMAA_STACK_NOT_EXISTS_STATUS:
             status = "DELETE_COMPLETED"
         logger.info(f'stack delete status: {status}')
-       

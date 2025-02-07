@@ -181,4 +181,3 @@ class ModelSeriesType(ConstantBase):
     QWEN_REASONING_MODEL = "qwen reasoning model"
     DEEPSEEK_REASONING_MODEL = "deepseek reasoning model"
     BAICHUAN = "baichuan"
-    

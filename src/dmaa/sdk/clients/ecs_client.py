@@ -1,12 +1,12 @@
-import json 
-import os 
+import json
+import os
 from typing import Optional,Dict,Any,Union
 import io
 from urllib.parse import urlparse
 from pydantic import model_validator
 import uuid
 import codecs
-import time 
+import time
 from functools import reduce
 import botocore
 import threading
@@ -83,8 +83,8 @@ class ECSClient(ClientBase):
     @model_validator(mode='before')
     def validate_environment(cls, values: Dict) -> Dict:
         if values.get("base_url"):
-            return values 
-        
+            return values
+
         model_stack_name = values.get("model_stack_name")
         if model_stack_name is None:
             # check if stack is ready
@@ -96,7 +96,7 @@ class ECSClient(ClientBase):
                 model_tag=values.get("model_tag") or MODEL_DEFAULT_TAG
             )
 
-        # get endpoint name from stack 
+        # get endpoint name from stack
         if not check_stack_exists(model_stack_name):
             raise ValueError(f"Model stack {model_stack_name} does not exist")
 
@@ -108,10 +108,10 @@ class ECSClient(ClientBase):
             if output['OutputKey'] == 'PublicLoadBalancerDNSName':
                 values["base_url"] = output['OutputValue']
                 break
-        
+
         assert values.get("base_url") is not None, "base_url  not found in stack outputs"
         return values
-    
+
     def invoke(self,pyload:dict):
         stream = pyload.get('stream', False)
         url = f"{self.base_url}/invocations"
@@ -128,7 +128,7 @@ class ECSClient(ClientBase):
                 for line in interator:
                     chunk_dict = json.loads(line)
                     if not chunk_dict:
-                        continue 
+                        continue
                     yield chunk_dict
 
             return _ret_iterator_helper()
@@ -137,10 +137,3 @@ class ECSClient(ClientBase):
                 url,
                 json=pyload
             ).json()
-
-
-
-
-        
-
-

@@ -1,12 +1,12 @@
-import json 
-import os 
+import json
+import os
 from typing import Optional,Dict,Any,Union
 import io
 from urllib.parse import urlparse
 from pydantic import model_validator
 import uuid
 import codecs
-import time 
+import time
 from functools import reduce
 import botocore
 import threading
@@ -18,7 +18,7 @@ from dmaa.utils.aws_service_utils import check_stack_exists,get_model_stack_info
 from dmaa.models import Model
 from dmaa.constants import MODEL_DEFAULT_TAG
 from dmaa.utils.logger_utils import get_logger
-# from sagemaker.async_inference 
+# from sagemaker.async_inference
 
 logger = get_logger(__name__)
 
@@ -460,7 +460,7 @@ class SageMakerClient(ClientBase):
 
     region_name: Union[str,None] = None
     """The aws region where the Sagemaker model is deployed, eg. `us-west-2`."""
-    
+
     credentials_profile_name: Union[str,None] = None
     """The name of the profile in the ~/.aws/credentials or ~/.aws/config files, which
     has either access keys or role information specified.
@@ -477,14 +477,14 @@ class SageMakerClient(ClientBase):
     function. See `boto3`_. docs for more info.
     .. _boto3: <https://boto3.amazonaws.com/v1/documentation/api/latest/index.html>
     """
- 
+
     default_bucket: Union[str,None] = None
     """Default bucket to use for async inference if not specified in the request"""
-    
+
     default_bucket_prefix: Union[str,None] = None
     """Default bucket prefix to use for async inference if not specified in the request"""
-    
-    s3_client: Any = None 
+
+    s3_client: Any = None
     """Boto3 client for s3"""
 
     @model_validator(mode='before')
@@ -504,7 +504,7 @@ class SageMakerClient(ClientBase):
                             # use default credentials
                             boto_session = boto3.Session()
                         values['boto_session'] = boto_session
-                    
+
                     values["client"] = values['boto_session'].client(
                         "sagemaker-runtime", region_name=values.get("region_name")
                     )
@@ -514,7 +514,7 @@ class SageMakerClient(ClientBase):
                         )
 
                 except Exception as e:
-                    import traceback 
+                    import traceback
                     logger.error(traceback.format_exc())
                     raise ValueError(
                         "Could not load credentials to authenticate with AWS client. "
@@ -527,7 +527,7 @@ class SageMakerClient(ClientBase):
                     "Could not import boto3 python package. "
                     "Please install it with `pip install boto3`."
                 )
-        
+
         if values.get("endpoint_name"):
             return values
 
@@ -541,13 +541,13 @@ class SageMakerClient(ClientBase):
                 model_id,
                 model_tag=values.get("model_tag") or MODEL_DEFAULT_TAG
             )
-        
-        # get endpoint name from stack 
+
+        # get endpoint name from stack
         if not check_stack_exists(model_stack_name):
             raise ValueError(f"Model stack {model_stack_name} does not exist")
-        
+
         stack_info = get_model_stack_info(model_stack_name)
-        
+
         Outputs = stack_info.get('Outputs')
         if not Outputs:
             raise RuntimeError(f"Model stack {model_stack_name} does not have any outputs, the model may be not deployed in success")
@@ -555,9 +555,9 @@ class SageMakerClient(ClientBase):
             if output['OutputKey'] == 'SageMakerEndpointName':
                 values["endpoint_name"] = output['OutputValue']
                 break
-        
+
         assert values.get("endpoint_name") is not None, "Endpoint name not found in stack outputs"
-        
+
         if not values.get("name"):
             values['name'] = model_stack_name
         return values
@@ -592,14 +592,14 @@ class SageMakerClient(ClientBase):
                 for line in iterator:
                     chunk_dict = json.loads(line)
                     if not chunk_dict:
-                        continue 
+                        continue
                     yield chunk_dict
             return _ret_iterator_helper()
         else:
             output = self.client.invoke_endpoint(**request_options)['Body']
             response_dict = json.loads(output.read().decode("utf-8"))
             return response_dict
-    
+
 
     def account_id(self) -> str:
         """Get the AWS account id of the caller.
@@ -646,7 +646,7 @@ class SageMakerClient(ClientBase):
                     raise
                 else:
                     raise
-    
+
     def expected_bucket_owner_id_bucket_check(self, bucket_name, s3, expected_bucket_owner_id):
         """Checks if the bucket belongs to a particular owner and throws a Client Error if it is not
 
@@ -755,7 +755,7 @@ class SageMakerClient(ClientBase):
             return self.default_bucket
 
         region = self.boto_session.region_name
-     
+
         default_bucket = generate_default_sagemaker_bucket_name(self.boto_session)
 
         self._create_s3_bucket_if_it_does_not_exist(
@@ -766,8 +766,8 @@ class SageMakerClient(ClientBase):
         self.default_bucket = default_bucket
 
         return self.default_bucket
-    
-    
+
+
     def _upload_data_to_s3(
         self,
         data,
@@ -786,7 +786,7 @@ class SageMakerClient(ClientBase):
                 name_from_base(self.name, short=True),
                 "{}-{}".format(timestamp, my_uuid),
             )
-        
+
         _model_kwargs = self.model_kwargs or {}
         data = json.dumps({**_model_kwargs,**data},ensure_ascii=False,indent=2)
         self.s3_client.put_object(
@@ -795,7 +795,7 @@ class SageMakerClient(ClientBase):
         input_path = input_path or "s3://{}/{}".format(bucket, key)
 
         return input_path
-    
+
     def _handle_response(self,response):
         response_body = response["Body"]
         content_type = response.get("ContentType", "application/octet-stream")
@@ -882,7 +882,7 @@ class SageMakerClient(ClientBase):
                 seconds=waiter_config.delay * waiter_config.max_attempts,
             )
         )
-    
+
     def _check_output_path(self, output_path, waiter_config):
         """Check the Amazon S3 output path for the output.
 
@@ -909,7 +909,7 @@ class SageMakerClient(ClientBase):
             return self._check_output_and_failure_paths(output_path, failure_path, waiter_config)
 
         return self._check_output_path(output_path, waiter_config)
-    
+
     def invoke_async(
             self,
             data:dict=None,
@@ -924,7 +924,7 @@ class SageMakerClient(ClientBase):
             )
         if data is not None:
             input_path = self._upload_data_to_s3(data, input_path)
-        
+
         request_options = {
             "InputLocation":input_path,
             "EndpointName":self.endpoint_name,
@@ -950,5 +950,3 @@ class SageMakerClient(ClientBase):
                 output_path=output_location, failure_path=failure_location, waiter_config=waiter_config
             )
         return result
-        
-

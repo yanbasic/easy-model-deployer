@@ -1,14 +1,14 @@
 import boto3
 import argparse
-import json 
-import time 
+import json
+import time
 import logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 def get_or_create_role(role_name, region):
     iam_client = boto3.client('iam')
-    # to allow assuming role when visit sagemaker 
+    # to allow assuming role when visit sagemaker
     trust_policy = json.dumps({
             "Version": "2012-10-17",
                 "Statement": [
@@ -26,14 +26,14 @@ def get_or_create_role(role_name, region):
         iam_client.update_assume_role_policy(
             PolicyDocument=trust_policy,
             RoleName=role_name,
-        )  
+        )
     except iam_client.exceptions.NoSuchEntityException:
         role = iam_client.create_role(
             RoleName=role_name,
             AssumeRolePolicyDocument=trust_policy
         )
         role_arn  = role['Role']['Arn']
-    
+
     # attach policy
     if region.startswith("cn"):
         permission_policies = [
@@ -52,16 +52,16 @@ def get_or_create_role(role_name, region):
             RoleName=role_name,
             PolicyArn=policy
         )
-    
+
     return role_arn
 
 
 def create_sagemaker_endpoint(
-        region, 
+        region,
         instance_type,
         role_arn,
         image_uri,
-        endpoint_name, 
+        endpoint_name,
         model_id,
         is_async_deploy=False,
         s3_output_path=None
@@ -80,7 +80,7 @@ def create_sagemaker_endpoint(
         },
         ExecutionRoleArn=role_arn,
     )
-    
+
     endpoint_config_kwargs = dict(
         EndpointConfigName=endpoint_name + '-config',
         ProductionVariants=[

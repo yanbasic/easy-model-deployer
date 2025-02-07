@@ -42,7 +42,7 @@ def whisper_invoke(model_id,model_tag):
     model = Model.get_model(model_id)
     from dmaa.sdk.invoke.whisper_invoker import WhisperInvoker
     invoker = WhisperInvoker(model_id, model_tag)
-    
+
     audio_input = Prompt.ask("[bold yellow]Enter the s3 path to the audio file[/bold yellow]")
     invoker.add_audio_input(audio_input)
     model = Prompt.ask(

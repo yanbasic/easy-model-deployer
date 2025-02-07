@@ -7,11 +7,11 @@ from jinja2 import Template
 import boto3
 from dmaa.models import (
     Model,
-    ExecutableConfig, 
+    ExecutableConfig,
 )
 from dmaa.models.utils.constants import (
-    ServiceType, 
-    EngineType, 
+    ServiceType,
+    EngineType,
     FrameworkType,
     InstanceType,
 )

@@ -60,4 +60,3 @@ if huggingface_url_list is not None:
 # Upload model to S3
 logger.info(f"Uploading comfyui models to S3")
 upload_dir_to_s3_by_s5cmd(model_s3_bucket, model_dir)
-

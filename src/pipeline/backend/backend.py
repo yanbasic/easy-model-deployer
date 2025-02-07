@@ -8,7 +8,7 @@ import logging
 import subprocess
 import signal
 import traceback
-import json  
+import json
 
 # import httpx
 from dmaa.models.utils.constants import ModelType,ServiceType
@@ -16,7 +16,7 @@ from dmaa.models import Engine
 
 
 from utils.common import download_dir_from_s3_by_s5cmd
-import torch 
+import torch
 from dmaa.constants import DMAA_MODELS_S3_KEY_TEMPLATE
 from dmaa.utils.logger_utils import get_logger
 
@@ -62,11 +62,11 @@ class OpenAICompitableProxyBackendBase(BackendBase):
         self.gpu_num = torch.cuda.device_count()
         self.model_type = self.execute_model.model_type
         self.proc = None
-    
-    
+
+
     def create_proxy_server_start_command(self,model_path):
         raise NotImplementedError("This method should be implemented by subclasses.")
-    
+
 
     def start_server(self, server_start_command):
         logger.info(f"Starting {self.engine_type} server with command: {server_start_command}")
@@ -86,10 +86,10 @@ class OpenAICompitableProxyBackendBase(BackendBase):
             except Exception as e:
                 print(f"error：{str(e)}")
             return False
-        # 
+        #
         while True:
             if check_server_status("127.0.0.1",self.server_port):
-                break 
+                break
             if not t.is_alive():
                 raise RuntimeError('openai server failed to start.')
             time.sleep(5)
@@ -105,7 +105,7 @@ class OpenAICompitableProxyBackendBase(BackendBase):
         if self.service_type != ServiceType.LOCAL:
             logger.info(f"Downloading model from s3")
             download_dir_from_s3_by_s5cmd(self.model_s3_bucket, model_dir)
-        
+
         if model_files_modify_hook:
             logger.info(f"Applying model files modify hook: {model_files_modify_hook}")
             Engine.load_model_files_modify_hook(model_files_modify_hook)(
@@ -126,14 +126,14 @@ class OpenAICompitableProxyBackendBase(BackendBase):
         # if self.service_type != ServiceType.LOCAL:
         #     logger.info(f"Downloading model from s3")
         #     download_dir_from_s3_by_s5cmd(self.model_s3_bucket, model_dir)
-        
+
         # if model_files_modify_hook:
         #     logger.info(f"Applying model files modify hook: {model_files_modify_hook}")
         #     Engine.load_model_files_modify_hook(model_files_modify_hook)(
         #         model_abs_path,
         #         **model_files_modify_hook_kwargs
         #     )
-        
+
         # get server start command
         server_start_command = self.create_proxy_server_start_command(model_abs_path)
         self.start_server(server_start_command)
@@ -154,16 +154,16 @@ class OpenAICompitableProxyBackendBase(BackendBase):
         #     except Exception as e:
         #         print(f"error：{str(e)}")
         #     return False
-        # # 
+        # #
         # while True:
         #     if check_server_status("127.0.0.1",self.server_port):
-        #         break 
+        #         break
         #     if not t.is_alive():
         #         raise RuntimeError('openai server failed to start.')
         #     time.sleep(5)
         # return
 
-    
+
     def stop(self):
         if self.proc:
             logger.info(f"pid: {self.proc.pid}")
@@ -197,8 +197,3 @@ class OpenAICompitableProxyBackendBase(BackendBase):
 
     def _get_response(self, response) -> List[str]:
         return response
-    
-
-    
-
-

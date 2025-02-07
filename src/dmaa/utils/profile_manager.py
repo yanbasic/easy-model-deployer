@@ -1,6 +1,6 @@
 
 from dmaa.constants import DMAA_DEFAULT_PROFILE_PARH
-import os 
+import os
 from dmaa.utils.logger_utils import get_logger
 
 logger = get_logger(
@@ -16,7 +16,7 @@ class ProfileManager:
     def write_default_profile_name_to_local(self,aws_profile_name: str):
         with open(self.profile_path,'w') as f:
             f.write(aws_profile_name)
-        
+
     def load_profile_name_from_local(self):
         try:
             with open(self.profile_path,'r') as f:
@@ -24,17 +24,17 @@ class ProfileManager:
         except FileNotFoundError:
             return None
 
-    
+
     def set_default_aws_profile_from_local(self):
         try:
             profile_name = self.load_profile_name_from_local()
         except Exception as e:
             logger.warning(f"Error loading AWS profile: {str(e)}")
-        
+
         if profile_name:
             os.environ["AWS_PROFILE"] = profile_name
             logger.info(f"Set AWS_PROFILE to {profile_name}")
-        
+
     def remove_profile_name_from_local(self):
         if os.path.exists(self.profile_path):
             default_name = self.load_profile_name_from_local()
@@ -42,5 +42,3 @@ class ProfileManager:
             return default_name
 
 profile_manager = ProfileManager()
-
-

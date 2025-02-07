@@ -284,4 +284,3 @@ comfyui_engine = ComfyuiEngine(**{
             "docker_login_region":"us-east-1",
 }
 )
-

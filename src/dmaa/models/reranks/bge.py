@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import vllm_embedding_engine066
 from ..services import sagemaker_service,local_service
 from ..frameworks import fastapi_framework
@@ -33,7 +33,7 @@ Model.register(
         ],
         supported_services=[
             sagemaker_service,
-            local_service 
+            local_service
         ],
         supported_frameworks=[
             fastapi_framework

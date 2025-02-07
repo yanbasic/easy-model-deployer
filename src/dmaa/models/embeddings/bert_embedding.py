@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import vllm_embedding_engine064
 from ..services import sagemaker_service,local_service,ecs_service
 from ..frameworks import fastapi_framework

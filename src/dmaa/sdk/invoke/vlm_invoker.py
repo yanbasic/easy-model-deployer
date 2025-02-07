@@ -2,7 +2,7 @@
 from .invoker_base import InvokerBase
 from dmaa.constants import MODEL_DEFAULT_TAG
 import base64
-import os 
+import os
 import io
 from urllib.parse import urlparse
 from rich.console import Console
@@ -11,14 +11,14 @@ class VLMInvoker(InvokerBase):
     def __init__(self, model_id, model_tag = MODEL_DEFAULT_TAG):
         super().__init__(model_id, model_tag)
         self.image_path = None
-        self.use_message = None 
+        self.use_message = None
         self.sample_audio_path = self.assets_path + "/vlm_sample_data.jpg"
         console = Console()
         console.print(f"VLM sample data path: {self.sample_audio_path}")
-    
+
     def add_user_message(self, message):
         self.use_message = message
-    
+
     def add_image(self, image_path):
         self.image_path = image_path
 
@@ -28,7 +28,7 @@ class VLMInvoker(InvokerBase):
                 return base64.b64encode(image_file.read()).decode('utf-8')
         elif image_path.startswith("s3://"):
             # download image from s3
-            import boto3 
+            import boto3
             s3 = boto3.client('s3')
             o = urlparse(image_path, allow_fragments=False)
             buffer = io.BytesIO()
@@ -39,7 +39,7 @@ class VLMInvoker(InvokerBase):
         else:
             raise Exception(f"image_path: {image_path} is not valid, only local file and s3 files  are allowed")
 
-    
+
     def invoke(self,stream=False):
         image_path = self.image_path
         use_message = self.use_message
@@ -58,14 +58,9 @@ class VLMInvoker(InvokerBase):
         ret = self._invoke(pyload)
         if not stream:
             return ret['choices'][0]['message']['content']
-        
+
         def _stream_helper():
             for i in ret:
-                yield i 
+                yield i
 
         return _stream_helper()
-
-    
-
-    
-    

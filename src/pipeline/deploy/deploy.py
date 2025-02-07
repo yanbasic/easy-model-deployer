@@ -6,8 +6,8 @@ import json
 import argparse
 from dmaa.models.utils.constants import (
     InstanceType,
-    ServiceType, 
-    EngineType, 
+    ServiceType,
+    EngineType,
     FrameworkType
 )
 from dmaa.models import Model, ExecutableConfig

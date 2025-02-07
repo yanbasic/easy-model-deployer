@@ -7,7 +7,7 @@ class ConversationInvoker(InvokerBase):
     def __init__(self, model_id, model_tag = MODEL_DEFAULT_TAG):
         super().__init__(model_id, model_tag)
         self.messages = []
-    
+
     def add_system_message(self,message:str):
         self.messages.insert({"role": "system", "content": message},0)
 
@@ -16,7 +16,7 @@ class ConversationInvoker(InvokerBase):
 
     def add_assistant_message(self, message:str):
         self.messages.append({"role": "assistant", "content": message})
-    
+
     def invoke(self,pyload=None,stream=False):
         if pyload is None:
             pyload = {
@@ -31,13 +31,10 @@ class ConversationInvoker(InvokerBase):
             if reasoning_content:
                 content = f"<think>\n{reasoning_content}\n</think>\n{content}"
             return content
-        
-        
+
+
         def _stream_helper():
             for i in ret:
-                yield i 
+                yield i
 
         return _stream_helper()
-    
-
-   

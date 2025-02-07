@@ -37,4 +37,3 @@ def normalize(input_str: str) -> str:
                 result.append(char)
 
     return "".join(result)
-

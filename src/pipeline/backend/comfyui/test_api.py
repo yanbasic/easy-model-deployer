@@ -2,7 +2,7 @@ import json
 from urllib import request, parse
 import random
 import websocket
-import uuid 
+import uuid
 import os
 from PIL import Image
 import io
@@ -78,7 +78,7 @@ def get_images(prompt_id, server_address):
   history = get_history(prompt_id, server_address)[prompt_id]
   for node_id in history['outputs']:
       node_output = history['outputs'][node_id]
-      print(node_id, node_output) 
+      print(node_id, node_output)
       if 'images' in node_output:
           images_output = []
           for image in node_output['images']:
@@ -110,7 +110,7 @@ def save_image(images, output_path, save_previews):
           image = Image.open(io.BytesIO(itm['image_data']))
           image.save(os.path.join(directory, itm['file_name']))
       except Exception as e:
-          print(f"Failed to save image {itm['file_name']}: {e}")  
+          print(f"Failed to save image {itm['file_name']}: {e}")
 
 def queue_prompt(prompt, client_id, server_address):
     p = {"prompt": prompt, "client_id": client_id}
@@ -128,9 +128,8 @@ prompt = json.load(f)
 ws, server_address, client_id = open_websocket_connection()
 prompt_id = queue_prompt(prompt, client_id, server_address)['prompt_id']
 print(prompt_id)
-track_progress(prompt, ws, prompt_id) 
+track_progress(prompt, ws, prompt_id)
 #images = get_images(prompt_id, server_address)
 
 #output_path = './output'
 #save_image(images, output_path, save_previews=False)
-

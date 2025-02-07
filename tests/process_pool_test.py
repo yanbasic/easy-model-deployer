@@ -1,12 +1,12 @@
 
 from concurrent import futures
 from concurrent.futures import FIRST_EXCEPTION,as_completed
-import random 
-import time 
-import sys 
+import random
+import time
+import sys
 from multiprocessing import Event
-import threading 
-import os 
+import threading
+import os
 
 def init_worker(event):
     global shared_event
@@ -46,7 +46,7 @@ def worker(fn,*args,**kwargs):
             print("thread is not alive")
             if thread.err is not None:
                 shared_event.set()
-            break 
+            break
         time.sleep(0.1)
 
 
@@ -105,13 +105,13 @@ with futures.ProcessPoolExecutor(max_workers = 3,initializer=init_worker,initarg
 # from time import sleep
 # from multiprocessing.pool import Pool
 # from multiprocessing import Manager
- 
+
 # # initialize worker processes
 # def init_worker(shared_event):
 #     # store the event as a global in the worker process
 #     global event
 #     event = shared_event
- 
+
 # # task executed in a worker process
 # def task(identifier):
 #     # loop for a while
@@ -130,7 +130,7 @@ with futures.ProcessPoolExecutor(max_workers = 3,initializer=init_worker,initarg
 #             return
 #     # report done
 #     print(f'Task {identifier} done', flush=True)
- 
+
 # # protect the entry point
 # if __name__ == '__main__':
 #     # create a manager

@@ -80,7 +80,7 @@ def log_pipeline_execution_details(execution_id: str = None, logs: bool = False)
                     pipelineName=pipeline_name,
                     pipelineExecutionId=execution_id,
                 )["pipelineExecution"]["status"]
-            
+
             build_log = []
             if execution_status == "InProgress":
                 while execution_status == "InProgress":
@@ -135,7 +135,7 @@ def log_pipeline_execution_details(execution_id: str = None, logs: bool = False)
                         else:
                             log_status_message("Pending", "Model service deployment", ":ship:")
                     except Exception as e:
-                        pass                            
+                        pass
             # Retrieve pipeline execution details
             execution_details = codepipeline.get_pipeline_execution(
                 pipelineName=pipeline_name,

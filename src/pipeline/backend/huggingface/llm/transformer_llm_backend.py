@@ -6,14 +6,14 @@ from dmaa.models.utils.constants import ModelType,ServiceType
 
 from backend.backend import BackendBase
 from utils.common import download_dir_from_s3_by_s5cmd
-import torch 
+import torch
 from dmaa.constants import DMAA_MODELS_LOCAL_DIR_TEMPLATE
 from dmaa.utils.logger_utils import get_logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 from transformers import TextIteratorStreamer
 from threading import Thread
-import json 
+import json
 
 
 logger = get_logger(__name__)
@@ -32,34 +32,34 @@ class TransformerLLMBackend(BackendBase):
         self.model_type = self.execute_model.model_type
         self.proc = None
         self.model = None
-        self.tokenizer = None 
+        self.tokenizer = None
         self.pretrained_model_init_kwargs = self.execute_model.executable_config.current_engine.pretrained_model_init_kwargs or {}
         self.pretrained_tokenizer_init_kwargs = self.execute_model.executable_config.current_engine.pretrained_tokenizer_init_kwargs or {}
 
-    
+
     def start(self):
         model_dir = os.environ.get("MODEL_DIR") or DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=self.model_id)
         if self.service_type != ServiceType.LOCAL:
             logger.info(f"Downloading model from s3")
             download_dir_from_s3_by_s5cmd(self.model_s3_bucket, model_dir)
         model_abs_path = os.path.abspath(model_dir)
-        
-        # TODO add model iint args from model's definition 
+
+        # TODO add model iint args from model's definition
         self.model = AutoModelForCausalLM.from_pretrained(
                 model_abs_path,
                 torch_dtype="auto",
                 device_map="auto",
                 **self.pretrained_model_init_kwargs
 
-                
+
         )
-        # TODO add tokenizer init args from model's definition 
+        # TODO add tokenizer init args from model's definition
         self.tokenizer =  AutoTokenizer.from_pretrained(
             model_abs_path,
             **self.pretrained_tokenizer_init_kwargs
         )
 
-    
+
     def format_response_as_openai(self,response:str):
         return {
             # "id": "chatcmpl-123",
@@ -96,10 +96,10 @@ class TransformerLLMBackend(BackendBase):
             "object":"chat.completion.chunk",
             "created":time.time(),
             "model": self.model_id,
-            # "system_fingerprint": "fp_44709d6fcb", 
+            # "system_fingerprint": "fp_44709d6fcb",
             "choices":[
                 {
-                    "index":0, 
+                    "index":0,
                     "delta":{
                         "role":"assistant","content":chunk_response
                 },
@@ -108,7 +108,7 @@ class TransformerLLMBackend(BackendBase):
         }
 
 
-    
+
     def invoke(self, request:dict):
         generate_kwargs = {
             "max_new_tokens":512,
@@ -131,7 +131,7 @@ class TransformerLLMBackend(BackendBase):
         model_inputs = self.tokenizer([text], return_tensors="pt").to(self.model.device)
         logger.info(f'request: {request}')
         logger.info(f"model_inputs: {model_inputs}, generate_kwargs: {generate_kwargs}")
-        
+
         if not request.get('stream',False):
             generated_ids = self.model.generate(
                 **model_inputs,
@@ -145,8 +145,8 @@ class TransformerLLMBackend(BackendBase):
             response = self.format_response_as_openai(response)
             logger.info(f'response: {response}')
             return response
-        
-            
+
+
         streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True,skip_special_tokens=True)
         generation_kwargs = {
             **model_inputs,
@@ -164,16 +164,12 @@ class TransformerLLMBackend(BackendBase):
                     yield json.dumps(new_text) + "\n"
                 else:
                     yield new_text
-            
+
             new_text = self.format_stream_response_as_openai("",is_last=True)
             if self.service_type == ServiceType.SAGEMAKER:
                 yield json.dumps(new_text) + "\n"
             else:
                 yield new_text
             logger.info(f'response: {self.format_response_as_openai(history_response)}')
-            
+
         return streamer_return_helper()
-
-
-
-

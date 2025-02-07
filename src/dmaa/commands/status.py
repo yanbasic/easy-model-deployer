@@ -52,7 +52,7 @@ def status(
             "outputs":d['outputs'],
             "deploy_version":d['deploy_version']
         })
-    
+
     for d in completed:
         data.append({
             "model_id":d['model_id'],
@@ -67,7 +67,7 @@ def status(
             "outputs":d['outputs'],
             "deploy_version":d['deploy_version']
         })
-    
+
     account_id = get_account_id()
     table = Table(show_lines=True, expand=True)
     table.add_column("ModelId", justify="left",overflow='fold')
@@ -105,11 +105,3 @@ def status(
 
 if __name__ == "__main__":
     status()
-
-
-    
-
-
-
-    
-

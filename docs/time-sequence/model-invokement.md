@@ -23,7 +23,7 @@ sequenceDiagram
     DB-->>Core API: The deploy task is finished
     Core API-->>Application API: The deploy task is finished
     Application API->>Core API: Call dmaa.core.invoke() with parameters
-    Core API->>Sagemaker: Call sagemaker endpoint 
+    Core API->>Sagemaker: Call sagemaker endpoint
     Sagemaker-->>Core API: Return inference results
     Core API-->>Application API: Return inference results
     Application API-->>WebUI: Return inference results

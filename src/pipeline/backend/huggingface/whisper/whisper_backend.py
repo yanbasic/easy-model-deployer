@@ -1,6 +1,6 @@
 from typing import Iterable, List
-import sys 
-import time 
+import sys
+import time
 
 from backend.backend import BackendBase
 sys.path.append("/opt/")
@@ -11,8 +11,8 @@ from silero_vad import get_speech_timestamps, load_silero_vad, read_audio
 
 import boto3
 import botocore
-import json 
-import os 
+import json
+import os
 from dmaa.models.utils.logger_utils import get_logger
 from concurrent.futures import ProcessPoolExecutor,as_completed
 
@@ -148,7 +148,7 @@ class WhisperBackend(BackendBase):
         except Exception as e:
             logger.error("<<<<download error:", e)
             return {'status': 'bad response'}
-    
+
         print("download success")
         # my_process = ctx.Process(
         #     target=inference,
@@ -164,4 +164,3 @@ class WhisperBackend(BackendBase):
 
     def load_model(self, model_type:str):
         return
-

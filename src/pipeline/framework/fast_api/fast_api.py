@@ -14,7 +14,7 @@ logger = get_logger(__name__)
 # prevent logging ping
 class HealthCheckFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
-        return record.getMessage().find("GET /ping") == -1 and record.getMessage().find("GET /health") == -1 
+        return record.getMessage().find("GET /ping") == -1 and record.getMessage().find("GET /health") == -1
 
 # Remove /credentials/health from application server logs
 logging.getLogger("uvicorn.access").addFilter(HealthCheckFilter())
@@ -80,7 +80,7 @@ async def invocations(request: Request, authorization: str = Depends(get_authori
 if __name__ == "__main__":
     args = parse_args()
     host = args.host
-    port = args.port 
+    port = args.port
     uvicorn_log_level = args.uvicorn_log_level
     model_id = args.model_id
     # continue generate the variables
@@ -110,4 +110,3 @@ if __name__ == "__main__":
     engine = execute_model.get_engine()
     engine.start()
     uvicorn.run(app, host=host, port=port, log_level=uvicorn_log_level, timeout_keep_alive=60)
-

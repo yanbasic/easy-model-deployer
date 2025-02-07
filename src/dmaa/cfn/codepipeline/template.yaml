@@ -22,7 +22,7 @@ Parameters:
   CloudFormationRoleName:
     Type: String
     Description: Name of the CloudFormation role name
-    
+
 Resources:
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
@@ -262,7 +262,7 @@ Resources:
                 Provider: CodeBuild
               Configuration:
                 ProjectName: !Ref CodeBuildProject
-                EnvironmentVariables: 
+                EnvironmentVariables:
                   !Sub |
                     [{
                       "name": "ModelId",

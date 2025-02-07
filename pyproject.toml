@@ -3,8 +3,8 @@ name = "dmaa"
 description = "Deploy Model Anywhere on AWS"
 version = "0.6.0"
 authors = [
-    {name = "Yi Yan",email = "<yiyanz@amazon.com>"}, 
-    {name = "Jie Tang", email="<tangjiee@amazon.com>"}, 
+    {name = "Yi Yan",email = "<yiyanz@amazon.com>"},
+    {name = "Jie Tang", email="<tangjiee@amazon.com>"},
     {name="Xuan Zhou",email="<zhouxss@amazon.com>"}
 ]
 readme = "README.md"
@@ -36,8 +36,8 @@ modelscope = "^1.21.1"
 [tool.poetry.extras]
 # optional dependencies
 cli = ["typer","rich","questionary","requests"]
-langchain = ["langchain", "langchain-aws"]  # langchain required 
-all = ["typer","rich","questionary","langchain", "langchain-aws","sagemaker","openai","jinja2","huggingface_hub","modelscope"] # all 
+langchain = ["langchain", "langchain-aws"]  # langchain required
+all = ["typer","rich","questionary","langchain", "langchain-aws","sagemaker","openai","jinja2","huggingface_hub","modelscope"] # all
 
 
 [tool.poetry.group.dev.dependencies]

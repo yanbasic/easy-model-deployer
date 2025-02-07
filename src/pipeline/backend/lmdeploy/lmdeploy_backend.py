@@ -6,7 +6,7 @@ logger = get_logger(__name__)
 
 class LMdeployBackend(OpenAICompitableProxyBackendBase):
     server_port = "23333"
-    
+
     def create_proxy_server_start_command(self,model_path):
         serve_command = f'lmdeploy serve api_server --server-port {self.server_port} --model-name={self.model_id} --tp {self.gpu_num} {self.default_cli_args} {self.cli_args} {model_path}'
         if self.environment_variables:
@@ -30,7 +30,7 @@ class LMdeployBackend(OpenAICompitableProxyBackendBase):
         #         "Accept-Type": "application/json",
         #     }
         #     response = httpx.post(
-        #         f'http://localhost:{self.server_port}/v1/score', 
+        #         f'http://localhost:{self.server_port}/v1/score',
         #         json=request,
         #         headers=headers
         #     ).json()

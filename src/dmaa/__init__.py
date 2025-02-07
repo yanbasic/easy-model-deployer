@@ -34,4 +34,3 @@ def __getattr__(attr:str):
     if attr not in functions_map:
         raise AttributeError(f"module dmaa has no attribute '{attr}'")
     return functions_map[attr]()
-    

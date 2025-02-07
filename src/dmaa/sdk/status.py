@@ -16,7 +16,7 @@ def get_pipeline_execution_status(
         pipeline_name:str = CODEPIPELINE_NAME,
         region=None
     ):
-    client = boto3.client('codepipeline', region_name=region)  
+    client = boto3.client('codepipeline', region_name=region)
     response = client.get_pipeline_execution(
         pipelineName=pipeline_name,
         pipelineExecutionId=pipeline_execution_id
@@ -66,7 +66,7 @@ def get_destroy_status(stack_name:str):
              "is_succeeded":False,
              "status": status,
         }
-    
+
 
 def get_model_status(model_id:str=None,model_tag=MODEL_DEFAULT_TAG):
     check_env_stack_exist_and_complete()
@@ -90,7 +90,7 @@ def get_model_status(model_id:str=None,model_tag=MODEL_DEFAULT_TAG):
         for model_stack in model_stacks
     }
 
-    # deduplication 
+    # deduplication
     uuids = set()
     _model_stacks = []
     _active_executuion_infos = []
@@ -121,7 +121,7 @@ def get_model_status(model_id:str=None,model_tag=MODEL_DEFAULT_TAG):
     if cur_id in active_executuion_infos_d:
         ret['inprogress'].append(active_executuion_infos_d[cur_id])
         return ret
-    
+
     if cur_id in model_stacks_d:
         ret['completed'].append(model_stacks_d[cur_id])
         return ret
@@ -131,7 +131,5 @@ def get_model_status(model_id:str=None,model_tag=MODEL_DEFAULT_TAG):
 
     ret['inprogress'].extend(active_executuion_infos)
     ret["completed"].extend(model_stacks)
-    
+
     return ret
-
-

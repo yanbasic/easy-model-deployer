@@ -1,7 +1,7 @@
 from backend.backend import OpenAICompitableProxyBackendBase
 from dmaa.utils.logger_utils import get_logger
 from dmaa.models import Instance
-import os 
+import os
 from dmaa.utils.accelerator_utils import (
     check_cuda_exists,
     check_neuron_exists,
@@ -30,7 +30,7 @@ class TgiBackend(OpenAICompitableProxyBackendBase):
         # entrypoint = "text-generation-launcher"
         # if Instance.check_inf2_instance(self.instance_type) or check_neuron_exists():
         #     entrypoint = "/tgi-entrypoint.sh"
-        
+
         shard_num = self.get_shard_num()
         serve_command = f'{self.entrypoint} --trust-remote-code --model-id {model_path} --port {self.server_port} --num-shard {shard_num} {self.default_cli_args} {self.cli_args}'
         if self.environment_variables:
@@ -39,11 +39,11 @@ class TgiBackend(OpenAICompitableProxyBackendBase):
             serve_command += f" --api-key {self.api_key}"
         return serve_command
 
-    
+
     def convert_model_to_neuron(self,model_path,output_path):
         convert_cmd = "optimum-cli export neuron" \
                       f" --model {model_path}"
-                                
+
         for k,v in self.neuron_compile_params.items():
             convert_cmd += f" --{k} {v}"
         convert_cmd += f" {output_path}"
@@ -59,7 +59,7 @@ class TgiBackend(OpenAICompitableProxyBackendBase):
         #         **compiler_args
         #     )
         # model.save_pretrained(otuput_path)
-        
+
 
     def before_start(self,model_dir=None):
         model_abs_path = super().before_start(model_dir=model_dir)
@@ -76,7 +76,7 @@ class TgiBackend(OpenAICompitableProxyBackendBase):
             )
             model_abs_path = output_path
             logger.info(f"compile model to neuron done")
-        
+
         return model_abs_path
 
         # return super().start(model_dir=model_dir)
@@ -98,7 +98,7 @@ class TgiBackend(OpenAICompitableProxyBackendBase):
         #         "Accept-Type": "application/json",
         #     }
         #     response = httpx.post(
-        #         f'http://localhost:{self.server_port}/v1/score', 
+        #         f'http://localhost:{self.server_port}/v1/score',
         #         json=request,
         #         headers=headers
         #     ).json()

@@ -23,7 +23,7 @@ def download_huggingface_model(model,args:dict):
 
     if isinstance(huggingface_endpoints,str):
         huggingface_endpoints = [huggingface_endpoints]
-    
+
     is_download_success = False
     print('huggingface_endpoints',huggingface_endpoints)
     for huggingface_endpoint in huggingface_endpoints:
@@ -39,7 +39,7 @@ def download_huggingface_model(model,args:dict):
         except Exception as e:
             logger.error(f"Error downloading {huggingface_model_id} model from endpoint: {huggingface_endpoint}, error: {e}")
             continue
-    
+
     if not is_download_success:
         raise Exception(f"Failed to download {huggingface_model_id} model from all endpoints: {huggingface_endpoints}")
 
@@ -50,7 +50,7 @@ def download_huggingface_model(model,args:dict):
     # logger.info(f"Downloading {huggingface_model_id} model from endpoint: {huggingface_endpoint}")
 
     # hf_snapshot_download(
-    #     huggingface_model_id, 
+    #     huggingface_model_id,
     #     local_dir=model_dir,
     #     endpoint=huggingface_endpoint
     # )
@@ -61,9 +61,9 @@ def download_modelscope_model(model,args=None):
     model_id = model.model_id
     model_dir = DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=model_id)
     logger.info(f"Downloading {modelscope_model_id} model")
-    
+
     ms_snapshot_download(
-        model_id=modelscope_model_id, 
+        model_id=modelscope_model_id,
         local_dir=model_dir
     )
 

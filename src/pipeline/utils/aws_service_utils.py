@@ -3,7 +3,7 @@ import time
 import os
 from botocore.exceptions import ClientError, NoCredentialsError
 from .logger_utils import get_logger
-import json 
+import json
 import hashlib
 import boto3
 logger = get_logger(__name__)
@@ -11,8 +11,8 @@ logger = get_logger(__name__)
 
 def calculate_md5_string(input_string):
     md5_hash = hashlib.md5()
-    md5_hash.update(input_string.encode('utf-8'))  
-    return md5_hash.hexdigest()  
+    md5_hash.update(input_string.encode('utf-8'))
+    return md5_hash.hexdigest()
 
 
 def check_aws_environment():
@@ -59,7 +59,7 @@ def create_s3_bucket(bucket_name,region):
             logger.info(f"bucket: {bucket_name} exists")
         except Exception as e:
             raise
-        
+
 
 def get_role_create_template(
         role_name:str,

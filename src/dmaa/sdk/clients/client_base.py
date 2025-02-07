@@ -1,6 +1,6 @@
-from pydantic import BaseModel,Field 
+from pydantic import BaseModel,Field
 from typing import Optional
-import os 
+import os
 
 class ClientBase(BaseModel):
     model_id: Optional[str] = None
@@ -23,6 +23,3 @@ class ClientBase(BaseModel):
 
     def invoke_async(self, pyload:dict):
         raise NotADirectoryError
-
-
-

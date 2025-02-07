@@ -14,19 +14,19 @@ from dmaa.revision import VERSION, COMMIT_HASH
 
 from dmaa.commands import (
     bootstrap,
-    deploy, 
-    # models, 
-    destroy, 
+    deploy,
+    # models,
+    destroy,
     version,
     status,
     config
 )
-from dmaa.commands.invoke import invoke 
+from dmaa.commands.invoke import invoke
 from dmaa.utils.aws_service_management import check_aws_environment
 from typing_extensions import Annotated
 from dmaa.utils.decorators import load_aws_profile,catch_aws_credential_errors
-from dmaa.models import Model 
-import json 
+from dmaa.models import Model
+import json
 
 app = typer.Typer(
     add_completion=False,

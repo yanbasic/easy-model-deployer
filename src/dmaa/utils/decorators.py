@@ -125,10 +125,10 @@ def load_aws_profile(fn):
         #     pass
         # except Exception as e:
         #     logger.error(f"Error loading AWS profile: {str(e)}")
-        
+
         # if profile_name:
         #     os.environ["AWS_PROFILE"] = profile_name
-        
+
         print_aws_profile()
         # try:
         #     sts = boto3.client("sts")

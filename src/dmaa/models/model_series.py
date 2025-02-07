@@ -11,7 +11,7 @@ GLM4_SERIES = ModelSeries(
     model_series_name = ModelSeriesType.GLM4,
     description="The GLM-4 series includes the latest generation of pre-trained models launched by Zhipu AI.",
     reference_link="https://github.com/THUDM/GLM-4"
-) 
+)
 
 INTERLM2d5_SERIES = ModelSeries(
     model_series_name=ModelSeriesType.INTERLM2d5,
@@ -89,6 +89,3 @@ BAICHAUN_SERIES= ModelSeries(
     description="Baichuan Intelligent Technology.",
     reference_link="https://github.com/baichuan-inc"
 )
-
-
-

@@ -62,16 +62,16 @@ def supported_models_filter(region:str,support_models:list[Model]):
 
     for model in support_models:
         if is_cn_region and not model.allow_china_region:
-            continue 
+            continue
         ret.append(model)
-    return ret 
+    return ret
 
 def supported_services_filter(region,allow_local_deploy,supported_services:list[Service]):
     ret = []
     is_cn_region = check_cn_region(region)
     for service in supported_services:
         if is_cn_region and not service.support_cn_region:
-            continue 
+            continue
         if service.service_type == ServiceType.LOCAL and not allow_local_deploy:
             continue
         ret.append(service)
@@ -87,9 +87,9 @@ def supported_instances_filter(region,allow_local_deploy:bool,supported_instance
             continue
 
         if instance.instance_type == InstanceType.LOCAL and not allow_local_deploy:
-            continue 
+            continue
         ret.append(instance)
-    
+
     if not ret:
         raise InstanceNotSupported(region)
     return ret
@@ -100,7 +100,7 @@ def check_model_support_on_cn_region(model_id,region):
     model = Model.get_model(model_id)
     is_cn_region = check_cn_region(region)
     if is_cn_region and not model.allow_china_region:
-        return False 
+        return False
     return True
 
 def check_service_support_on_cn_region(serivce_type, region):
@@ -124,7 +124,7 @@ def is_valid_model_tag(name,pattern=MODEL_TAG_PATTERN):
 def ask_model_id(region,model_id=None):
     if model_id is not None:
         return model_id
-    
+
     # step 1: select model series name
     support_models:list[Model] = sorted(
         [Model.get_model(m) for m in Model.get_supported_models()],
@@ -147,7 +147,7 @@ def ask_model_id(region,model_id=None):
         description += f"\nreference link: {model.model_series.reference_link}"
         description += "\nSupported models: "+ "\n - " + "\n - ".join(model.model_id for model in models)
         return description
-    
+
     series_name = select_with_help(
         "Select the model series:",
         choices=[
@@ -162,14 +162,14 @@ def ask_model_id(region,model_id=None):
     ).ask()
     if series_name is None:
         raise typer.Exit(0)
-    
+
     def _get_model_description(model:Model):
         description=f"\n\nModelType: {model.model_type}\nApplication Scenario: {model.application_scenario}"
         if model.description:
             description += f"\nDescription: {model.description}"
-        return description 
+        return description
 
-    # step 2 select model_id 
+    # step 2 select model_id
     model_id = select_with_help(
         "Select the model name:",
         choices=[
@@ -182,7 +182,7 @@ def ask_model_id(region,model_id=None):
         show_description=True,
         style=custom_style
     ).ask()
-        
+
     if model_id is None:
         raise typer.Exit(0)
     return model_id
@@ -223,19 +223,19 @@ def deploy(
     allow_local_deploy:Annotated[
         Optional[bool], typer.Option("--allow-local-deploy", help="allow local instance")
     ] = False,
-    
+
 ):
     # console.print("[bold blue]Checking AWS environment...[/bold blue]")
-   
+
     region = get_current_region()
-    
-    # ask model id 
+
+    # ask model id
     model_id = ask_model_id(region,model_id=model_id)
-    
+
     if not check_model_support_on_cn_region(model_id,region):
         raise ModelNotSupported(region,model_id=model_id)
-        
-    
+
+
     model = Model.get_model(model_id)
     # support services
     supported_services:list[Service] = model.supported_services
@@ -262,14 +262,14 @@ def deploy(
         console.print(f"[bold blue]service type: {service_type}[/bold blue]")
         assert service_type in supported_service_types, \
             f"Invalid service type: {service_type}, supported service types for model: {model_id}: {supported_service_types}"
-    
+
     if service_type is None:
         raise typer.Exit(0)
-    
+
     if not check_service_support_on_cn_region(service_type,region):
         raise ServiceNotSupported(region, service_type=service_type)
 
-    # support instance    
+    # support instance
     supported_instances = model.supported_instances
     supported_instances = supported_instances_filter(region,allow_local_deploy,supported_instances)
     if service_type == ServiceType.LOCAL:
@@ -309,13 +309,13 @@ def deploy(
             console.print(f"[bold blue]instance type: {instance_type}[/bold blue]")
             assert instance_type in supported_instance_types,\
                     f"Invalid instance type: {instance_type}, supoorted instance types for model: {model_id}: {supported_instance_types}"
-    
+
     if instance_type is None:
         raise typer.Exit(0)
 
     if not check_instance_support_on_cn_region(instance_type,region):
         raise InstanceNotSupported(region, instance_type=instance_type)
-    
+
     supported_engines = model.supported_engines
     if Instance.check_inf2_instance(instance_type):
         supported_engines = [engine for engine in supported_engines if engine.support_inf2_instance]
@@ -373,7 +373,7 @@ def deploy(
 
     if framework_type is None:
         raise typer.Exit(0)
-    
+
     # extra_params
     if extra_params is None:
         while True:
@@ -381,7 +381,7 @@ def deploy(
                 "(Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter:",
                 default="{}"
             ).ask()
-          
+
             try:
                 extra_params = parse_extra_params(extra_params)
                 break
@@ -392,8 +392,8 @@ def deploy(
             extra_params = parse_extra_params(extra_params)
         except json.JSONDecodeError as e:
             console.print("[red]Invalid JSON format. Please try again.[/red]")
-    
-    # model tag 
+
+    # model tag
     if model_tag==MODEL_DEFAULT_TAG and not skip_confirm:
         while True:
             model_tag = questionary.text(
@@ -407,7 +407,7 @@ def deploy(
                 break
             if not model_tag and not is_valid_model_tag(model_tag):
                 console.print(f"[bold blue]invalid model tag: {model_tag}. Please ensure that the tag complies with the standard rules: {MODEL_TAG_PATTERN}.[/bold blue]")
-    
+
     if model_tag == "":
         model_tag = MODEL_DEFAULT_TAG
 

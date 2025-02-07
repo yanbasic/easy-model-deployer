@@ -29,13 +29,13 @@
 import io
 import re
 
-NEWLINE = re.compile(r'\\n')  
+NEWLINE = re.compile(r'\\n')
 DOUBLE_NEWLINE = re.compile(r'\\n\\n')
 
 class LineIterator:
     """
-    A helper class for parsing the byte stream from Llama 2 model inferenced with LMI Container. 
-    
+    A helper class for parsing the byte stream from Llama 2 model inferenced with LMI Container.
+
     The output of the model will be in the following repetetive but incremental format:
     ```
     b'{"generated_text": "'
@@ -47,7 +47,7 @@ class LineIterator:
     For each iteration, we just read the incremental part and seek for the new position for the next iteration till the end of the line.
 
     """
-    
+
     def __init__(self, stream):
         self.byte_iterator = iter(stream)
         self.buffer = io.BytesIO()
@@ -68,7 +68,7 @@ class LineIterator:
                 self.read_pos += len(line)
                 if line.startswith(start_sequence):# in :
                     line = line.lstrip(start_sequence)
-                
+
                 if line.endswith(stop_sequence):
                     line =line.rstrip(stop_sequence)
                 line = line.decode('utf-8')

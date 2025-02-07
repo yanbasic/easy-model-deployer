@@ -1,4 +1,4 @@
-import os 
+import os
 import re
 import importlib
 from pydantic import BaseModel,Field,ConfigDict
@@ -34,33 +34,33 @@ class ValueWithDefault(BaseModel):
 
 class Instance(ModelBase):
     instance_type: InstanceType
-    gpu_num: Union[int,None] = Field(description="Gpu num of NVIDIA chips",default=None) 
+    gpu_num: Union[int,None] = Field(description="Gpu num of NVIDIA chips",default=None)
     neuron_core_num: Union[int,None] = Field(description="NeuronCore num of Inferentia2 chips",default=None)
     description: str
     vcpu: int
     memory: int = Field(description="memory of the instance, use `GiB` unit")
     support_cn_region: bool = False
-   
+
     gib_to_mb: ClassVar[int] = 1073
     vcpu_to_cpu: ClassVar[int] = 1024
     instance_map: ClassVar[dict] = {}
     def model_post_init(self, __context: Any) -> None:
-        Instance.instance_map[self.instance_type] = self 
-    
+        Instance.instance_map[self.instance_type] = self
+
     @classmethod
     def get_ecs_container_memory(cls,instance_type:InstanceType):
         instance = Instance.instance_map[instance_type]
         return f"{int(instance.memory * 1024/cls.gib_to_mb)*1024}"
-     
+
     @classmethod
     def get_ecs_container_cpu(cls,instance_type:InstanceType):
         instance = Instance.instance_map[instance_type]
         return f"{min(instance.vcpu,10) * cls.vcpu_to_cpu}"
-    
+
     @classmethod
     def get_instance_from_instance_type(cls,instance_type:InstanceType):
         return Instance.instance_map[instance_type]
-    
+
     @classmethod
     def check_inf2_instance(cls,instance_type:str):
         return "inf2" in instance_type
@@ -75,17 +75,17 @@ class Engine(ModelBase):
     use_public_ecr: bool = False
     docker_login_region: Union[str,None] = None
     python_name: str = "python3"
-    
+
     # this field is used to modify the model fields like qwen2 yarn config
     model_files_modify_hook: Union[str,None] = None
     model_files_modify_hook_kwargs: Union[dict,None] = None
     description:str = ""
     support_inf2_instance: bool = False
-    
+
     # vllm_environment_variables:str = ""
     # vllm_cli_args: str = ""
     # default_vllm_cli_args: str = ""
-    
+
     @staticmethod
     def load_model_files_modify_hook(hook_path:str):
         *module_path,hook_name = hook_path.split(".")
@@ -104,22 +104,22 @@ class Service(ModelBase):
     service_type_maps: ClassVar[dict] = {}
 
     def model_post_init(self, __context: Any) -> None:
-        Service.service_name_maps[self.name] = self 
+        Service.service_name_maps[self.name] = self
         Service.service_type_maps[self.service_type] = self
 
-    
+
     @classmethod
     def get_service_from_service_type(cls, service_type:ServiceType):
         return cls.service_type_maps[service_type]
-    
+
     @classmethod
     def get_service_from_name(cls, name:str):
         return cls.service_name_maps[name]
-    
+
     # # TODO
     # def get_quota_args(self,instance_type:InstanceType):
     #     raise NotImplementedError
-    
+
 
 
 class Framework(ModelBase):
@@ -134,9 +134,9 @@ class ExecutableConfig(ModelBase):
     current_service: Union[Service,None] = None
     current_framework: Union[Framework,None] = None
     extra_params: Union[dict,None] = None
-    model_s3_bucket: Union[str,None] = None 
+    model_s3_bucket: Union[str,None] = None
     model_tag: str = MODEL_DEFAULT_TAG
-    
+
 
 class ModelSeries(ModelBase):
     model_series_name:ModelSeriesType
@@ -146,8 +146,8 @@ class ModelSeries(ModelBase):
     model_series_name_maps: ClassVar[dict] = {}
 
     def model_post_init(self, __context: Any) -> None:
-        ModelSeries.model_series_name_maps[self.model_series_name] = self 
-    
+        ModelSeries.model_series_name_maps[self.model_series_name] = self
+
     @classmethod
     def get_model_series_from_name(cls, model_series_name:ModelSeriesType):
         return cls.model_series_name_maps[model_series_name]
@@ -172,7 +172,7 @@ class Model(ModelBase,Generic[T]):
     model_type: ModelType = ModelType.LLM
     need_prepare_model: bool = True
     model_series: ModelSeries
-    
+
     executable_config: Union[ExecutableConfig,None] = None
 
     @classmethod
@@ -180,7 +180,7 @@ class Model(ModelBase,Generic[T]):
         model = cls(**model_dict)
         Model.model_map[model.model_id] = model
         return model
-    
+
 
     @classmethod
     def get_model(cls ,model_id:str,update:dict = None) -> T:
@@ -198,14 +198,14 @@ class Model(ModelBase,Generic[T]):
 
     def find_current_engine(self,engine_type:str) -> dict:
         supported_engines:List[Engine]  = self.supported_engines
-        cur_engine = None 
+        cur_engine = None
         for supported_engine in supported_engines:
             if supported_engine.engine_type == engine_type:
                 cur_engine = supported_engine.model_dump()
-                break 
+                break
         assert cur_engine is not None, (engine_type,supported_engines)
         return cur_engine
-    
+
     def find_current_instance(self,instance_type):
         supported_instances = self.supported_instances
         cur_instance = None
@@ -215,7 +215,7 @@ class Model(ModelBase,Generic[T]):
                 break
         assert cur_instance is not None, (instance_type, supported_instances)
         return cur_instance
-        
+
     def find_current_service(self,service_type):
         supported_services = self.supported_services
         cur_service = None
@@ -226,7 +226,7 @@ class Model(ModelBase,Generic[T]):
         assert cur_service is not None, (service_type, supported_services)
 
         return cur_service
-    
+
     def find_current_framework(self,framework_type):
         supported_frameworks = self.supported_frameworks
         cur_framework = None
@@ -237,35 +237,35 @@ class Model(ModelBase,Generic[T]):
         assert cur_framework is not None, (framework_type, supported_frameworks)
         return cur_framework
 
-    
+
     @property
     def supported_instance_types(self):
         return [i.instance_type for i in self.supported_instances]
-    
+
     @property
     def supported_service_types(self):
         return [i.service_type for i in self.supported_services]
-    
+
     @property
     def supported_engine_types(self):
         return [i.engine_type for i in self.supported_engines]
-    
+
     @property
     def supported_framework_types(self):
         return [i.framework_type for i in self.supported_frameworks]
-    
-    
+
+
     def get_engine(self) -> Engine:
         assert self.executable_config.current_engine is not None, self.executable_config.current_engine
         engine_cls_path = self.executable_config.current_engine.engine_cls
         *engine_cls_path,cls_name = engine_cls_path.split(".")
         module = importlib.import_module("backend." + ".".join(engine_cls_path))
         return getattr(module,cls_name)(self)
-     
+
     def get_engine_dir(self) -> str:
         *engine_cls_path,_,_ = self.executable_config.current_engine.engine_cls.split(".")
         return os.path.join("backend","/".join(engine_cls_path))
-    
+
     def get_dockerfile(self) -> str:
         engine_dir = self.get_engine_dir()
         dockerfile_abs_path = os.path.join(
@@ -279,24 +279,24 @@ class Model(ModelBase,Generic[T]):
             "executable_config":executable_config
         })
         return model
-    
+
     def get_execute_dir(self) -> str:
         if self.executable_config.model_tag == MODEL_DEFAULT_TAG:
             return f"deploy/{self.model_id}_artifacts"
         else:
             return f"deploy/{self.model_id}_{self.executable_config.model_tag}_artifacts"
 
-   
+
     def get_normalized_model_id(self):
         return self.normalize_model_id(self.model_id)
-    
+
     @classmethod
     def normalize_model_id(cls,model_id):
         return normalize(model_id).lower()
 
     @classmethod
     def get_model_stack_name_prefix(cls,model_id,model_tag=MODEL_DEFAULT_TAG, model_deploy_version=VERSION_MODIFY):
-        model_id_with_tag = model_id 
+        model_id_with_tag = model_id
         if model_tag and model_tag != MODEL_DEFAULT_TAG:
             model_id_with_tag = f"{model_id_with_tag}-{model_tag}"
         return f"{MODEL_STACK_NAME_PREFIX}-{model_deploy_version}-{cls.normalize_model_id(model_id_with_tag)}"
@@ -335,6 +335,4 @@ class Model(ModelBase,Generic[T]):
         return image_uri
 
     def get_image_host(self,image_uri):
-        return image_uri.split("/")[0]  
-
-        
+        return image_uri.split("/")[0]

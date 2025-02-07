@@ -1,19 +1,19 @@
 from threading import Thread
 from dmaa.sdk.clients.sagemaker_client import SageMakerClient
-import time  
+import time
 
 pyload = {
         "messages": [
             {
                 "role": "user",
                 "content": [{"type": "text", "text": "9.11和9.9哪个更大？"}]
-                
+
             }
         ],
         "max_tokens": 512,
         "temperature": 1.0,
         "stream":False
-    } 
+    }
 
 client = SageMakerClient(
     # model_id="Qwen2.5-72B-Instruct-AWQ"
@@ -39,10 +39,3 @@ if __name__ == "__main__":
     for t in threads:
         t.join()
     print("done, all task elapsed time: ",time.time()-t0)
-
-
-
-
-
-
-

@@ -17,7 +17,7 @@ from . import (
     comfyui,
     asr,
     embeddings,
-    reranks, 
+    reranks,
 )
 # text-2-image,text-2-video
 
@@ -26,4 +26,3 @@ from . import instances
 from . import services
 from . import model_series
 from . import frameworks
-

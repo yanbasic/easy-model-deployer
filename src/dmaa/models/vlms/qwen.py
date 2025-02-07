@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import vllm_qwen2vl7b_engine064,vllm_qwen2vl72b_engine064
 from ..services import (
     sagemaker_service,

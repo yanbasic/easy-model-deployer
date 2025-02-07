@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import (
     vllm_deepseek_r1_distill_qwen_engine071,
     vllm_deepseek_r1_distill_llama_engine071
@@ -42,7 +42,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -72,7 +72,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -103,7 +103,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -134,7 +134,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -165,7 +165,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service
@@ -196,7 +196,7 @@ Model.register(
             local_instance
         ],
         supported_services=[
-            sagemaker_service, 
+            sagemaker_service,
             sagemaker_async_service,
             ecs_service,
             local_service

@@ -12,7 +12,7 @@ pyload = dict(
 )
 
 client = SageMakerClient(
-    
+
     # region='us-west-2',
     # endpoint_name="whisper-huggingface-2024-11-29-04-32-00"
 )

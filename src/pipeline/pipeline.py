@@ -1,12 +1,12 @@
 import sys
 import os
-import time 
+import time
 import argparse
 import importlib
-import json 
+import json
 import logging
 from concurrent.futures import as_completed,ProcessPoolExecutor
-from dmaa.models import Model 
+from dmaa.models import Model
 from dmaa.constants import MODEL_DEFAULT_TAG
 from dmaa.models.utils.constants import FrameworkType,ServiceType,InstanceType
 from utils.common import str2bool
@@ -45,7 +45,7 @@ def parse_args():
     parser.add_argument("--skip_deploy", action='store_true')
     parser.add_argument("--disable_parallel_prepare_and_build_image", action='store_true')
     parser.add_argument(
-            "--extra_params", 
+            "--extra_params",
             type=load_extra_params,
             default=os.environ.get("extra_params","{}")
         )
@@ -64,10 +64,10 @@ def run_prepare_model(args):
     if model.need_prepare_model and not args.skip_prepare_model:
         from deploy import prepare_model
         prepare_model.run(
-            model, 
-            args.model_s3_bucket, 
-            args.backend_type, 
-            args.service_type, 
+            model,
+            args.model_s3_bucket,
+            args.backend_type,
+            args.service_type,
             args.region,
             args=vars(args)
         )
@@ -132,7 +132,7 @@ def worker(fn,*args,**kwargs):
         if not thread.is_alive():
             if thread.err is not None:
                 shared_event.set()
-            break 
+            break
         time.sleep(0.1)
     return thread.ret
 
@@ -240,11 +240,11 @@ if __name__ == "__main__":
                 all_params['instance_type'],
                 all_params['service_type']
             )
-    
+
     s3_output_path = args.s3_output_path
     if not s3_output_path:
         s3_output_path = f"s3://{all_params['model_s3_bucket']}/{all_params['model_id']}/output"
-    
+
     all_params_normalized = {
         **all_params,
         "instance_type":instance_type,
@@ -255,7 +255,7 @@ if __name__ == "__main__":
     print('all_params_normalized: ',all_params_normalized)
     current_service = execute_model.executable_config.current_service
     cfn_parameters = current_service.cfn_parameters
-    
+
 
     service_extra_params = args.extra_params.get('service_params',{})
     print(f"service_extra_params: {service_extra_params}")
@@ -267,9 +267,9 @@ if __name__ == "__main__":
         key_in_all_params_normalized = v
         default_value = None
         if isinstance(v,ValueWithDefault):
-            key_in_all_params_normalized = v.name 
+            key_in_all_params_normalized = v.name
             default_value = v.default
-            
+
         value = service_extra_params.get(
             key_in_all_params_normalized,
             all_params_normalized.get(
@@ -285,8 +285,8 @@ if __name__ == "__main__":
 
     # service_deploy_parameters = {
     #     k:all_params_normalized[v]
-        
-    # } 
+
+    # }
     print("service_deploy_parameters: ",service_deploy_parameters)
     with open(f"parameters.json", "w") as f:
         json.dump({"Parameters": service_deploy_parameters},f)

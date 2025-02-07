@@ -11,7 +11,7 @@ Parameters:
   ModelId:
     Type: String
     Description: The dmaa model ID to be used for the SageMaker Endpoint
-  ModelTag: 
+  ModelTag:
     Type: String
     Description: The model tag to be used for the SageMaker Endpoint
   FrameWorkType:
@@ -34,7 +34,7 @@ Parameters:
     Type: Number
     Description: The target value for the autoscaling
     Default: 10
-    
+
 Resources:
   ExecutionRole:
     Type: AWS::IAM::Role

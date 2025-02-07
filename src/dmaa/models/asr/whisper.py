@@ -1,4 +1,4 @@
-from .. import Model 
+from .. import Model
 from ..engines import huggingface_whisper_engine
 from ..services import sagemaker_async_service
 from ..frameworks import fastapi_framework

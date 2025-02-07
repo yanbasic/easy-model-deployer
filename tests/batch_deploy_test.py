@@ -1,8 +1,8 @@
 from dmaa import deploy as deploy_sdk, destroy as destroy_sdk
-from pydantic import BaseModel 
-from dmaa.models import Model 
+from pydantic import BaseModel
+from dmaa.models import Model
 from dmaa.models.utils.constants import ModelType
-import traceback 
+import traceback
 from dmaa.utils.logger_utils import get_logger
 
 
@@ -57,21 +57,21 @@ def invoke(task:Task):
     elif model_type == ModelType.EMBEDDING:
         from dmaa.sdk.invoke.embedding_invoker import EmbeddingInvoker
         invoker_cls = EmbeddingInvoker
-        
+
     elif model_type == ModelType.VLM:
         from dmaa.sdk.invoke.vlm_invoker import VLMInvoker
         invoker_cls = VLMInvoker
-        
+
     elif model_type == ModelType.RERANK:
         from dmaa.sdk.invoke.rerank_invoker import RerankInvoker
         invoker_cls = RerankInvoker
-        
+
     elif model_type == ModelType.VIDEO:
         from dmaa.sdk.invoke.comfyui_invoke import ComfyUIInvoker
         invoker_cls = ComfyUIInvoker
     else:
         raise NotImplementedError
-    
+
     invoker = invoker_cls(model_id=model_id, model_tag=model_tag)
     for pyload in task.invoke_config.pyloads:
         print(f"invoke with pyload: {pyload}")
@@ -109,9 +109,9 @@ def test_one_task(task:Task):
             error = traceback.format_exc()
             logger.error(f"task: {model_id} destroy failed:\n{error}")
 
-    
-    return ret 
-        
+
+    return ret
+
 
 if __name__ == "__main__":
     tasks = [
@@ -132,7 +132,7 @@ if __name__ == "__main__":
                             "content": "Explain async programming in Python"
                         }
                     ]
-                }],   
+                }],
             }
         },
         {
@@ -147,7 +147,7 @@ if __name__ == "__main__":
             "invoke_config":{
                 "pyloads":[{
                     "input": ['Who you are?']
-                }],   
+                }],
             }
         },
         {
@@ -164,7 +164,7 @@ if __name__ == "__main__":
                     "encoding_format": "float",
                     "text_1": "What's the capital of China?",
                     "text_2": "Beijing"
-                }],   
+                }],
             }
         }
     ]
@@ -183,6 +183,3 @@ if __name__ == "__main__":
 
     if all([ret['code'] == 0 for ret in test_ret]):
         print("=="*50 + "all success" + "=="*50)
-
-
-

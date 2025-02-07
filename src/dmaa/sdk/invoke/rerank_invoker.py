@@ -8,11 +8,11 @@ class RerankInvoker(InvokerBase):
         self.text_b = None
 
     def add_text_a(self, text:str):
-        self.text_a = text 
+        self.text_a = text
 
     def add_text_b(self, text:str):
         self.text_b = text
-    
+
     def invoke(self):
         pyload = {
             "encoding_format": "float",
@@ -20,6 +20,4 @@ class RerankInvoker(InvokerBase):
             "text_2": self.text_b
         }
         ret = self._invoke(pyload)
-        return ret 
-
-    
+        return ret

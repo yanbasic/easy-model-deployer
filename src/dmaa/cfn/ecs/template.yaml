@@ -152,7 +152,7 @@ Resources:
             Resource: '*'
       RouteTableIds:
         - !Ref PublicRouteTable
-        
+
   # Security Groups
   ECSSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -185,7 +185,7 @@ Resources:
       ClusterSettings:
         - Name: containerInsights
           Value: enabled
-  
+
 
   # Autoscaling group. This launches the actual EC2 instances that will register
   # themselves as members of the cluster, and run the docker containers.
@@ -254,8 +254,8 @@ Resources:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
-      Roles: 
-      - !Ref EC2Role 
+      Roles:
+      - !Ref EC2Role
   # Create an ECS capacity provider to attach the ASG to the ECS cluster
   # so that it autoscales as we launch more containers
   CapacityProvider:
@@ -379,11 +379,11 @@ Resources:
           # MountPoints:
           #   - ContainerPath: /opt/tomcat/webapps
           #     SourceVolume: webapps
-      # Volumes: 
+      # Volumes:
       #   - Name: webapps
   Service:
     Type: AWS::ECS::Service
-    DependsOn: 
+    DependsOn:
       - PublicLoadBalancerListener
       - ECSTaskExecutionRole
       - EC2Role
@@ -531,7 +531,7 @@ Resources:
                       asg_name = os.environ['ASG_NAME']
                       autoscaling = boto3.client('autoscaling')
                       ec2 = boto3.client('ec2')
-                      
+
                       # 1. Set desired capacity to 0 first
                       print(f"Setting capacity to 0 for ASG: {asg_name}")
                       autoscaling.update_auto_scaling_group(
@@ -540,26 +540,26 @@ Resources:
                           MinSize=0,
                           MaxSize=0
                       )
-                      
+
                       # 2. Get and terminate all instances in the ASG
                       response = autoscaling.describe_auto_scaling_groups(
                           AutoScalingGroupNames=[asg_name]
                       )
-                      
+
                       if response['AutoScalingGroups']:
                           instance_ids = [
-                              instance['InstanceId'] 
+                              instance['InstanceId']
                               for instance in response['AutoScalingGroups'][0]['Instances']
                           ]
-                          
+
                           if instance_ids:
                               print(f"Terminating instances: {instance_ids}")
                               ec2.terminate_instances(InstanceIds=instance_ids)
-                              
+
                               # Wait for instances to terminate
                               waiter = ec2.get_waiter('instance_terminated')
                               waiter.wait(InstanceIds=instance_ids)
-                      
+
                   cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
               except Exception as e:
                   print(f"Error: {str(e)}")

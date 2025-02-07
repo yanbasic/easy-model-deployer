@@ -1,13 +1,13 @@
 from .system_call_utils import execute_command
 import os
-import json 
+import json
 
 
 def get_gpu_num(shell_script="nvidia-smi --list-gpus | wc -l"):
     ret = execute_command(shell_script)
     if ret.returncode != 0:
         raise RuntimeError(f"Failed to get gpu num: \n{ret.stderr}")
-    
+
     stdout = ret.stdout.decode("utf-8").strip()
     try:
         gpu_num = int(stdout)
@@ -23,7 +23,7 @@ def get_neuron_core_num(shell_script="neuron-ls -j"):
     stdout = ret.stdout.decode("utf-8").strip()
     core_num = len(json.loads(stdout))
     return core_num
-    
+
 
 
 def command_exists(command):
@@ -35,7 +35,3 @@ def check_neuron_exists():
 
 def check_cuda_exists():
     return command_exists("nvidia-smi")
-     
-    
-
-

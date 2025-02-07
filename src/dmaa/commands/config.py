@@ -19,7 +19,7 @@ console = Console()
 @catch_aws_credential_errors
 def set_default_profile_name(
     name: Annotated[
-        str, 
+        str,
         typer.Argument(help="profile name")
     ]=None
 ):
@@ -40,17 +40,17 @@ def set_default_profile_name(
                         description=f"ProfileName: {profile_name}, Region: {region}"
                     )
                 )
-            
+
             # choices.insert(0,Choice(title=DMAA_USE_NO_PROFILE_CHOICE, description="Manually enter the AK/SK"))
             name = select_with_help(
                 "Select the profile for deployment:",
                 choices=choices,
                 style=custom_style
             ).ask()
-    
+
     if not name:
         console.print(f"[bold blue]No profile set[/bold blue]")
-        return 
+        return
     profile_manager.write_default_profile_name_to_local(name)
     console.print(f"set default profile: {name} to {profile_manager.profile_path}")
 
@@ -73,5 +73,3 @@ def remove_default_profile_name():
         console.print(f"[bold blue]Default profile: {name} removed[/bold blue]")
     else:
         console.print(f"[bold blue]No default profile to remove[/bold blue]")
-
-

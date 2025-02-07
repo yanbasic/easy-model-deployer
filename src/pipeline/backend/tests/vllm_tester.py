@@ -31,7 +31,7 @@ class TestVLLMBackend(unittest.TestCase):
             current_framework=model.find_current_framework(framework_type),
             model_s3_bucket=model_s3_bucket,
             vllm_cli_args=vllm_cli_args,
-            
+
         )
         self.execute_model = model.convert_to_execute_model(executable_config)
         self.backend = self.execute_model.get_engine()

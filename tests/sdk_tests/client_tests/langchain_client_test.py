@@ -27,7 +27,7 @@ chat_model = SageMakerVllmChatModel(
     }
     # model_tag='Admin',
     # endpoint_name="DMAA-Model-Qwen2-5-72B-Instruct-AWQ-sv1dqz-endpoint"
-) 
+)
 
 
 chain = chat_model | StrOutputParser()
@@ -50,7 +50,7 @@ for i in chain.stream(messages):
 
 print("="*50)
 
-# tool use test 
+# tool use test
 def calculate_sentence_len(char:str,sentence:str):
     """calculate the sentence length"""
     c = 0
@@ -73,7 +73,7 @@ chat_model_with_tool = chat_model.bind_tools([tool])
 messages = [
     SystemMessage(content="You are a helpful AI agent, you are goods at applying certainly tools to solve kinds of questions."),
         # AIMessage(content="<thinking>"),
-    
+
     HumanMessage(content="how many 'r’s in ‘strrawberries’"),
         # AIMessage(content="<thinking>"),
     ]
@@ -89,7 +89,7 @@ print(chat_model_with_tool.invoke(
 ))
 
 
-# vlm model test 
+# vlm model test
 
 # chat_model = SageMakerVllmChatModel(
 #     # region_name='us-west-2',
@@ -106,7 +106,7 @@ print(chat_model_with_tool.invoke(
 #     # model_id="internlm2_5-20b-chat-4bit-awq",
 #     # model_tag='Admin',
 #     # endpoint_name="DMAA-Model-Qwen2-5-72B-Instruct-AWQ-sv1dqz-endpoint"
-# ) 
+# )
 
 
 # chain = chat_model | StrOutputParser()
@@ -124,4 +124,3 @@ print(chat_model_with_tool.invoke(
 #         # AIMessage(content="<thinking>"),
 #     ]
 # print(chain.invoke(messages))
-
