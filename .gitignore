@@ -133,4 +133,3 @@ dmaa_models/
 **artifacts
 src/pipeline/dmaa
 *.log
-.pre-commit-config.yaml
