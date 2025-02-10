@@ -18,9 +18,8 @@ from dmaa.models.utils.constants import (
 from dmaa.models.utils.serialize_utils import load_extra_params, dump_extra_params
 from dmaa.constants import MODEL_DEFAULT_TAG
 from dmaa.utils.aws_service_utils import check_cn_region
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from dmaa.utils.logger_utils import get_logger
+logger = get_logger(__name__)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--region", type=str, default=os.environ.get("region", "us-east-1"))
@@ -98,19 +97,18 @@ def run(
     extra_params
 ):
     model = Model.get_model(model_id)
-    current_engine = model.find_current_engine(backend_type)
-    executable_config = ExecutableConfig(
+
+    execute_model = model.convert_to_execute_model(
+    # current_engine = model.find_current_engine(backend_type)
+        engine_type=backend_type,
         region=region,
-        current_engine=current_engine,
-        current_instance=model.find_current_instance(instance_type),
-        current_service=model.find_current_service(service_type),
-        current_framework=model.find_current_framework(framework_type),
-        # gpu_num=gpu_num,
+        instance_type=instance_type,
+        service_type=service_type,
+        framework_type=framework_type,
         model_s3_bucket=model_s3_bucket,
         extra_params=extra_params,
-        model_tag=model_tag,
+        model_tag=model_tag
     )
-    execute_model = model.convert_to_execute_model(executable_config)
 
     # engine = execute_model.get_engine()
     logger.info(f"Building and deploying {model_id} on {backend_type} backend")
@@ -119,6 +117,7 @@ def run(
     logger.info(f"Write Dockerfile for {backend_type} backend")
     engine_docker_file_path = execute_model.get_dockerfile()
     execute_dir = execute_model.get_execute_dir()
+    logger.info(f"docker build dir: {execute_dir}")
 
     os.makedirs(execute_dir, exist_ok=True)
     # assert os.system(f"rm -rf {execute_dir}/*") == 0
@@ -130,20 +129,9 @@ def run(
         assert os.system(f"cp -Lr {dmaa_path_in_pipeline} {execute_dir}") == 0
     else:
         raise RuntimeError("dmaa path not found...")
-    # elif os.path.exists(os.path.join(parent_dir,"models")):
-    #     # print(f"cp -r {os.path.join(parent_dir,'models')} {execute_dir}")
-    #     assert os.system(f"cp -r {os.path.join(parent_dir,'models')} {execute_dir}/dmaa") == 0
-
-    # find models path
-    # model_path_in_pipeline = os.path.join("dmaa","models")
-    # if os.path.exists(model_path_in_pipeline) and not os.path.islink(model_path_in_pipeline):
-    #     # print('copy models',f"cp -r models {execute_dir}")
-    #     assert os.system(f"cp -r {model_path_in_pipeline} {execute_dir}/dmaa") == 0
-    # elif os.path.exists(os.path.join(parent_dir,"models")):
-    #     # print(f"cp -r {os.path.join(parent_dir,'models')} {execute_dir}")
-    #     assert os.system(f"cp -r {os.path.join(parent_dir,'models')} {execute_dir}/dmaa") == 0
 
     assert os.system(f"cp -r backend {execute_dir}") == 0
+    assert os.system(f"cp -r deploy {execute_dir}") == 0
     assert os.system(f"cp -r utils {execute_dir}") == 0
 
     # download s5cmd
@@ -151,6 +139,7 @@ def run(
     # assert os.system("mkdir -p /tmp/s5cmd && tar -xvf /tmp/s5cmd.tar.gz -C /tmp/s5cmd") == 0
     assert os.system(f"cp s5cmd {execute_dir}") == 0
     assert os.system(f"cp framework/fast_api/fast_api.py {execute_dir}") == 0
+    assert os.system(f"cp requirements.txt {execute_dir}") == 0
     # assert os.system(f"cp deploy/build_and_push_image.sh {execute_dir}") == 0
     # assert os.system(f"cp -r {execute_model.get_engine_dir()}/* {execute_dir}") == 0
 
@@ -175,30 +164,25 @@ def run(
         framework_f.write("\n")
         framework_f.write("COPY s5cmd /app/s5cmd")
         framework_f.write("\n")
+        framework_f.write("RUN python3 -m pip install -r requirements.txt")
+        framework_f.write("\n")
         if (
             execute_model.executable_config.current_framework.framework_type
             == FrameworkType.FASTAPI
         ):
-            # extra_params_commands = ""
-            # default_extra_params = execute_model.default_extra_params or {}
-            # logger.info(f"default_extra_params: {default_extra_params}")
-            # extra_params_new = {**extra_params,**default_extra_params}
-            # TODO: filter vllm params
-            engine_params = extra_params.get("engine_param", {})
-            extra_params_commands = dump_extra_params(engine_params)
-            # for k,v in engine_params.items():
-            #     extra_params_commands += f' --{k} "{v}"'
-
+            extra_params_commands = dump_extra_params(extra_params)
             fastapi_serve_command = (
                 f"export AWS_DEFAULT_REGION={region} && "
                 f"export PYTHONPATH=.:$PYTHONPATH && "
                 f"python3 fast_api.py"
                 f" --backend_type={backend_type}"
                 f" --model_id={model_id}"
+                f" --region={region}"
                 f" --model_s3_bucket={model_s3_bucket}"
                 f" --instance_type={instance_type}"
                 f" --service_type={service_type}"
-                f' --engine_params "{extra_params_commands}"'
+                f' --extra_params "{extra_params_commands}"'
+                f' --framework_type={FrameworkType.FASTAPI}'
                 f" --port 8080"
             )
             logger.info(f"fastapi_serve_command: {fastapi_serve_command}")

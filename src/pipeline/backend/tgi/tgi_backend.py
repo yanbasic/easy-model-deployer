@@ -30,9 +30,8 @@ class TgiBackend(OpenAICompitableProxyBackendBase):
         # entrypoint = "text-generation-launcher"
         # if Instance.check_inf2_instance(self.instance_type) or check_neuron_exists():
         #     entrypoint = "/tgi-entrypoint.sh"
-
-        shard_num = self.get_shard_num()
-        serve_command = f'{self.entrypoint} --trust-remote-code --model-id {model_path} --port {self.server_port} --num-shard {shard_num} {self.default_cli_args} {self.cli_args}'
+        # shard_num = self.get_shard_num()
+        serve_command = f'{self.entrypoint} --trust-remote-code --model-id {model_path} --port {self.server_port} {self.default_cli_args} {self.cli_args}'
         if self.environment_variables:
             serve_command = f'{self.environment_variables} && {serve_command}'
         if self.api_key:

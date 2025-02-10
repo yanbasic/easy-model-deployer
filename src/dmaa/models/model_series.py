@@ -84,6 +84,12 @@ DEEPSEEK_REASONING_MODEL = ModelSeries(
     reference_link="https://github.com/deepseek-ai/DeepSeek-R1"
 )
 
+DEEPSEEK_V3_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.DEEPSEEK_v3,
+    description="DeepSeek-R1-Zero and DeepSeek-R1 are innovative reasoning models, with the former showcasing strong performance through reinforcement learning alone, while the latter enhances reasoning capabilities by incorporating cold-start data, achieving results comparable to OpenAI-o1 and setting new benchmarks with its distilled versions.",
+    reference_link="https://github.com/deepseek-ai/DeepSeek-R1"
+)
+
 BAICHAUN_SERIES= ModelSeries(
     model_series_name=ModelSeriesType.BAICHUAN,
     description="Baichuan Intelligent Technology.",

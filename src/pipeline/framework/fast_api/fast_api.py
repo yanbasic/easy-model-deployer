@@ -9,6 +9,7 @@ from dmaa.models.utils.serialize_utils import load_extra_params,dump_extra_param
 from fastapi import FastAPI, Request, status, Header, Depends
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from dmaa.utils.logger_utils import get_logger
+from fastapi.concurrency import run_in_threadpool
 
 logger = get_logger(__name__)
 # prevent logging ping
@@ -23,14 +24,19 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, default="0.0.0.0")
     parser.add_argument("--port", type=int,default=8080)
-    parser.add_argument("--uvicorn_log_level", type=str,default="info")
+    # parser.add_argument("--uvicorn_log_level", type=str,default="info")
     parser.add_argument("--model_id", type=str)
     parser.add_argument("--backend_type", type=str)
     parser.add_argument("--model_s3_bucket", type=str, default="dmaa-models")
-    # parser.add_argument("--gpu_num", type=int, default=1)
+    parser.add_argument("--region", type=str)
     parser.add_argument("--instance_type", type=str)
     parser.add_argument("--service_type", type=str)
-    parser.add_argument("--engine_params", type=load_extra_params,default=os.environ.get("engine_params","{}"))
+    # parser.add_argument("--engine_params", type=load_extra_params,default=os.environ.get("engine_params","{}"))
+    parser.add_argument(
+        "--extra_params",
+        type=load_extra_params,
+        default=os.environ.get("extra_params", "{}")
+    )
     parser.add_argument("--framework_type", type=str,default=FrameworkType.FASTAPI)
     return parser.parse_args()
 
@@ -41,7 +47,9 @@ async def get_authorization(authorization: str = Header(None)):
     return authorization
 
 async def invoke(payload):
-    generator = engine.invoke(payload)
+    # logger.info('invoke ......')
+    generator = await run_in_threadpool(engine.invoke, payload)
+    # generator = engine.invoke(payload)
     stream = payload.get("stream",False)
     if stream:
         return StreamingResponse(content=generator,
@@ -65,6 +73,7 @@ def health():
 @app.post("/score")
 # @measure_time
 async def invocations(request: Request, authorization: str = Depends(get_authorization)):
+    # logger.info('invocations ......')
     payload = await request.json()
     # If the request does not have Authorization, invoke the payload
     if authorization is None:
@@ -75,38 +84,48 @@ async def invocations(request: Request, authorization: str = Depends(get_authori
     # If the request does not have extra_headers, create a new one with Authorization
     elif "extra_headers" not in payload:
         payload["extra_headers"] = { "Authorization": authorization }
+
     return await invoke(payload)
 
 if __name__ == "__main__":
     args = parse_args()
     host = args.host
     port = args.port
-    uvicorn_log_level = args.uvicorn_log_level
+    # uvicorn_log_level = args.uvicorn_log_level
     model_id = args.model_id
     # continue generate the variables
     backend_type = args.backend_type
     model_s3_bucket = args.model_s3_bucket
+    extra_params = args.extra_params
     # gpu_num = args.gpu_num
     instance_type = args.instance_type
     service_type = args.service_type
-    engine_params = args.engine_params
+    # engine_params = extra_params.get("engine_params", {})
+    # model_params = extra_params.get("model_params", {})
     framework_type = args.framework_type
-    logger.info(f"engine_params: {engine_params}")
+    logger.info(f"extra_params: {extra_params}")
 
     model = Model.get_model(model_id)
-    engine = model.find_current_engine(backend_type)
-    for k,v in engine_params.items():
-        engine[k] = v
-    executable_config = ExecutableConfig(
-        current_engine=engine,
-        current_instance=model.find_current_instance(instance_type),
-        current_service=model.find_current_service(service_type),
-        model_s3_bucket=model_s3_bucket,
-        current_framework=model.find_current_framework(framework_type),
-    )
+    # get region
     execute_model = model.convert_to_execute_model(
-        executable_config
+        engine_type=backend_type,
+        region=args.region,
+        instance_type=instance_type,
+        service_type=service_type,
+        framework_type=framework_type,
+        model_s3_bucket=model_s3_bucket,
+        extra_params=extra_params,
+        # model_tag=model_tag
     )
+    logger.info(f"executable_config:\n{execute_model.executable_config.model_dump()}")
     engine = execute_model.get_engine()
+    framework = execute_model.executable_config.current_framework
     engine.start()
-    uvicorn.run(app, host=host, port=port, log_level=uvicorn_log_level, timeout_keep_alive=60)
+    uvicorn.run(
+        app,
+        host=host,
+        port=port,
+        log_level=framework.uvicorn_log_level,
+        timeout_keep_alive=framework.timeout_keep_alive,
+        limit_concurrency=framework.limit_concurrency,
+    )

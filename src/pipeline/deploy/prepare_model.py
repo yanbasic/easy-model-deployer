@@ -11,28 +11,44 @@ from dmaa.utils.logger_utils import get_logger
 from utils.common import upload_dir_to_s3_by_s5cmd
 from dmaa.constants import DMAA_MODELS_LOCAL_DIR_TEMPLATE,DMAA_MODELS_S3_KEY_TEMPLATE
 
+
 logger = get_logger(__name__)
 
-def download_huggingface_model(model,args:dict):
+
+def enable_hf_transfer():
+    try:
+        import hf_transfer
+        os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
+        from huggingface_hub import constants
+        constants.HF_HUB_ENABLE_HF_TRANSFER = True
+        logger.info("hf_transfer enabled")
+    except ModuleNotFoundError as e:
+        logger.info(f"hf_transfer not installed, skip enabling hf_transfer, error: {e}")
+
+
+
+def download_huggingface_model(model:Model,model_dir=None):
+    enable_hf_transfer()
     huggingface_model_id = model.huggingface_model_id
     service_type = model.executable_config.current_service.service_type
     model_id = model.model_id
-    model_dir = DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=model_id)
-    hf_endpoint_from_cli = args.get("model_params",{}).get("hf_endpoint")
-    huggingface_endpoints = hf_endpoint_from_cli or model.huggingface_endpoints
+    model_dir = model_dir or DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=model_id)
+    # hf_endpoint_from_cli = args.get("model_params",{}).get("hf_endpoint")
+    huggingface_endpoints = model.huggingface_endpoints
 
     if isinstance(huggingface_endpoints,str):
         huggingface_endpoints = [huggingface_endpoints]
 
     is_download_success = False
-    print('huggingface_endpoints',huggingface_endpoints)
+    logger.info(f'huggingface_endpoints: {huggingface_endpoints}')
     for huggingface_endpoint in huggingface_endpoints:
         try:
             logger.info(f"Downloading {huggingface_model_id} model from endpoint: {huggingface_endpoint}")
             hf_snapshot_download(
                 huggingface_model_id,
                 local_dir=model_dir,
-                endpoint=huggingface_endpoint
+                endpoint=huggingface_endpoint,
+                **model.huggingface_model_download_kwargs
             )
             is_download_success = True
             break
@@ -43,23 +59,12 @@ def download_huggingface_model(model,args:dict):
     if not is_download_success:
         raise Exception(f"Failed to download {huggingface_model_id} model from all endpoints: {huggingface_endpoints}")
 
-    # hf_endpoint_from_cli = args.get("model_params",{}).get("hf_endpoint")
-    # huggingface_endpoint = model.huggingface_endpoint
-    # huggingface_endpoint = hf_endpoint_from_cli or huggingface_endpoint
-    # os.environ['HF_ENDPOINT'] = huggingface_endpoint
-    # logger.info(f"Downloading {huggingface_model_id} model from endpoint: {huggingface_endpoint}")
 
-    # hf_snapshot_download(
-    #     huggingface_model_id,
-    #     local_dir=model_dir,
-    #     endpoint=huggingface_endpoint
-    # )
-
-def download_modelscope_model(model,args=None):
+def download_modelscope_model(model:Model,model_dir=None):
     modelscope_model_id = model.modelscope_model_id
     service_type = model.executable_config.current_service.service_type
     model_id = model.model_id
-    model_dir = DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=model_id)
+    model_dir = model_dir or DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=model_id)
     logger.info(f"Downloading {modelscope_model_id} model")
 
     ms_snapshot_download(
@@ -67,11 +72,11 @@ def download_modelscope_model(model,args=None):
         local_dir=model_dir
     )
 
-def download_comfyui_model(model,args=None):
+def download_comfyui_model(model,model_dir=None):
     model_id = model.model_id
     huggingface_model_list = model.huggingface_model_list
     huggingface_url_list = model.huggingface_url_list
-    model_dir = DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=model_id)
+    model_dir = model_dir or DMAA_MODELS_LOCAL_DIR_TEMPLATE.format(model_id=model_id)
     os.makedirs(model_dir, exist_ok=True)
     if huggingface_model_list is not None:
         for key, value in huggingface_model_list.items():
@@ -94,13 +99,40 @@ def upload_model_to_s3(model:Model, model_s3_bucket):
     logger.info(f"Uploading {model_id} model to S3")
     upload_dir_to_s3_by_s5cmd(model_s3_bucket, model_dir)
 
-def run(model, model_s3_bucket, backend_type, service_type, region,args):
-    if backend_type == EngineType.COMFYUI:
-        download_comfyui_model(model,args)
+
+def download_model_files(model:Model,model_dir=None):
+    engine_type = model.executable_config.current_engine.engine_type
+    region = model.executable_config.region
+    if engine_type == EngineType.COMFYUI:
+        download_comfyui_model(model,model_dir=model_dir)
     else:
         if check_cn_region(region):
-            download_modelscope_model(model,args)
+            try:
+                download_modelscope_model(model,model_dir=model_dir)
+            except Exception as e:
+                logger.error(f"Error downloading {model.model_id} model from modelscope, error: {e}")
+                logger.info("download from huggingface...")
+                download_huggingface_model(model, model_dir=model_dir)
         else:
-            download_huggingface_model(model,args)
-    if service_type != ServiceType.LOCAL:
+            download_huggingface_model(model,model_dir=model_dir)
+
+
+def run(model:Model):#, model_s3_bucket, backend_type, service_type, region,args):
+    need_prepare_model = model.need_prepare_model
+    model_files_s3_path = model.model_files_s3_path
+    service_type = model.executable_config.current_service.service_type
+    engine_type = model.executable_config.current_engine.engine_type
+    model_s3_bucket = model.executable_config.model_s3_bucket
+    # if  args.service_type == ServiceType.LOCAL or (args.model.need_prepare_model and not args.skip_prepare_model):
+    if service_type == ServiceType.LOCAL or (need_prepare_model and model_files_s3_path is None):
+        if engine_type == EngineType.OLLAMA:
+            logger.info(f"Model {model.model_id} is ollama model, skip prepare model step. need_prepare_model:{need_prepare_model}, model_files_s3_path: {model_files_s3_path}")
+            return
+        if not need_prepare_model and service_type == ServiceType.LOCAL:
+            logger.info("Force to download model when deploy in local")
+        download_model_files(model)
+    else:
+        logger.info(f"Model {model.model_id} already prepared, skip prepare model step. need_prepare_model:{need_prepare_model}, model_files_s3_path: {model_files_s3_path}")
+
+    if service_type != ServiceType.LOCAL and need_prepare_model:
         upload_model_to_s3(model, model_s3_bucket)

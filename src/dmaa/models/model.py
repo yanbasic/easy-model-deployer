@@ -9,11 +9,17 @@ from .utils.constants import (
     ServiceType,
     FrameworkType,
     ModelType,
-    ModelSeriesType
+    ModelSeriesType,
+    # ModelPrepareMethod
 )
 import boto3
 from .utils.text_utilities import normalize
-from dmaa.constants import MODEL_STACK_NAME_PREFIX,MODEL_DEFAULT_TAG, VERSION_MODIFY
+from dmaa.constants import (
+    MODEL_STACK_NAME_PREFIX,
+    MODEL_DEFAULT_TAG,
+    VERSION_MODIFY
+)
+
 from dmaa.revision import convert_stack_name_to_version_name
 
 T = TypeVar('T', bound='Model')
@@ -82,9 +88,6 @@ class Engine(ModelBase):
     description:str = ""
     support_inf2_instance: bool = False
 
-    # vllm_environment_variables:str = ""
-    # vllm_cli_args: str = ""
-    # default_vllm_cli_args: str = ""
 
     @staticmethod
     def load_model_files_modify_hook(hook_path:str):
@@ -98,6 +101,7 @@ class Service(ModelBase):
     name: str
     description: str
     support_cn_region: bool
+    # support_custom_vpc: bool = False
 
     # class vars
     service_name_maps: ClassVar[dict] = {}
@@ -125,6 +129,7 @@ class Service(ModelBase):
 class Framework(ModelBase):
     framework_type: FrameworkType
     description: str
+
 
 
 class ExecutableConfig(ModelBase):
@@ -160,10 +165,12 @@ class Model(ModelBase,Generic[T]):
     supported_services: List[Service] = Field(description="supported services")
     supported_frameworks: List[Framework] = Field(description="supported frameworks")
     allow_china_region: bool = False
-    model_files_s3_path: Union[str,None] = None
+
     # allow_china_region_ecs: bool = False
     huggingface_model_id: str = ""
     huggingface_endpoints: List[str] =  ["https://huggingface.co","https://hf-mirror.com"]
+    huggingface_model_download_kwargs: dict = Field(default_factory=dict)
+    ollama_model_id:Union[str,None] = None
     require_huggingface_token: bool = False
     modelscope_model_id: str = ""
     require_modelscope_token: bool = False
@@ -171,8 +178,9 @@ class Model(ModelBase,Generic[T]):
     description: str =  ""
     model_type: ModelType = ModelType.LLM
     need_prepare_model: bool = True
+    # download model files directly from s3
+    model_files_s3_path: Union[str,None] = None
     model_series: ModelSeries
-
     executable_config: Union[ExecutableConfig,None] = None
 
     @classmethod
@@ -274,17 +282,64 @@ class Model(ModelBase,Generic[T]):
         )
         return dockerfile_abs_path
 
-    def convert_to_execute_model(self,executable_config:ExecutableConfig) -> T:
+    def convert_to_execute_model(
+            self,
+            engine_type,
+            instance_type,
+            service_type,
+            framework_type,
+            extra_params,
+            model_tag=MODEL_DEFAULT_TAG,
+            region=None,
+            model_s3_bucket=None
+            # executable_config:ExecutableConfig,
+            # **model_params
+        ) -> T:
+        engine_params = extra_params.get("engine_params", {})
+        model_params = extra_params.get("model_params", {})
+        service_params = extra_params.get("service_params",{})
+        framework_params = extra_params.get("framework_params",{})
+        instance_params = extra_params.get("instance_params",{})
+
+        current_engine = self.find_current_engine(engine_type)
+        current_engine.update(engine_params)
+
+        current_instance = self.find_current_instance(instance_type)
+        current_instance.update(instance_params)
+
+
+        current_service = self.find_current_service(service_type)
+        current_service.update(service_params)
+
+
+        current_framework = self.find_current_framework(framework_type)
+        current_framework.update(framework_params)
+
+
+        executable_config = ExecutableConfig(
+            region=region,
+            current_engine=current_engine,
+            current_instance=current_instance,
+            current_service=current_service,
+            current_framework=current_framework,
+            model_s3_bucket=model_s3_bucket,
+            extra_params=extra_params,
+            model_tag=model_tag
+        )
+
         model = self.model_copy(update={
-            "executable_config":executable_config
+            "executable_config":executable_config,
+            **model_params
         })
         return model
 
+
+
     def get_execute_dir(self) -> str:
         if self.executable_config.model_tag == MODEL_DEFAULT_TAG:
-            return f"deploy/{self.model_id}_artifacts"
+            return f"deploy_artifacts/{self.model_id}_artifacts"
         else:
-            return f"deploy/{self.model_id}_{self.executable_config.model_tag}_artifacts"
+            return f"deploy_artifacts/{self.model_id}_{self.executable_config.model_tag}_artifacts"
 
 
     def get_normalized_model_id(self):

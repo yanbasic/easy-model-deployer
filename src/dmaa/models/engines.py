@@ -21,6 +21,12 @@ class TgiEngine(OpenAICompitableEngine):
     entrypoint:str = "text-generation-launcher"
 
 
+class LlamaCppEngine(OpenAICompitableEngine):
+    pass
+
+
+class OllamaEngine(OpenAICompitableEngine):
+    pass
 
 class HuggingFaceWhisperEngine(Engine):
     pass
@@ -31,6 +37,7 @@ class HuggingFaceLLMEngine(Engine):
 
 class ComfyuiEngine(Engine):
     pass
+
 
 vllm_engine064 = VllmEngine(**{
             "engine_type":EngineType.VLLM,
@@ -53,7 +60,7 @@ vllm_qwen2d5_engine064 = VllmEngine(**{
 vllm_deepseek_r1_distill_qwen_engine071 = VllmEngine(**{
             **vllm_engine064.model_dump(),
             "engine_dockerfile_config": {"VERSION":"v0.7.1"},
-            "default_cli_args": "--max_num_seq 10 --enable-reasoning --reasoning-parser deepseek_r1 --max_model_len 16000 --disable-log-stats"
+            "default_cli_args": "--max_num_seq 10 --enable-reasoning --reasoning-parser deepseek_r1 --max_model_len 16000 --disable-log-stats --chat-template dmaa/models/chat_templates/deepseek_r1_distill.jinja"
 })
 
 vllm_deepseek_r1_distill_llama_engine071 = vllm_deepseek_r1_distill_qwen_engine071
@@ -138,6 +145,42 @@ tgi_deepseek_r1_llama_70b_engine301 = TgiEngine(
 }
 )
 
+ollama_deepseek_r1_qwen2d5_1d5b_engine057 = OllamaEngine(
+    **{
+        "engine_type":EngineType.OLLAMA,
+        "engine_dockerfile_config": {"VERSION":"0.5.7_py312"},
+        "engine_cls":"ollama.ollama_backend.OllamaBackend",
+        "base_image_host":"public.ecr.aws",
+        "use_public_ecr":True,
+        "docker_login_region":"us-east-1",
+    }
+)
+
+llama_cpp_deepseek_r1_1d58_bit_engine_b9ab0a4 = LlamaCppEngine(
+    **{
+        "engine_type":EngineType.LLAMA_CPP,
+        "engine_dockerfile_config": {"VERSION":"b9ab0a4-cuda-12-4"},
+        "engine_cls":"llama_cpp.llama_cpp_backend.LlamaCppBackend",
+        "base_image_host":"public.ecr.aws",
+        "use_public_ecr":True,
+        "docker_login_region":"us-east-1",
+        "default_cli_args":" -c 6500  -np 5 --temp 0.6 -ngl 10000 --cache-type-k q4_0 --cont-batching --threads-http 5 --jinja --chat-template-file dmaa/models/chat_templates/deepseek_r1.jinja"
+    }
+)
+
+llama_cpp_deepseek_r1_distill_engineb9ab0a4 = LlamaCppEngine(
+    **{
+        "engine_type":EngineType.LLAMA_CPP,
+        "engine_dockerfile_config": {"VERSION":"b9ab0a4-cuda-12-4"},
+        "engine_cls":"llama_cpp.llama_cpp_backend.LlamaCppBackend",
+        "base_image_host":"public.ecr.aws",
+        "use_public_ecr":True,
+        "docker_login_region":"us-east-1",
+        "default_cli_args":" -c 16000  -np 5 --temp 0.6  --jinja -ngl 10000 --cont-batching --threads-http 5 --chat-template-file dmaa/models/chat_templates/deepseek_r1_distill.jinja"
+    }
+)
+
+
 tgi_qwen2d5_72b_engine064 = TgiEngine(
     **{
         "engine_type":EngineType.TGI,
@@ -179,6 +222,27 @@ tgi_qwen2d5_on_inf2 = TgiEngine(
         "compile_to_neuron":True,
         "neuron_compile_params":{
             "num_cores":2,
+            "auto_cast_type":'fp16',
+            "batch_size":10,
+            "sequence_length": 16000,
+            "task":"text-generation"
+        },
+        "entrypoint": "/tgi-entrypoint.sh",
+        "default_cli_args": " --max-batch-size 10 --max-input-tokens 15000",
+    }
+)
+
+tgi_qwen2d5_72b_on_inf2 = TgiEngine(
+    **{
+        "engine_type":EngineType.TGI,
+        "engine_dockerfile_config": {"VERSION":"neuronx-tgi-0.0.28.dev0"},
+        "engine_cls":"tgi.tgi_backend.TgiBackend",
+        "base_image_host":"public.ecr.aws",
+        "use_public_ecr":True,
+        "docker_login_region":"us-east-1",
+        "compile_to_neuron":True,
+        "neuron_compile_params":{
+            "num_cores":8,
             "auto_cast_type":'fp16',
             "batch_size":10,
             "sequence_length": 16000,

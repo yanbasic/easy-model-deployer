@@ -4,6 +4,7 @@ import time
 from typing import Optional
 
 import boto3
+import sys
 
 from dmaa.constants import (
     CODEPIPELINE_NAME,
@@ -303,7 +304,7 @@ def deploy_local(
         zip_ref.extractall(dir)
 
     pipeline_cmd = (
-        f"cd {dir}/pipeline && python pipeline.py "
+        f"cd {dir}/pipeline && {sys.executable} pipeline.py "
         f" --model_id {model_id}"
         f" --model_tag {model_tag}"
         f" --instance_type {instance_type}"

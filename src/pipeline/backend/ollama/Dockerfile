@@ -1,11 +1,8 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa-vllm/vllm-openai:{{VERSION}} AS vllm-base
-
-# Create a new stage based on vllm-base
-FROM vllm-base AS sagemaker-serving
+FROM public.ecr.aws/aws-gcr-solutions/dmaa/ollama:{{VERSION}} AS ollama-base
 
 # Ensure the serve script has executable permissions
 # RUN chmod +x /usr/bin/serve
-RUN pip install boto3 hf_transfer modelscope
+RUN pip install boto3 fastapi uvicorn requests openai modelscope
 
 # Expose port 8080
 EXPOSE 8080

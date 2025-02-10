@@ -1,7 +1,10 @@
 from .. import Model
 from ..engines import (
     vllm_deepseek_r1_distill_qwen_engine071,
-    vllm_deepseek_r1_distill_llama_engine071
+    vllm_deepseek_r1_distill_llama_engine071,
+    ollama_deepseek_r1_qwen2d5_1d5b_engine057,
+    llama_cpp_deepseek_r1_1d58_bit_engine_b9ab0a4,
+    llama_cpp_deepseek_r1_distill_engineb9ab0a4
 )
 from ..services import (
     sagemaker_service,
@@ -25,7 +28,7 @@ from ..instances import (
 from dmaa.models.utils.constants import ModelType
 from dmaa.models.utils.constants import ModelType
 from dmaa.models import ModelSeries
-from ..model_series import DEEPSEEK_REASONING_MODEL
+from ..model_series import DEEPSEEK_REASONING_MODEL,DEEPSEEK_V3_SERIES
 from ..engines import tgi_deepseek_r1_llama_70b_engine301
 from dmaa.models.utils.constants import ModelType
 from ..model_series import LLAMA3_SERIES
@@ -155,6 +158,72 @@ Model.register(
 
 Model.register(
     dict(
+        model_id = "DeepSeek-R1-Distill-Qwen-1.5B_ollama",
+        supported_engines=[ollama_deepseek_r1_qwen2d5_1d5b_engine057],
+        supported_instances=[
+            g5d2xlarge_instance,
+            g5d4xlarge_instance,
+            g5d8xlarge_instance,
+            g5d16xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        ollama_model_id="deepseek-r1:1.5b",
+        # modelscope_model_id="Qwen/Qwen2.5-14B-Instruct",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of DeepSeek LLMs for reasoning",
+        model_type=ModelType.LLM,
+        model_series=DEEPSEEK_REASONING_MODEL
+    )
+)
+
+
+Model.register(
+    dict(
+        model_id = "DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+        supported_engines=[llama_cpp_deepseek_r1_distill_engineb9ab0a4],
+        supported_instances=[
+            g5d2xlarge_instance,
+            g5d4xlarge_instance,
+            g5d8xlarge_instance,
+            g5d16xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        huggingface_model_id = "unsloth/DeepSeek-R1-Distill-Qwen-1.5B-GGUF",
+        huggingface_model_download_kwargs = {
+            "allow_patterns":["DeepSeek-R1-Distill-Qwen-1.5B-Q8_0.gguf"],
+        },
+        allow_china_region=True,
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of DeepSeek LLMs for reasoning",
+        model_type=ModelType.LLM,
+        model_series=DEEPSEEK_REASONING_MODEL
+    )
+)
+
+
+Model.register(
+    dict(
         model_id = "DeepSeek-R1-Distill-Llama-8B",
         supported_engines=[vllm_deepseek_r1_distill_llama_engine071],
         supported_instances=[
@@ -188,7 +257,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "deepseek-r1-distill-llama-70b-awq",
-        supported_engines=[tgi_deepseek_r1_llama_70b_engine301,vllm_deepseek_r1_distill_llama_engine071],
+        supported_engines=[vllm_deepseek_r1_distill_llama_engine071,tgi_deepseek_r1_llama_70b_engine301],
         supported_instances=[
             g5d12xlarge_instance,
             g5d24xlarge_instance,
@@ -213,5 +282,93 @@ Model.register(
         description="The latest series of DeepSeek LLMs for reasoning",
         model_type=ModelType.LLM,
         model_series=DEEPSEEK_REASONING_MODEL
+    )
+)
+
+Model.register(
+    dict(
+        model_id = "deepseek-r1-671b-1.58bit_ollama",
+        supported_engines=[ollama_deepseek_r1_qwen2d5_1d5b_engine057],
+        supported_instances=[
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=False,
+        ollama_model_id="SIGJNF/deepseek-r1-671b-1.58bit",
+        # modelscope_model_id="Qwen/Qwen2.5-14B-Instruct",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of DeepSeek LLMs for reasoning",
+        model_type=ModelType.LLM,
+        model_series=DEEPSEEK_REASONING_MODEL
+    )
+)
+
+
+Model.register(
+    dict(
+        model_id = "deepseek-r1-671b-1.58bit_gguf",
+        supported_engines=[llama_cpp_deepseek_r1_1d58_bit_engine_b9ab0a4],
+        supported_instances=[
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        need_prepare_model=False,
+        huggingface_model_id="unsloth/DeepSeek-R1-GGUF",
+        huggingface_model_download_kwargs = dict(allow_patterns = ["*UD-IQ1_S*"]),
+        # modelscope_model_id="Qwen/Qwen2.5-14B-Instruct",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of DeepSeek LLMs for reasoning",
+        model_type=ModelType.LLM,
+        model_series=DEEPSEEK_REASONING_MODEL
+    )
+)
+
+
+Model.register(
+    dict(
+        model_id = "deepseek-v3-UD-IQ1_M_ollama",
+        supported_engines=[ollama_deepseek_r1_qwen2d5_1d5b_engine057],
+        supported_instances=[
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=False,
+        ollama_model_id="milkey/deepseek-v3-UD:IQ1_M",
+        # modelscope_model_id="Qwen/Qwen2.5-14B-Instruct",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of DeepSeek LLMs",
+        model_type=ModelType.LLM,
+        model_series=DEEPSEEK_V3_SERIES
     )
 )

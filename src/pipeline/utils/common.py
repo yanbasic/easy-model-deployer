@@ -33,9 +33,13 @@ def download_dir_from_s3(bucket_name, remote_dir_name):
             os.makedirs(os.path.dirname(obj.key))
         bucket.download_file(obj.key, obj.key)
 
-def download_dir_from_s3_by_s5cmd(bucket_name, remote_dir_name):
-    logger.info(f"Downloading {remote_dir_name} from {bucket_name} bucket")
-    assert os.system(f"./s5cmd cp s3://{bucket_name}/{remote_dir_name}/* {remote_dir_name}") == 0
+def download_dir_from_s3_by_s5cmd(local_dir,bucket_name=None, s3_key=None,model_files_s3_path=None):
+    if model_files_s3_path is None:
+        assert bucket_name and s3_key
+        model_files_s3_path = f"s3://{bucket_name}/{s3_key}"
+
+    logger.info(f"Downloading model files from {model_files_s3_path}")
+    assert os.system(f"./s5cmd cp {model_files_s3_path}/* {local_dir}") == 0
 
 def upload_dir_to_s3(bucket_name, local_dir_name):
     logger.info(f"Uploading {local_dir_name} to {bucket_name} bucket")
