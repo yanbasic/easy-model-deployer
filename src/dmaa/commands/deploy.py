@@ -269,6 +269,8 @@ def deploy(
     if not check_service_support_on_cn_region(service_type,region):
         raise ServiceNotSupported(region, service_type=service_type)
 
+    #
+
     # support instance
     supported_instances = model.supported_instances
     supported_instances = supported_instances_filter(region,allow_local_deploy,supported_instances)
@@ -281,7 +283,7 @@ def deploy(
                 support_gpu_num = supported_instances[0].gpu_num
                 default_gpus_str = ",".join([str(i) for i in range(min(gpu_num,support_gpu_num))])
                 gpus_to_deploy = questionary.text(
-                        "input the local gpus to deploy the model:",
+                        "input the local gpu ids to deploy the model (e.g. 0,1,2):",
                         default=f"{default_gpus_str}"
                     ).ask()
                 os.environ['CUDA_VISIBLE_DEVICES']=gpus_to_deploy
@@ -394,7 +396,7 @@ def deploy(
             console.print("[red]Invalid JSON format. Please try again.[/red]")
 
     # model tag
-    if model_tag==MODEL_DEFAULT_TAG and not skip_confirm:
+    if model_tag==MODEL_DEFAULT_TAG and not skip_confirm and not service_type == ServiceType.LOCAL:
         while True:
             model_tag = questionary.text(
                     "(Optional) Add a model deployment tag (custom label), you can skip by pressing Enter:",

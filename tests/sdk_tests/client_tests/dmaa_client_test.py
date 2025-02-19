@@ -3,10 +3,11 @@ from dmaa.sdk.clients.sagemaker_client import SageMakerClient
 
 client = SageMakerClient(
     # model_id="Qwen2.5-72B-Instruct-AWQ"
-    model_id="internlm2_5-20b-chat-4bit-awq"
+    # model_id="internlm2_5-20b-chat-4bit-awq"
+    model_id="deepseek-r1-distill-llama-70b-awq"
 )
 
-ret = client.invoke(
+ret = client.invoke_async(
     {
         "messages": [
             {
@@ -16,13 +17,13 @@ ret = client.invoke(
             }
         ],
         "max_tokens": 512,
-        "temperature": 0.1,
+        "temperature": 0.6,
         "stream":False
     }
 )
-for i in ret:
-    print(i['choices'][0]['delta']['content'],end="")
-
+# for i in ret:
+#     print(i['choices'][0]['delta']['content'],end="")
+print(ret)
 
 
 # client = SageMakerClient(

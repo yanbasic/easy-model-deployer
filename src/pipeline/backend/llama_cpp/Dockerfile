@@ -1,7 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa/huggingface/text-generation-inference:{{VERSION}} AS tgi-base
-
-# Create a new stage based on vllm-base
-FROM tgi-base AS sagemaker-serving
+FROM public.ecr.aws/aws-gcr-solutions/dmaa/llama-cpp:{{VERSION}}
 
 # Ensure the serve script has executable permissions
 # RUN chmod +x /usr/bin/serve

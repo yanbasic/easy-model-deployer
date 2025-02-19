@@ -17,9 +17,10 @@ import threading
 from multiprocessing import Event
 from dmaa.models import Instance
 from dmaa.models import ValueWithDefault
+from dmaa.utils.logger_utils import get_logger
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# logging.basicConfig(level=logging.INFO)
+logger = get_logger(__name__)
 
 
 def parse_args():
@@ -61,18 +62,17 @@ def run_prepare_model(args):
     model = get_executable_model(args)
     # model = Model.get_model(args.model_id)
     t1 = time.time()
-    if model.need_prepare_model and not args.skip_prepare_model:
-        from deploy import prepare_model
-        prepare_model.run(
-            model,
-            args.model_s3_bucket,
-            args.backend_type,
-            args.service_type,
-            args.region,
-            args=vars(args)
-        )
-    else:
-        print("skip prepare model...")
+    from deploy import prepare_model
+    prepare_model.run(
+        model,
+        # args.model_s3_bucket,
+        # args.backend_type,
+        # args.service_type,
+        # args.region,
+        # args=vars(args)
+    )
+    # else:
+    #     print("skip prepare model...")
     print(f"prepare_model elapsed time: ",time.time() - t1)
 
 
@@ -132,6 +132,8 @@ def worker(fn,*args,**kwargs):
         if not thread.is_alive():
             if thread.err is not None:
                 shared_event.set()
+                print("Current process got wrong...")
+                os.system("kill -9 %d" % os.getpid())
             break
         time.sleep(0.1)
     return thread.ret
@@ -184,17 +186,26 @@ def run_deploy(execute_model, service_deploy_parameters, region, role_name):
 
 def get_executable_model(args):
     model = Model.get_model(args.model_id)
-    executable_config = ExecutableConfig(
-        region=args.region,
-        current_engine=model.find_current_engine(args.backend_type),
-        current_instance=model.find_current_instance(args.instance_type),
-        current_service=model.find_current_service(args.service_type),
-        current_framework=model.find_current_framework(args.framework_type),
+    # executable_config = ExecutableConfig(
+    #     region=args.region,
+    #     current_engine=model.find_current_engine(args.backend_type),
+    #     current_instance=model.find_current_instance(args.instance_type),
+    #     current_service=model.find_current_service(args.service_type),
+    #     current_framework=model.find_current_framework(args.framework_type),
+    #     model_s3_bucket=args.model_s3_bucket,
+    #     extra_params=args.extra_params,
+    #     model_tag=args.model_tag
+    # )
+    execute_model = model.convert_to_execute_model(
+        engine_type=args.backend_type,
+        instance_type=args.instance_type,
+        service_type=args.service_type,
+        framework_type=args.framework_type,
         model_s3_bucket=args.model_s3_bucket,
+        model_tag=args.model_tag,
         extra_params=args.extra_params,
-        model_tag=args.model_tag
+        region=args.region
     )
-    execute_model = model.convert_to_execute_model(executable_config)
     return execute_model
 
 def download_s5cmd():

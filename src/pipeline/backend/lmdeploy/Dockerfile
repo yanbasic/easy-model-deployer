@@ -5,7 +5,7 @@ FROM lmdeploy-base AS sagemaker-serving
 
 # Ensure the serve script has executable permissions
 # RUN chmod +x /usr/bin/serve
-RUN pip3 install boto3
+RUN pip3 install boto3 hf_transfer modelscope
 
 # Expose port 8080
 EXPOSE 8080

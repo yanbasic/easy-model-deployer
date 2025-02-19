@@ -29,6 +29,7 @@ class EngineType(ConstantBase):
     HUGGINGFACE = "huggingface"
     COMFYUI = "comfyui"
     OLLAMA = "ollama"
+    LLAMA_CPP = "llama.cpp"
     TGI = "tgi"
     LMDEPLOY = 'lmdeploy'
 
@@ -130,6 +131,14 @@ class ServiceCode(ConstantBase):
     SAGEMAKER = "sagemaker"
 
 
+# class ModelPrepareMethod(ConstantBase):
+#     UPLOAD_TO_S3 = "upload to s3"
+#     DOANLOWD_FROM_S3 = "download from s3"
+#     IGNORE = "ignore"
+
+
+
+
 class ServiceQuotaCode(ConstantBase):
     G5dXLARGE_ENDPOINT = "L-1928E07B"
     G5d2XLARGE_ENDPOINT = "L-9614C779"
@@ -180,4 +189,5 @@ class ModelSeriesType(ConstantBase):
     LLAMA = "llama"
     QWEN_REASONING_MODEL = "qwen reasoning model"
     DEEPSEEK_REASONING_MODEL = "deepseek reasoning model"
+    DEEPSEEK_v3 = "deepseek v3"
     BAICHUAN = "baichuan"
