@@ -638,7 +638,7 @@
         </section>
         <section class="print-page" id="architecture"><h1 id="architecture-architecture">Architecture</h1>
 <p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
-<p><img alt="alt text" src="../images/emd-architecture.png" /></p>
+<p><img alt="alt text" src="../emd-architecture.png" /></p>
 <ol>
 <li>
 <p>User/Client initiates model deployment task, triggering pipeline to start model building.</p>
@@ -760,7 +760,7 @@ expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> <
 <ol>
 <li>
 <p>upload image to a s3 path
-<img alt="alt text" src="../images/sample.png" />
+<img alt="alt text" src="../sample.png" />
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
 </code></pre></div></p>
 </li>
@@ -843,7 +843,6 @@ Enter<span class="w"> </span>model<span class="w"> </span><span class="o">[</spa
 <ol>
 <li>
 <p>upload image to a s3 path
-<img alt="alt text" src="../images/sample.png" />
 <div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
 </code></pre></div></p>
 </li>
@@ -878,26 +877,13 @@ Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err
 </code></pre></div>
 <h2 id="langchain_interface-rerank-models">Rerank models</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmEmbeddings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmRerank</span>
-<span class="n">embedding_model</span> <span class="o">=</span> <span class="n">SageMakerVllmEmbeddings</span><span class="p">(</span>
-    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-m3&quot;</span><span class="p">,</span>
-    <span class="c1"># model_tag=&#39;dev-2&#39;</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;hi&quot;</span><span class="p">,</span><span class="s1">&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;</span><span class="p">]</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;what is panda?&#39;</span>
+<span class="n">rerank_model</span> <span class="o">=</span> <span class="n">SageMakerVllmRerank</span><span class="p">(</span>
+    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-reranker-v2-m3&quot;</span>
 <span class="p">)</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;</span>
-<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">r1</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">([</span><span class="n">text</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_query: </span><span class="si">{</span><span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_documents: </span><span class="si">{</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="c1"># docs = [&quot;hi&quot;,&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;]</span>
-<span class="c1"># query = &#39;what is panda?&#39;</span>
-<span class="c1"># rerank_model = SageMakerVllmRerank(</span>
-<span class="c1">#     model_id=&quot;bge-reranker-v2-m3&quot;</span>
-<span class="c1"># )</span>
-<span class="c1"># print(rerank_model.rerank(query=query,documents=docs))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rerank_model</span><span class="o">.</span><span class="n">rerank</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span><span class="n">documents</span><span class="o">=</span><span class="n">docs</span><span class="p">))</span>
 </code></pre></div></section><section class="print-page" id="openai_compatiable"><h1 id="openai_compatiable-test-openai-compatible-interface">Test OpenAI compatible interface</h1>
 <h3 id="openai_compatiable-sample-code">Sample Code</h3>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>

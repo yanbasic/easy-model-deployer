@@ -75,11 +75,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#about" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -537,32 +532,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#about" class="md-nav__link">
-    <span class="md-ellipsis">
-      About
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      Architecture
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -586,16 +555,7 @@
 Easy Model Deployer - Simple, Efficient, and Easy-to-Integrate
 </h3>
 
-<h2 id="about">About</h2>
 <p>EMD (Easy Model Deployer) is a lightweight tool designed to simplify model deployment. Built for developers who need reliable and scalable model serving without complex setup.</p>
-<h2 id="architecture">Architecture</h2>
-<p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
-<p><img alt="alt text" src="docs/images/emd-architecture.png" /></p>
-<ol>
-<li>User/Client initiates model deployment task, triggering pipeline to start model building.</li>
-<li>AWS CodeBuild constructs the large model using predefined configuration and publishes it to Amazon ECR.</li>
-<li>AWS CloudFormation creates a model infrastructure stack based on user selection and deploys the model from ECR to AWS services (Amazon SageMaker, EC2, ECS).</li>
-</ol>
 
 
 
