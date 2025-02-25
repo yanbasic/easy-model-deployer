@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/</loc>
-         <lastmod>2025-02-21</lastmod>
+         <lastmod>2025-02-25</lastmod>
     </url>
     <url>
-         <loc>https://github.com/aws-samples/easy-model-deployer/about/</loc>
-         <lastmod>2025-02-21</lastmod>
+         <loc>https://github.com/aws-samples/easy-model-deployer/architecture/</loc>
+         <lastmod>2025-02-25</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/installation/</loc>
-         <lastmod>2025-02-21</lastmod>
+         <lastmod>2025-02-25</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/invocation/</loc>
+         <lastmod>2025-02-25</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/supported_models/</loc>
-         <lastmod>2025-02-21</lastmod>
-    </url>
-    <url>
-         <loc>https://github.com/aws-samples/easy-model-deployer/usage/</loc>
-         <lastmod>2025-02-21</lastmod>
+         <lastmod>2025-02-25</lastmod>
     </url>
 </urlset>

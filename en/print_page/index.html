@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#about" class="md-skip">
+        <a href="#architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -220,29 +220,12 @@
   
   
     <li class="md-tabs__item">
-      <a href="../about/" class="md-tabs__link">
+      <a href="../architecture/" class="md-tabs__link">
         
   
     
   
-  About
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../supported_models/" class="md-tabs__link">
-        
-  
-    
-  
-  Supported Model
+  Architecture
 
       </a>
     </li>
@@ -271,12 +254,46 @@
   
   
     <li class="md-tabs__item">
-      <a href="../usage/" class="md-tabs__link">
+      <a href="../deployment.md" class="md-tabs__link">
         
   
     
   
-  Usage
+  Deployment
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../invocation/" class="md-tabs__link">
+        
+  
+    
+  
+  Invocation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../supported_models/" class="md-tabs__link">
+        
+  
+    
+  
+  Supported Model
 
       </a>
     </li>
@@ -334,32 +351,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../about/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    About
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../supported_models/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Supported Model
+    Architecture
     
   </span>
   
@@ -397,11 +393,53 @@
   
   
     <li class="md-nav__item">
-      <a href="../usage/" class="md-nav__link">
+      <a href="../deployment.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Usage
+    Deployment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../invocation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Invocation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../supported_models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Model
     
   </span>
   
@@ -436,18 +474,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#about" class="md-nav__link">
+  <a href="#architecture" class="md-nav__link">
     <span class="md-ellipsis">
-      1. About
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#supported_models" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Supported Model
+      1. Architecture
     </span>
   </a>
   
@@ -456,16 +485,25 @@
         <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Installation
+      2. Installation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#invocation" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Usage
+      3. Invocation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported_models" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Supported Model
     </span>
   </a>
   
@@ -495,19 +533,37 @@
                 </nav>
             </div>
         </section>
-        <section class="print-page" id="about"><h1 id="about-about-easy-model-deployer">About Easy Model Deployer</h1>
-<p>Easy Model Deployer is a lightweight tool designed to simplify the machine learning model deployment process.</p>
-<h2 id="about-features">Features</h2>
+        <section class="print-page" id="architecture"><h1 id="architecture-architecture">Architecture</h1>
+<p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
+<p><img alt="alt text" src="../architecture/docs/images/emd-architecture.png" /></p>
+<ol>
+<li>User/Client initiates model deployment task, triggering pipeline to start model building.</li>
+<li>AWS CodeBuild constructs the large model using predefined configuration and publishes it to Amazon ECR.</li>
+<li>AWS CloudFormation creates a model infrastructure stack based on user selection and deploys the model from ECR to AWS services (Amazon SageMaker, EC2, ECS).</li>
+</ol></section><section class="print-page" id="installation"><h1 id="installation-installation-guide">Installation Guide</h1>
+<h2 id="installation-prerequisites">Prerequisites</h2>
 <ul>
-<li>Simple deployment workflow</li>
-<li>Support for multiple ML frameworks</li>
-<li>Easy configuration</li>
-<li>Minimal dependencies</li>
+<li>Python 3.9 or higher</li>
+<li>pip (Python package installer)</li>
 </ul>
-<h2 id="about-why-use-easy-model-deployer">Why Use Easy Model Deployer?</h2>
-<p>Perfect for developers who want to quickly deploy ML models without dealing with complex infrastructure setup.</p>
-<h2 id="about-getting-started">Getting Started</h2>
-<p>Check our <a href="#usage">Usage Guide</a> to start deploying your models in minutes.</p></section><section class="print-page" id="supported_models"><table>
+<h2 id="installation-setting-up-the-environment">Setting up the Environment</h2>
+<ol>
+<li>
+<p>Create a virtual environment:
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>emd-env
+</code></pre></div></p>
+</li>
+<li>
+<p>Activate the virtual environment:
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>emd-env/bin/activate
+</code></pre></div></p>
+</li>
+<li>
+<p>Install the required packages:
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/aws-samples/easy-model-deployer/releases/download/main/emd-0.6.0-py3-none-any.whl
+</code></pre></div></p>
+</li>
+</ol></section><section class="print-page" id="supported_models"><table>
 <thead>
 <tr>
 <th style="text-align: left;">ModeId</th>
