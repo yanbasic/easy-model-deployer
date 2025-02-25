@@ -36,7 +36,7 @@ Enter prompt: What's in this image?
 ...
 ```
 
-### Video(Txt2edding) models
+### Video(Txt2Video) models
 1. input prompt for video generation
 ```bash
 emd invoke txt2video-LTX
@@ -63,5 +63,20 @@ emd invoke bge-reranker-v2-m3
 ...
 Enter the text_a (string): What is the capital of France?
 Enter the text_b (string): The capital of France is Paris.
+...
+```
+
+##  ASR models(whisper)
+1. upload audio to a s3 path
+```bash
+aws s3 cp xx.wav s3://your-bucket/xx.wav
+```
+
+2. invoke the model
+```bash
+emd invoke whisper
+...
+Enter the s3 path to the audio file: s3://your-bucket/xx.wav
+Enter model [large-v3-turbo/large-v3]: large-v3-turbo
 ...
 ```
