@@ -252,7 +252,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../deployment.md" class="md-tabs__link">
+      <a href="../deployment/" class="md-tabs__link">
         
   
     
@@ -269,12 +269,46 @@
   
   
     <li class="md-tabs__item">
-      <a href="../invocation/" class="md-tabs__link">
+      <a href="../emd_client/" class="md-tabs__link">
         
   
     
   
-  Invocation
+  EMD-Client
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../langchain_interface/" class="md-tabs__link">
+        
+  
+    
+  
+  Langchain-Interface
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../openai_compatiable/" class="md-tabs__link">
+        
+  
+    
+  
+  OpenAI-Compatiable
 
       </a>
     </li>
@@ -401,7 +435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment.md" class="md-nav__link">
+      <a href="../deployment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -422,11 +456,53 @@
   
   
     <li class="md-nav__item">
-      <a href="../invocation/" class="md-nav__link">
+      <a href="../emd_client/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Invocation
+    EMD-Client
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../langchain_interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Langchain-Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openai_compatiable/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenAI-Compatiable
     
   </span>
   
@@ -496,11 +572,17 @@
 
 <h1 id="architecture">Architecture</h1>
 <p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
-<p><img alt="alt text" src="docs/images/emd-architecture.png" /></p>
+<p><img alt="alt text" src="../images/emd-architecture.png" /></p>
 <ol>
-<li>User/Client initiates model deployment task, triggering pipeline to start model building.</li>
-<li>AWS CodeBuild constructs the large model using predefined configuration and publishes it to Amazon ECR.</li>
-<li>AWS CloudFormation creates a model infrastructure stack based on user selection and deploys the model from ECR to AWS services (Amazon SageMaker, EC2, ECS).</li>
+<li>
+<p>User/Client initiates model deployment task, triggering pipeline to start model building.</p>
+</li>
+<li>
+<p>AWS CodeBuild constructs the large model using predefined configuration and publishes it to Amazon ECR.</p>
+</li>
+<li>
+<p>AWS CloudFormation creates a model infrastructure stack based on user selection and deploys the model from ECR to AWS services (Amazon SageMaker, EC2, ECS).</p>
+</li>
 </ol>
 
 

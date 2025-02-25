@@ -9,11 +9,23 @@
          <lastmod>2025-02-25</lastmod>
     </url>
     <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/deployment/</loc>
+         <lastmod>2025-02-25</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/emd_client/</loc>
+         <lastmod>2025-02-25</lastmod>
+    </url>
+    <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/installation/</loc>
          <lastmod>2025-02-25</lastmod>
     </url>
     <url>
-         <loc>https://github.com/aws-samples/easy-model-deployer/invocation/</loc>
+         <loc>https://github.com/aws-samples/easy-model-deployer/langchain_interface/</loc>
+         <lastmod>2025-02-25</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/openai_compatiable/</loc>
          <lastmod>2025-02-25</lastmod>
     </url>
     <url>

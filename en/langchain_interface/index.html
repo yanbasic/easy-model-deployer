@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/installation/">
+        <link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/langchain_interface/">
       
       
-        <link rel="prev" href="../architecture/">
+        <link rel="prev" href="../emd_client/">
       
       
-        <link rel="next" href="../deployment/">
+        <link rel="next" href="../openai_compatiable/">
       
       
       <link rel="icon" href="https://s3.cn-north-1.amazonaws.com.cn/aws-assets-prod/libra-css/images/site/fav/favicon.ico">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Installation - Easy Model Deployer</title>
+        <title>Langchain-Interface - Easy Model Deployer</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation-guide" class="md-skip">
+        <a href="#invocation-guidelines" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installation
+              Langchain-Interface
             
           </span>
         </div>
@@ -233,11 +233,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../installation/" class="md-tabs__link">
         
   
     
@@ -286,9 +284,11 @@
         
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../langchain_interface/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
     
@@ -403,31 +403,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Installation
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -437,44 +416,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-the-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Setting up the Environment
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -525,10 +466,31 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../langchain_interface/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Langchain-Interface
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -538,6 +500,104 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#use-emd-to-invoke-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use EMD to invoke model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use EMD to invoke model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-llm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      For LLM models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-vlm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      For VLM models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-embedding-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Embedding models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-embedding-models_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Embedding models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f" class="md-nav__link">
+    <span class="md-ellipsis">
+      F
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-the-langchain-interface-to-invoke-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use the langchain interface to invoke model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-the" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use the
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -611,18 +671,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#use-emd-to-invoke-model" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      Use EMD to invoke model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use EMD to invoke model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-llm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      For LLM models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-vlm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      For VLM models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-embedding-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Embedding models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-embedding-models_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Embedding models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f" class="md-nav__link">
+    <span class="md-ellipsis">
+      F
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-the-langchain-interface-to-invoke-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use the langchain interface to invoke model
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#setting-up-the-environment" class="md-nav__link">
+  <a href="#use-the" class="md-nav__link">
     <span class="md-ellipsis">
-      Setting up the Environment
+      Use the
     </span>
   </a>
   
@@ -647,30 +767,67 @@
   
 
 
-<h1 id="installation-guide">Installation Guide</h1>
-<h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li>Python 3.9 or higher</li>
-<li>pip (Python package installer)</li>
-</ul>
-<h2 id="setting-up-the-environment">Setting up the Environment</h2>
+<h1 id="invocation-guidelines">Invocation guidelines</h1>
+<h2 id="use-emd-to-invoke-model">Use EMD to invoke model</h2>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
+</code></pre></div>
+<h3 id="for-llm-models">For LLM models</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
+User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
+Assistant:&lt;think&gt;
+
+Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
+expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
+...
+</code></pre></div>
+<h3 id="for-vlm-models">For VLM models</h3>
 <ol>
 <li>
-<p>Create a virtual environment:
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>emd-env
+<p>upload image to a s3 path
+<img alt="alt text" src="../images/sample.png" />
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
 </code></pre></div></p>
 </li>
 <li>
-<p>Activate the virtual environment:
-<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>emd-env/bin/activate
-</code></pre></div></p>
-</li>
-<li>
-<p>Install the required packages:
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/aws-samples/easy-model-deployer/releases/download/main/emd-0.6.0-py3-none-any.whl
+<p>invoke the model
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>Qwen2-VL-7B-Instruct
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+...
 </code></pre></div></p>
 </li>
 </ol>
+<h3 id="for-embedding-models">For Embedding models</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
+User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
+Assistant:&lt;think&gt;
+
+Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
+expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
+...
+</code></pre></div>
+<h3 id="for-embedding-models_1">For Embedding models</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
+User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
+Assistant:&lt;think&gt;
+
+Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
+expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
+...
+</code></pre></div>
+<h3 id="f">F</h3>
+<p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
+<h2 id="use-the-langchain-interface-to-invoke-model">Use the langchain interface to invoke model</h2>
+<h2 id="use-the">Use the</h2>
 
 
 

@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/invocation/">
+        <link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/emd_client/">
       
       
-        <link rel="prev" href="../installation/">
+        <link rel="prev" href="../deployment/">
       
       
-        <link rel="next" href="../supported_models/">
+        <link rel="next" href="../langchain_interface/">
       
       
       <link rel="icon" href="https://s3.cn-north-1.amazonaws.com.cn/aws-assets-prod/libra-css/images/site/fav/favicon.ico">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Invocation - Easy Model Deployer</title>
+        <title>EMD-Client - Easy Model Deployer</title>
       
     
     
@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#usse-emd-client-to-invoke-deployed-models" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -112,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Invocation
+              EMD-Client
             
           </span>
         </div>
@@ -247,7 +252,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../deployment.md" class="md-tabs__link">
+      <a href="../deployment/" class="md-tabs__link">
         
   
     
@@ -271,7 +276,41 @@
   
     
   
-  Invocation
+  EMD-Client
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../langchain_interface/" class="md-tabs__link">
+        
+  
+    
+  
+  Langchain-Interface
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../openai_compatiable/" class="md-tabs__link">
+        
+  
+    
+  
+  OpenAI-Compatiable
 
       </a>
     </li>
@@ -388,7 +427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment.md" class="md-nav__link">
+      <a href="../deployment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -415,18 +454,144 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    EMD-Client
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Invocation
+    EMD-Client
     
   </span>
   
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#llm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      LLM models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vlm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      VLM models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VLM models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#videotxt2edding-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Video(Txt2edding) models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedding-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedding models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rerank-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rerank models
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../langchain_interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Langchain-Interface
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openai_compatiable/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OpenAI-Compatiable
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -469,6 +634,67 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#llm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      LLM models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vlm-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      VLM models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VLM models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#videotxt2edding-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Video(Txt2edding) models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#embedding-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Embedding models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rerank-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rerank models
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -487,9 +713,66 @@
   
 
 
-  <h1>Invocation</h1>
+<h1 id="usse-emd-client-to-invoke-deployed-models">Usse EMD client to invoke deployed models</h1>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
+</code></pre></div>
+<h2 id="llm-models">LLM models</h2>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
+User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
+Assistant:&lt;think&gt;
 
-
+Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
+expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
+...
+</code></pre></div>
+<h2 id="vlm-models">VLM models</h2>
+<ol>
+<li>
+<p>upload image to a s3 path
+<img alt="alt text" src="../images/sample.png" />
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
+</code></pre></div></p>
+</li>
+<li>
+<p>invoke the model
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>Qwen2-VL-7B-Instruct
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>Qwen2-VL-7B-Instruct<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Enter<span class="w"> </span>image<span class="w"> </span>path<span class="o">(</span><span class="nb">local</span><span class="w"> </span>or<span class="w"> </span>s3<span class="w"> </span>file<span class="o">)</span>:<span class="w"> </span>s3://your-bucket/image.jpg
+Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err">&#39;</span>s<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>image?
+...
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="videotxt2edding-models">Video(Txt2edding) models</h3>
+<ol>
+<li>input prompt for video generation
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>txt2video-LTX
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>txt2video-LTX<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
+User:<span class="w"> </span>Two<span class="w"> </span>police<span class="w"> </span>officers<span class="w"> </span><span class="k">in</span><span class="w"> </span>dark<span class="w"> </span>blue<span class="w"> </span>uniforms<span class="w"> </span>and<span class="w"> </span>matching<span class="w"> </span>hats<span class="w"> </span>enter<span class="w"> </span>a<span class="w"> </span>dimly<span class="w"> </span>lit<span class="w"> </span>room<span class="w"> </span>through<span class="w"> </span>a<span class="w"> </span>doorway<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>left<span class="w"> </span>side<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>frame.<span class="w"> </span>The<span class="w"> </span>first<span class="w"> </span>officer,<span class="w"> </span>with<span class="w"> </span>short<span class="w"> </span>brown<span class="w"> </span>hair<span class="w"> </span>and<span class="w"> </span>a<span class="w"> </span>mustache,<span class="w"> </span>steps<span class="w"> </span>inside<span class="w"> </span>first,<span class="w"> </span>followed<span class="w"> </span>by<span class="w"> </span>his<span class="w"> </span>partner,<span class="w"> </span>who<span class="w"> </span>has<span class="w"> </span>a<span class="w"> </span>shaved<span class="w"> </span>head<span class="w"> </span>and<span class="w"> </span>a<span class="w"> </span>goatee.<span class="w"> </span>Both<span class="w"> </span>officers<span class="w"> </span>have<span class="w"> </span>serious<span class="w"> </span>expressions<span class="w"> </span>and<span class="w"> </span>maintain<span class="w"> </span>a<span class="w"> </span>steady<span class="w"> </span>pace<span class="w"> </span>as<span class="w"> </span>they<span class="w"> </span>move<span class="w"> </span>deeper<span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>room.<span class="w"> </span>The<span class="w"> </span>camera<span class="w"> </span>remains<span class="w"> </span>stationary,<span class="w"> </span>capturing<span class="w"> </span>them<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>slightly<span class="w"> </span>low<span class="w"> </span>angle<span class="w"> </span>as<span class="w"> </span>they<span class="w"> </span>enter.<span class="w"> </span>The<span class="w"> </span>room<span class="w"> </span>has<span class="w"> </span>exposed<span class="w"> </span>brick<span class="w"> </span>walls<span class="w"> </span>and<span class="w"> </span>a<span class="w"> </span>corrugated<span class="w"> </span>metal<span class="w"> </span>ceiling,<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>barred<span class="w"> </span>window<span class="w"> </span>visible<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>background.<span class="w"> </span>The<span class="w"> </span>lighting<span class="w"> </span>is<span class="w"> </span>low-key,<span class="w"> </span>casting<span class="w"> </span>shadows<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>officers<span class="err">&#39;</span><span class="w"> </span>faces<span class="w"> </span>and<span class="w"> </span>emphasizing<span class="w"> </span>the<span class="w"> </span>grim<span class="w"> </span>atmosphere.<span class="w"> </span>The<span class="w"> </span>scene<span class="w"> </span>appears<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>film<span class="w"> </span>or<span class="w"> </span>television<span class="w"> </span>show.
+...
+</code></pre></div></li>
+<li>download generated video from <strong>output_path</strong></li>
+</ol>
+<h2 id="embedding-models">Embedding models</h2>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>bge-base-en-v1.5
+...
+Invoking<span class="w"> </span>model<span class="w"> </span>bge-base-en-v1.5<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Enter<span class="w"> </span>the<span class="w"> </span>sentence:<span class="w"> </span>hello
+...
+</code></pre></div>
+<h2 id="rerank-models">Rerank models</h2>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>bge-reranker-v2-m3
+...
+Enter<span class="w"> </span>the<span class="w"> </span>text_a<span class="w"> </span><span class="o">(</span>string<span class="o">)</span>:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>capital<span class="w"> </span>of<span class="w"> </span>France?
+Enter<span class="w"> </span>the<span class="w"> </span>text_b<span class="w"> </span><span class="o">(</span>string<span class="o">)</span>:<span class="w"> </span>The<span class="w"> </span>capital<span class="w"> </span>of<span class="w"> </span>France<span class="w"> </span>is<span class="w"> </span>Paris.
+...
+</code></pre></div>
 
 
 
