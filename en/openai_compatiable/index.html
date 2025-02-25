@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#invocation-guidelines" class="md-skip">
+        <a href="#test-openai-compatible-interface" class="md-skip">
           Skip to content
         </a>
       
@@ -538,78 +538,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#use-emd-to-invoke-model" class="md-nav__link">
+  <a href="#sample-code" class="md-nav__link">
     <span class="md-ellipsis">
-      Use EMD to invoke model
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Use EMD to invoke model">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-llm-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      For LLM models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-vlm-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      For VLM models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-embedding-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      For Embedding models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-embedding-models_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      For Embedding models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f" class="md-nav__link">
-    <span class="md-ellipsis">
-      F
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-the-langchain-interface-to-invoke-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      Use the langchain interface to invoke model
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-the" class="md-nav__link">
-    <span class="md-ellipsis">
-      Use the
+      Sample Code
     </span>
   </a>
   
@@ -671,78 +602,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#use-emd-to-invoke-model" class="md-nav__link">
+  <a href="#sample-code" class="md-nav__link">
     <span class="md-ellipsis">
-      Use EMD to invoke model
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Use EMD to invoke model">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-llm-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      For LLM models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-vlm-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      For VLM models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-embedding-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      For Embedding models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-embedding-models_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      For Embedding models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f" class="md-nav__link">
-    <span class="md-ellipsis">
-      F
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-the-langchain-interface-to-invoke-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      Use the langchain interface to invoke model
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-the" class="md-nav__link">
-    <span class="md-ellipsis">
-      Use the
+      Sample Code
     </span>
   </a>
   
@@ -767,67 +629,53 @@
   
 
 
-<h1 id="invocation-guidelines">Invocation guidelines</h1>
-<h2 id="use-emd-to-invoke-model">Use EMD to invoke model</h2>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
-</code></pre></div>
-<h3 id="for-llm-models">For LLM models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
+<h1 id="test-openai-compatible-interface">Test OpenAI compatible interface</h1>
+<h3 id="sample-code">Sample Code</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="c1"># Change the api_key here to the parameter you passed in via extra-parameter</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;your_openai_api_key&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chat_with_openai_stream</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://ec2-54-189-171-204.us-west-2.compute.amazonaws.com:8080/v1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-72B-Instruct-AWQ&quot;</span><span class="p">,</span>
+        <span class="c1"># model=&quot;Qwen2.5-1.5B-Instruct&quot;,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AI: &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+        <span class="n">think</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span><span class="s2">&quot;reasoning_content&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">think</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">think</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
-</code></pre></div>
-<h3 id="for-vlm-models">For VLM models</h3>
-<ol>
-<li>
-<p>upload image to a s3 path
-<img alt="alt text" src="../images/sample.png" />
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
-</code></pre></div></p>
-</li>
-<li>
-<p>invoke the model
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>Qwen2-VL-7B-Instruct
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-...
-</code></pre></div></p>
-</li>
-</ol>
-<h3 id="for-embedding-models">For Embedding models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
+<span class="k">def</span><span class="w"> </span><span class="nf">chat_with_openai</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:9000/v1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;DeepSeek-R1-Distill-Qwen-1.5B&quot;</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">},</span>
+                  <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}],</span>
+        <span class="n">stream</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
+<span class="c1"># Test the stream and non-stream interface</span>
+<span class="n">chat_with_openai_stream</span><span class="p">(</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">)</span>
+<span class="n">chat_with_openai</span><span class="p">(</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="for-embedding-models_1">For Embedding models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
-
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
-</code></pre></div>
-<h3 id="f">F</h3>
-<p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
-<h2 id="use-the-langchain-interface-to-invoke-model">Use the langchain interface to invoke model</h2>
-<h2 id="use-the">Use the</h2>
 
 
 

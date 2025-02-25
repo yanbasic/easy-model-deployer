@@ -672,7 +672,76 @@
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/aws-samples/easy-model-deployer/releases/download/main/emd-0.6.0-py3-none-any.whl
 </code></pre></div></p>
 </li>
-</ol></section><section class="print-page" id="emd_client"><h1 id="emd_client-usse-emd-client-to-invoke-deployed-models">Usse EMD client to invoke deployed models</h1>
+</ol></section><section class="print-page" id="deployment"><h1 id="deployment-deployment-parameters">Deployment parameters</h1>
+<h2 id="deployment--force-update-env-stack">--force-update-env-stack</h2>
+<p>No additional <code>emd bootstrap</code> required for deployment. Because of other commands, status/destroy etc. require pre-bootstrapping. Therefore, it is recommended to run <code>emd bootstrap</code> separately after each upgrade.</p>
+<h2 id="deployment--allow-local-deploy">--allow-local-deploy</h2>
+<p>Extra parameters passed to the model deployment. extra-params should be a Json object of dictionary format as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+
+<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:{</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;instance_params&quot;</span><span class="p">:{</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:{</span>
+<span class="w">      </span><span class="nt">&quot;cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;command line arguments of current engine&gt;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;api key&gt;&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;framework_params&quot;</span><span class="p">:{</span>
+<span class="w">      </span><span class="nt">&quot;uvicorn_log_level&quot;</span><span class="p">:</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;limit_concurrency&quot;</span><span class="p">:</span><span class="mi">200</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h1 id="deployment-local-deployment-on-the-ec2-instance">Local deployment on the ec2 instance</h1>
+<p>This is suitable for deploying models using local GPU resources.</p>
+<h2 id="deployment-pre-requisites">Pre-requisites</h2>
+<h3 id="deployment-start-and-connect-to-ec2-instance">Start and connect to EC2 instance</h3>
+<p>It is recommended to launch the instance using the AMI "<strong>Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.6 (Ubuntu 22.04)</strong>".</p>
+<h2 id="deployment-deploy-model-using-emd">Deploy model using EMD</h2>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--allow-local-deploy
+</code></pre></div>
+<p>There some EMD configuration sample settings for model deployment in the following two sections: <a href="#deployment-non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</a> and <a href="#deployment-reasoning-model-deployment-configuration">Reasoning Model deployment configuration</a>.
+Wait for the model deployment to complete.</p>
+<h3 id="deployment-non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</h3>
+<h4 id="deployment-qwen25-72b-instruct-awq">Qwen2.5-72B-Instruct-AWQ</h4>
+<div class="highlight"><pre><span></span><code>? Select the model series: qwen2.5
+? Select the model name: Qwen2.5-72B-Instruct-AWQ
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+? Select the inference engine to use: tgi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
+</code></pre></div>
+<h4 id="deployment-llama-33-70b-instruct-awq">llama-3.3-70b-instruct-awq</h4>
+<div class="highlight"><pre><span></span><code>? Select the model series: llama
+? Select the model name: llama-3.3-70b-instruct-awq
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+engine type: tgi
+framework type: fastapi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
+</code></pre></div>
+<h3 id="deployment-reasoning-model-deployment-configuration">Reasoning Model deployment configuration</h3>
+<h4 id="deployment-deepseek-r1-distill-qwen-32b">DeepSeek-R1-Distill-Qwen-32B</h4>
+<div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
+? Select the model name: DeepSeek-R1-Distill-Qwen-32B
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+engine type: vllm
+framework type: fastapi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--enable-reasoning --reasoning-parser deepseek_r1 --max_model_len 16000 --disable-log-stats --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja --max_num_seq 20 --gpu_memory_utilization 0.9&quot;}}
+</code></pre></div>
+<h4 id="deployment-deepseek-r1-distill-llama-70b-awq">deepseek-r1-distill-llama-70b-awq</h4>
+<div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
+? Select the model name: deepseek-r1-distill-llama-70b-awq
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+? Select the inference engine to use: tgi
+framework type: fastapi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
+</code></pre></div></section><section class="print-page" id="emd_client"><h1 id="emd_client-usse-emd-client-to-invoke-deployed-models">Usse EMD client to invoke deployed models</h1>
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
 </code></pre></div>
 <h2 id="emd_client-llm-models">LLM models</h2>
@@ -706,7 +775,7 @@ Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err
 </code></pre></div></p>
 </li>
 </ol>
-<h3 id="emd_client-videotxt2edding-models">Video(Txt2edding) models</h3>
+<h3 id="emd_client-videotxt2video-models">Video(Txt2Video) models</h3>
 <ol>
 <li>input prompt for video generation
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>txt2video-LTX
@@ -731,23 +800,46 @@ Enter<span class="w"> </span>the<span class="w"> </span>sentence:<span class="w"
 Enter<span class="w"> </span>the<span class="w"> </span>text_a<span class="w"> </span><span class="o">(</span>string<span class="o">)</span>:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>capital<span class="w"> </span>of<span class="w"> </span>France?
 Enter<span class="w"> </span>the<span class="w"> </span>text_b<span class="w"> </span><span class="o">(</span>string<span class="o">)</span>:<span class="w"> </span>The<span class="w"> </span>capital<span class="w"> </span>of<span class="w"> </span>France<span class="w"> </span>is<span class="w"> </span>Paris.
 ...
-</code></pre></div></section><section class="print-page" id="langchain_interface"><h1 id="langchain_interface-invocation-guidelines">Invocation guidelines</h1>
-<h2 id="langchain_interface-use-emd-to-invoke-model">Use EMD to invoke model</h2>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
 </code></pre></div>
-<h3 id="langchain_interface-for-llm-models">For LLM models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
+<h2 id="emd_client-asr-modelswhisper">ASR models(whisper)</h2>
+<ol>
+<li>
+<p>upload audio to a s3 path
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>xx.wav<span class="w"> </span>s3://your-bucket/xx.wav
+</code></pre></div></p>
+</li>
+<li>
+<p>invoke the model
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>whisper
 ...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
-
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
+Enter<span class="w"> </span>the<span class="w"> </span>s3<span class="w"> </span>path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>audio<span class="w"> </span>file:<span class="w"> </span>s3://your-bucket/xx.wav
+Enter<span class="w"> </span>model<span class="w"> </span><span class="o">[</span>large-v3-turbo/large-v3<span class="o">]</span>:<span class="w"> </span>large-v3-turbo
 ...
+</code></pre></div></p>
+</li>
+</ol></section><section class="print-page" id="langchain_interface"><h1 id="langchain_interface-usse-langchain-interface-to-invoke-deployed-models">Usse Langchain interface to invoke deployed models</h1>
+<h2 id="langchain_interface-llm-models">LLM models</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmChatModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">HumanMessage</span><span class="p">,</span><span class="n">AIMessage</span><span class="p">,</span><span class="n">SystemMessage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.tools.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredTool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.function_calling</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">convert_to_openai_function</span><span class="p">,</span>
+    <span class="n">convert_to_openai_tool</span>
+<span class="p">)</span>
+<span class="n">chat_model</span> <span class="o">=</span> <span class="n">SageMakerVllmChatModel</span><span class="p">(</span>
+    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+    <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">chat_model</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;9.11和9.9两个数字哪个更大？&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
 </code></pre></div>
-<h3 id="langchain_interface-for-vlm-models">For VLM models</h3>
+<h2 id="langchain_interface-vlm-models">VLM models</h2>
 <ol>
 <li>
 <p>upload image to a s3 path
@@ -759,99 +851,100 @@ expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> <
 <p>invoke the model
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>Qwen2-VL-7B-Instruct
 ...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Invoking<span class="w"> </span>model<span class="w"> </span>Qwen2-VL-7B-Instruct<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+Enter<span class="w"> </span>image<span class="w"> </span>path<span class="o">(</span><span class="nb">local</span><span class="w"> </span>or<span class="w"> </span>s3<span class="w"> </span>file<span class="o">)</span>:<span class="w"> </span>s3://your-bucket/image.jpg
+Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err">&#39;</span>s<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>image?
 ...
 </code></pre></div></p>
 </li>
 </ol>
-<h3 id="langchain_interface-for-embedding-models">For Embedding models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
+<h3 id="langchain_interface-videotxt2video-models">Video(Txt2Video) models</h3>
+<p>Not supported</p>
+<h2 id="langchain_interface-embedding-models">Embedding models</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmEmbeddings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmRerank</span>
+<span class="n">embedding_model</span> <span class="o">=</span> <span class="n">SageMakerVllmEmbeddings</span><span class="p">(</span>
+    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-m3&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">([</span><span class="n">text</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_query: </span><span class="si">{</span><span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_documents: </span><span class="si">{</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="langchain_interface-rerank-models">Rerank models</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmEmbeddings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmRerank</span>
+<span class="n">embedding_model</span> <span class="o">=</span> <span class="n">SageMakerVllmEmbeddings</span><span class="p">(</span>
+    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-m3&quot;</span><span class="p">,</span>
+    <span class="c1"># model_tag=&#39;dev-2&#39;</span>
+<span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">([</span><span class="n">text</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_query: </span><span class="si">{</span><span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_documents: </span><span class="si">{</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># docs = [&quot;hi&quot;,&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;]</span>
+<span class="c1"># query = &#39;what is panda?&#39;</span>
+<span class="c1"># rerank_model = SageMakerVllmRerank(</span>
+<span class="c1">#     model_id=&quot;bge-reranker-v2-m3&quot;</span>
+<span class="c1"># )</span>
+<span class="c1"># print(rerank_model.rerank(query=query,documents=docs))</span>
+</code></pre></div></section><section class="print-page" id="openai_compatiable"><h1 id="openai_compatiable-test-openai-compatible-interface">Test OpenAI compatible interface</h1>
+<h3 id="openai_compatiable-sample-code">Sample Code</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="c1"># Change the api_key here to the parameter you passed in via extra-parameter</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;your_openai_api_key&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chat_with_openai_stream</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://ec2-54-189-171-204.us-west-2.compute.amazonaws.com:8080/v1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-72B-Instruct-AWQ&quot;</span><span class="p">,</span>
+        <span class="c1"># model=&quot;Qwen2.5-1.5B-Instruct&quot;,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AI: &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span>
+        <span class="n">think</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span><span class="s2">&quot;reasoning_content&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">think</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">think</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
-</code></pre></div>
-<h3 id="langchain_interface-for-embedding-models_1">For Embedding models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
+<span class="k">def</span><span class="w"> </span><span class="nf">chat_with_openai</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:9000/v1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;DeepSeek-R1-Distill-Qwen-1.5B&quot;</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">},</span>
+                  <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}],</span>
+        <span class="n">stream</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
-</code></pre></div>
-<h3 id="langchain_interface-f">F</h3>
-<p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
-<h2 id="langchain_interface-use-the-langchain-interface-to-invoke-model">Use the langchain interface to invoke model</h2>
-<h2 id="langchain_interface-use-the">Use the</h2></section><section class="print-page" id="openai_compatiable"><h1 id="openai_compatiable-invocation-guidelines">Invocation guidelines</h1>
-<h2 id="openai_compatiable-use-emd-to-invoke-model">Use EMD to invoke model</h2>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
-</code></pre></div>
-<h3 id="openai_compatiable-for-llm-models">For LLM models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
-
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
-</code></pre></div>
-<h3 id="openai_compatiable-for-vlm-models">For VLM models</h3>
-<ol>
-<li>
-<p>upload image to a s3 path
-<img alt="alt text" src="../images/sample.png" />
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
-</code></pre></div></p>
-</li>
-<li>
-<p>invoke the model
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>Qwen2-VL-7B-Instruct
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-...
-</code></pre></div></p>
-</li>
-</ol>
-<h3 id="openai_compatiable-for-embedding-models">For Embedding models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
-
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
-</code></pre></div>
-<h3 id="openai_compatiable-for-embedding-models_1">For Embedding models</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
-...
-Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
-Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
-User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
-Assistant:&lt;think&gt;
-
-Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
-expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
-...
-</code></pre></div>
-<h3 id="openai_compatiable-f">F</h3>
-<p>Deploy models to the cloud with EMD will use the following components in Amazon Web Services:</p>
-<h2 id="openai_compatiable-use-the-langchain-interface-to-invoke-model">Use the langchain interface to invoke model</h2>
-<h2 id="openai_compatiable-use-the">Use the</h2></section><section class="print-page" id="supported_models"><table>
+<span class="c1"># Test the stream and non-stream interface</span>
+<span class="n">chat_with_openai_stream</span><span class="p">(</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">)</span>
+<span class="n">chat_with_openai</span><span class="p">(</span><span class="s2">&quot;What is the capital of France?&quot;</span><span class="p">)</span>
+</code></pre></div></section><section class="print-page" id="supported_models"><table>
 <thead>
 <tr>
 <th style="text-align: left;">ModeId</th>

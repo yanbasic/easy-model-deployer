@@ -515,9 +515,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#videotxt2edding-models" class="md-nav__link">
+  <a href="#videotxt2video-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Video(Txt2edding) models
+      Video(Txt2Video) models
     </span>
   </a>
   
@@ -541,6 +541,15 @@
   <a href="#rerank-models" class="md-nav__link">
     <span class="md-ellipsis">
       Rerank models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asr-modelswhisper" class="md-nav__link">
+    <span class="md-ellipsis">
+      ASR models(whisper)
     </span>
   </a>
   
@@ -663,9 +672,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#videotxt2edding-models" class="md-nav__link">
+  <a href="#videotxt2video-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Video(Txt2edding) models
+      Video(Txt2Video) models
     </span>
   </a>
   
@@ -689,6 +698,15 @@
   <a href="#rerank-models" class="md-nav__link">
     <span class="md-ellipsis">
       Rerank models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asr-modelswhisper" class="md-nav__link">
+    <span class="md-ellipsis">
+      ASR models(whisper)
     </span>
   </a>
   
@@ -747,7 +765,7 @@ Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err
 </code></pre></div></p>
 </li>
 </ol>
-<h3 id="videotxt2edding-models">Video(Txt2edding) models</h3>
+<h3 id="videotxt2video-models">Video(Txt2Video) models</h3>
 <ol>
 <li>input prompt for video generation
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>txt2video-LTX
@@ -773,6 +791,23 @@ Enter<span class="w"> </span>the<span class="w"> </span>text_a<span class="w"> <
 Enter<span class="w"> </span>the<span class="w"> </span>text_b<span class="w"> </span><span class="o">(</span>string<span class="o">)</span>:<span class="w"> </span>The<span class="w"> </span>capital<span class="w"> </span>of<span class="w"> </span>France<span class="w"> </span>is<span class="w"> </span>Paris.
 ...
 </code></pre></div>
+<h2 id="asr-modelswhisper">ASR models(whisper)</h2>
+<ol>
+<li>
+<p>upload audio to a s3 path
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>xx.wav<span class="w"> </span>s3://your-bucket/xx.wav
+</code></pre></div></p>
+</li>
+<li>
+<p>invoke the model
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>whisper
+...
+Enter<span class="w"> </span>the<span class="w"> </span>s3<span class="w"> </span>path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>audio<span class="w"> </span>file:<span class="w"> </span>s3://your-bucket/xx.wav
+Enter<span class="w"> </span>model<span class="w"> </span><span class="o">[</span>large-v3-turbo/large-v3<span class="o">]</span>:<span class="w"> </span>large-v3-turbo
+...
+</code></pre></div></p>
+</li>
+</ol>
 
 
 
