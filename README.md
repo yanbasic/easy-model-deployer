@@ -74,6 +74,7 @@ emd deploy --model-id DeepSeek-R1-Distill-Qwen-1.5B --instance-type g5.8xlarge -
 Notes: Get complete parameters by ```emd deploy --help``` and find the values of the required parameters [here](docs/en/supported_models.md)
 When you see "Waiting for model: ...",  it means the deployment task has started, you can quit the current task by ctrl+c.
 ![alt text](docs/images/emd-deploy.png)
+Notes: For more details about the deployment parameters, please refer to [Deployment parameters](docs/en/deployment.md).
 
 #### Check deployment status.
 ```bash
@@ -86,7 +87,7 @@ Notes: EMD allows to launch multiple deployment tasks at the same time.
 ```bash
 emd invoke DeepSeek-R1-Distill-Qwen-1.5B
 ```
-Notes: Find *ModelId* in the output of ```emd status```.
+Notes: Find *ModelId* in the output of ```emd status```. Refer to [EMD Client](docs/en/emd_client.md), [Langchain interface](docs/en/langchain_interface.md) and [OpenAI compatible interface](docs/en/openai_compatiable.md) for more details.
 ![alt text](docs/images/emd-invoke.png)
 
 #### Delete the deployed model
