@@ -14,7 +14,7 @@ from emd.utils.logger_utils import make_layout
 from emd.utils.aws_service_utils import get_account_id
 
 
-app = typer.Typer()
+app = typer.Typer(pretty_exceptions_enable=False)
 console = Console()
 layout = make_layout()
 

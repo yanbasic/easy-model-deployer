@@ -165,6 +165,7 @@ Model.register(
         application_scenario="Agent, tool use, translation, summary",
         description="The latest series of Qwen LLMs, offers base and tuned models from 0.5B to 72B\n parameters, featuring enhanced knowledge, improved coding and math skills, better instruction\n following, long-text generation, structured data handling, 128K token context support, and\n multilingual capabilities for 29+ languages.",
         model_type=ModelType.LLM,
+        need_prepare_model=False,
         model_series=QWEN2D5_SERIES
     )
 )
