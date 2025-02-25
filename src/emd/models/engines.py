@@ -91,6 +91,15 @@ vllm_qwen2vl72b_engine064 = VllmEngine(**{
             "default_cli_args": " --chat-template emd/models/chat_templates/qwen2vl_add_prefill_chat_template.jinja --max_model_len 25000 --disable-log-stats --limit-mm-per-prompt image=20,video=1 --max_num_seq 1 --gpu_memory_utilization 0.9"
 })
 
+vllm_qwen25vl72b_engine073 = VllmEngine(**{
+            **vllm_engine064.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"v0.7.3"},
+            "dockerfile_name":"Dockerfile_qwen25_vl",
+            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --max_model_len 25000 --disable-log-stats --limit-mm-per-prompt image=20,video=1 --max_num_seq 1 --gpu_memory_utilization 0.9"
+})
+
+
 vllm_internvl2d5_76b_engine064 = VllmEngine(**{
              **vllm_engine064.model_dump(),
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",

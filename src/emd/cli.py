@@ -30,6 +30,7 @@ import json
 
 app = typer.Typer(
     add_completion=False,
+    pretty_exceptions_enable=False
 )
 console = Console()
 

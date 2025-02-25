@@ -9,7 +9,7 @@ from emd.utils.decorators import catch_aws_credential_errors,check_emd_env_exist
 from emd.utils.logger_utils import make_layout
 from emd.revision import convert_version_name_to_stack_name
 
-app = typer.Typer()
+app = typer.Typer(pretty_exceptions_enable=False)
 console = Console()
 layout = make_layout()
 
