@@ -1,6 +1,8 @@
 import argparse
 import functools
+import random
 import os
+import json
 
 from transformers import AutoTokenizer
 
@@ -10,6 +12,11 @@ try:
     max_tokens = int(os.environ.get("MAX_TOKENS"))
 except (TypeError, ValueError):
     max_tokens = 512
+
+try:
+    min_tokens = int(os.environ.get("MIN_TOKENS"))
+except (TypeError, ValueError):
+    min_tokens = 0
 
 print(f"max_tokens set to {max_tokens}")
 
@@ -65,33 +72,112 @@ def get_prompt_set(min_input_length=0, max_input_length=500):
         if min_input_length <= d["input_tokens"] <= max_input_length
     ]
 
-prompts = get_prompt_set(30, 150)
+# prompts = get_prompt_set(30, 150)
+with open("prompts.txt", "r") as f:
+    prompt = f.read()
+    print(f"The tokens of the prompt is {len(tokenizer(prompt)['input_ids'])}")
+prompts = [prompt]
 
 
-class UserDef(BaseUserDef):
+class OpenAIUserDef(BaseUserDef):
+    # Alias endpoint and query inputs for readability
     BASE_URL = base_url
     PROMPTS = prompts
-
+    
     @classmethod
     def make_request(cls):
-        import json
-        import random
-
-        prompt = random.choice(cls.PROMPTS)
-        headers = {"Content-Type": "application/json"}
-        url = f"{cls.BASE_URL}/generate"
-        data = {
-            "prompt": prompt,
-            "system_prompt": system_prompt,  # this is important because there's a default system prompt
+        # Move imports inside method for performance
+        from random import sample
+        import json as json_parser
+        
+        # Select a random prompt from our collection
+        selected_prompt = random.choice(cls.PROMPTS)
+        
+        # Prepare HTTP request components
+        request_metadata = {"Content-Type": "application/json"}
+        endpoint = f"{cls.BASE_URL}/v1/chat/completions"
+        
+        # Build the payload with necessary parameters
+        payload = {
+            "messages": [{
+                "role": "system",
+                "content": system_prompt
+            }, {
+                "role": "user",
+                "content": selected_prompt
+            }],
+            "model": "Qwen2.5-7B-Instruct",
             "max_tokens": max_tokens,
+            "stream": False,
+            "extra_body": {
+                "min_tokens": min_tokens,
+            }
         }
-        return url, headers, json.dumps(data)
+
+        # Return request components in expected format
+        return endpoint, request_metadata, json_parser.dumps(payload)
 
     @staticmethod
-    def parse_response(chunk: bytes):
-        import json
-        text = chunk.decode("utf-8").strip()
-        return tokenizer.encode(text, add_special_tokens=False)
+    def parse_response(response_bytes: bytes):
+        # Process the raw bytes from model response
+        decoded_content = response_bytes.decode("utf-8").strip()
+        data = json.loads(decoded_content)
+        content = data.get("choices")[0].get("message").get("content")
+        
+        # Convert text to token IDs for benchmarking
+        return tokenizer.encode(content, add_special_tokens=False)
+
+class OpenAIStreamUserDef(BaseUserDef):
+    # Alias endpoint and query inputs for readability
+    BASE_URL = base_url
+    PROMPTS = prompts
+    
+    @classmethod
+    def make_request(cls):
+        # Move imports inside method for performance
+        from random import sample
+        import json as json_parser
+        
+        # Select a random prompt from our collection
+        selected_prompt = random.choice(cls.PROMPTS)
+        
+        # Prepare HTTP request components
+        request_metadata = {"Content-Type": "application/json"}
+        endpoint = f"{cls.BASE_URL}/v1/chat/completions"
+        
+        # Build the payload with necessary parameters
+        payload = {
+            "messages": [{
+                "role": "system",
+                "content": system_prompt
+            }, {
+                "role": "user",
+                "content": selected_prompt
+            }],
+            "model": "Qwen2.5-7B-Instruct",
+            "max_tokens": max_tokens,
+            "stream": True,
+            "extra_body": {
+                "min_tokens": min_tokens,
+            }
+        }
+
+        # Return request components in expected format
+        return endpoint, request_metadata, json_parser.dumps(payload)
+
+    @staticmethod
+    def parse_response(response_bytes: bytes):
+        # Process the raw bytes from model response
+        decoded_content = response_bytes.decode("utf-8").strip()
+        try:
+            data = json.loads(decoded_content[6:])
+            content = data.get("choices")[0].get("delta").get("content")
+        except json.JSONDecodeError:
+            content = ""
+
+        # Convert text to token IDs for benchmarking
+        return tokenizer.encode(content, add_special_tokens=False)
+
 
 
 if __name__ == "__main__":
@@ -105,4 +191,4 @@ if __name__ == "__main__":
     parser.add_argument("--ping_correction", action="store_true")
     args = parser.parse_args()
 
-    asyncio.run(start_benchmark_session(args, UserDef))
+    asyncio.run(start_benchmark_session(args, OpenAIUserDef))
