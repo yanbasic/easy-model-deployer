@@ -123,7 +123,12 @@ class OpenAIUserDef(BaseUserDef):
         decoded_content = response_bytes.decode("utf-8").strip()
         data = json.loads(decoded_content)
         content = data.get("choices")[0].get("message").get("content")
-        
+        print(f"The content length is {len(content)}")
+        print(f"The tokens of the content is {len(tokenizer(content)['input_ids'])}")
+        last_token_id = tokenizer(content)["input_ids"][-1]
+        last_token = tokenizer.decode(last_token_id)
+        print(f"The last token id of the content is {last_token}")
+
         # Convert text to token IDs for benchmarking
         return tokenizer.encode(content, add_special_tokens=False)
 
@@ -178,8 +183,6 @@ class OpenAIStreamUserDef(BaseUserDef):
         # Convert text to token IDs for benchmarking
         return tokenizer.encode(content, add_special_tokens=False)
 
-
-
 if __name__ == "__main__":
     import asyncio
     from common import start_benchmark_session
@@ -191,4 +194,4 @@ if __name__ == "__main__":
     parser.add_argument("--ping_correction", action="store_true")
     args = parser.parse_args()
 
-    asyncio.run(start_benchmark_session(args, OpenAIUserDef))
+    asyncio.run(start_benchmark_session(args, OpenAIStreamUserDef))
