@@ -4,13 +4,19 @@ from batch_deploy_test import (
 )
 
 
+extra_params = {
+    "model_params":{"need_prepare_model":False}
+}
+
+service_type = "ecs"
+
 tasks = [
         {
             "deploy_config":{
                 "model_id": "Qwen2.5-0.5B-Instruct",
                 "instance_type":"g5.2xlarge",
                 "engine_type":"vllm",
-                "service_type":"sagemaker",
+                "service_type":service_type,
                 "framework_type":"fastapi",
                 "model_tag":"batch_test"
             },
@@ -30,7 +36,7 @@ tasks = [
                 "model_id": "Qwen2.5-1.5B-Instruct",
                 "instance_type":"g5.2xlarge",
                 "engine_type":"vllm",
-                "service_type":"sagemaker",
+                "service_type":service_type,
                 "framework_type":"fastapi",
                 "model_tag":"batch_test"
             },
@@ -50,7 +56,7 @@ tasks = [
                 "model_id": "Qwen2.5-7B-Instruct",
                 "instance_type":"g5.12xlarge",
                 "engine_type":"vllm",
-                "service_type":"sagemaker",
+                "service_type":service_type,
                 "framework_type":"fastapi",
                 "model_tag":"batch_test"
             },
@@ -70,7 +76,7 @@ tasks = [
                 "model_id": "Qwen2.5-32B-Instruct",
                 "instance_type":"g5.12xlarge",
                 "engine_type":"vllm",
-                "service_type":"sagemaker",
+                "service_type":service_type,
                 "framework_type":"fastapi",
                 "model_tag":"batch_test"
             },
@@ -85,52 +91,93 @@ tasks = [
                 }],
             }
         },
-        {
-            "deploy_config":{
-                "model_id": "Qwen2.5-32B-Instruct",
-                "instance_type":"g5.12xlarge",
-                "engine_type":"vllm",
-                "service_type":"sagemaker",
-                "framework_type":"fastapi",
-                "model_tag":"batch_test"
-            },
-            "invoke_config":{
-                "pyloads":[{
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": "Explain async programming in Python"
-                        }
-                    ]
-                }],
-            }
-        },
-        {
-            "deploy_config":{
-                "model_id": "Qwen2.5-72B-Instruct",
-                "instance_type":"g5.48xlarge",
-                "engine_type":"vllm",
-                "service_type":"sagemaker",
-                "framework_type":"fastapi",
-                "model_tag":"batch_test"
-            },
-            "invoke_config":{
-                "pyloads":[{
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": "Explain async programming in Python"
-                        }
-                    ]
-                }],
-            }
-        },
+        # {
+        #     "deploy_config":{
+        #         "model_id": "Qwen2.5-32B-Instruct",
+        #         "instance_type":"g5.12xlarge",
+        #         "engine_type":"vllm",
+        #         "service_type":service_type,
+        #         "framework_type":"fastapi",
+        #         "model_tag":"batch_test"
+        #     },
+        #     "invoke_config":{
+        #         "pyloads":[{
+        #             "messages": [
+        #                 {
+        #                     "role": "user",
+        #                     "content": "Explain async programming in Python"
+        #                 }
+        #             ]
+        #         }],
+        #     }
+        # },
+        # {
+        #     "deploy_config":{
+        #         "model_id": "Qwen2.5-72B-Instruct",
+        #         "instance_type":"g5.48xlarge",
+        #         "engine_type":"vllm",
+        #         "service_type":service_type,
+        #         "framework_type":"fastapi",
+        #         "model_tag":"batch_test"
+        #     },
+        #     "invoke_config":{
+        #         "pyloads":[{
+        #             "messages": [
+        #                 {
+        #                     "role": "user",
+        #                     "content": "Explain async programming in Python"
+        #                 }
+        #             ]
+        #         }],
+        #     }
+        # },
+        # {
+        #     "deploy_config":{
+        #         "model_id": "Qwen2.5-32B-Instruct",
+        #         "instance_type":"g5.12xlarge",
+        #         "engine_type":"vllm",
+        #         "service_type":service_type,
+        #         "framework_type":"fastapi",
+        #         "model_tag":"batch_test",
+
+        #     },
+        #     "invoke_config":{
+        #         "pyloads":[{
+        #             "messages": [
+        #                 {
+        #                     "role": "user",
+        #                     "content": "Explain async programming in Python"
+        #                 }
+        #             ]
+        #         }],
+        #     }
+        # },
+        # {
+        #     "deploy_config":{
+        #         "model_id": "Qwen2.5-72B-Instruct",
+        #         "instance_type":"g5.48xlarge",
+        #         "engine_type":"vllm",
+        #         "service_type":service_type,
+        #         "framework_type":"fastapi",
+        #         "model_tag":"batch_test"
+        #     },
+        #     "invoke_config":{
+        #         "pyloads":[{
+        #             "messages": [
+        #                 {
+        #                     "role": "user",
+        #                     "content": "Explain async programming in Python"
+        #                 }
+        #             ]
+        #         }],
+        #     }
+        # },
         {
             "deploy_config":{
                 "model_id": "Qwen2.5-72B-Instruct-AWQ",
                 "instance_type":"g5.12xlarge",
                 "engine_type":"vllm",
-                "service_type":"sagemaker",
+                "service_type":service_type,
                 "framework_type":"fastapi",
                 "model_tag":"batch_test"
             },
@@ -150,7 +197,7 @@ tasks = [
                 "model_id": "bge-base-en-v1.5",
                 "instance_type":"g5.xlarge",
                 "engine_type":"vllm",
-                "service_type":"sagemaker",
+                "service_type":service_type,
                 "framework_type":"fastapi",
                 "model_tag":"batch_test"
             },
@@ -165,7 +212,7 @@ tasks = [
                 "model_id": "bge-reranker-v2-m3",
                 "instance_type":"g5.xlarge",
                 "engine_type":"vllm",
-                "service_type":"sagemaker",
+                "service_type":service_type,
                 "framework_type":"fastapi",
                 "model_tag":"batch_test"
             },
