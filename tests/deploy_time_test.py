@@ -2,6 +2,7 @@ from batch_deploy_test import (
     Task,
     test_one_task
 )
+import pandas as pd
 
 
 extra_params = {
@@ -225,7 +226,15 @@ tasks = [
             }
         }
     ]
+
+for task in tasks:
+    task['deploy_config']['extra_params'] = extra_params
+
+
 tasks = [Task(**task) for task in tasks]
+
+
+
 test_ret = []
 for task in tasks:
     test_ret.append(test_one_task(task))
@@ -238,6 +247,25 @@ for ret in test_ret:
     model_id = task.deploy_config.model_id
     print(f"model_id: {model_id}\ntest code:{ret['code']}\nerror:{ret['error']}")
     print("=="*50)
+
+# write test results to markdown using pandas
+df = pd.DataFrame(
+    [{
+        "modelId": ret['task'].deploy_config.model_id,
+        "instance_type": ret['task'].deploy_config.instance_type,
+        "engine_type": ret['task'].deploy_config.engine_type,
+        "service_type": ret['task'].deploy_config.service_type,
+        "framework_type": ret['task'].deploy_config.framework_type,
+        "deploy_time": ret['deploy_time'],
+        "invoke_time": ret['invoke_time'],
+        "test_code": ret['code'],
+        "error": ret['error']
+    }
+    for ret in test_ret
+    ]
+    )
+print("=="*50 + "test results" + "=="*50)
+print(str(df.to_markdown(index=False)))
 
 if all([ret['code'] == 0 for ret in test_ret]):
     print("=="*50 + "all success" + "=="*50)
