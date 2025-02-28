@@ -24,7 +24,7 @@ jobs:
 
     - name: Build wheel
       run: poetry build -f wheel
-
+      
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -33,7 +33,8 @@ jobs:
         release_name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
-        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload wheel to release
       uses: actions/upload-release-asset@v1
@@ -43,4 +44,5 @@ jobs:
         asset_name: emd-${{ github.ref_name }}.whl
         asset_content_type: application/zip
       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
