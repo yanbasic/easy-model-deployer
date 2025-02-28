@@ -21,7 +21,7 @@ jobs:
     - name: Install Poetry
       run: |
         curl -sSL https://install.python-poetry.org | python3
-
+        
     - name: Get tag name and commit hash
       id: vars
       run: |
@@ -33,9 +33,8 @@ jobs:
 
     - name: Update version and commit hash
       run: |
-        sed -i "s/VERSION = \".*\"/VERSION = \"${{ env.VERSION }}\"/" src/emd/revision.py
-        sed -i "s/COMMIT_HASH = \".*\"/COMMIT_HASH = \"${{ env.COMMIT_HASH }}\"/" src/emd/revision.py
-
+        sed -i 's/VERSION = ".*"/VERSION = "'"${{ env.VERSION }}"'"/' src/emd/revision.py
+        sed -i 's/COMMIT_HASH = ".*"/COMMIT_HASH = "'"${{ env.COMMIT_HASH }}"'"/' src/emd/revision.py
 
     - name: Build wheel
       run: poetry build -f wheel
