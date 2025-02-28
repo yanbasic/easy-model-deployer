@@ -22,6 +22,17 @@ jobs:
       run: |
         curl -sSL https://install.python-poetry.org | python3
 
+    - name: Get tag name and commit hash
+      id: vars
+      run: |
+        echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        echo "COMMIT_HASH=$(git rev-parse --short=8 HEAD)" >> $GITHUB_ENV
+
+    - name: Update version and commit hash
+      run: |
+        sed -i "s/VERSION = \".*\"/VERSION = \"${{ env.TAG_NAME#emd- }}\"/" src/emd/revision.py
+        sed -i "s/COMMIT_HASH = \".*\"/COMMIT_HASH = \"${{ env.COMMIT_HASH }}\"/" src/emd/revision.py
+
     - name: Build wheel
       run: poetry build -f wheel
 
