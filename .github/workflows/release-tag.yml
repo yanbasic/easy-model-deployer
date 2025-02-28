@@ -34,20 +34,11 @@ jobs:
         WHEEL_FILE=$(ls dist/*.whl)
         mv "$WHEEL_FILE" "dist/${{ env.TAG_NAME }}.whl"
 
+    - name: Install GitHub CLI
+      run: sudo apt-get install -y gh
+
     - name: Create GitHub Release
-      uses: actions/create-release@v1
-      with:
-        tag_name: ${{ env.TAG_NAME }}
-        release_name: Release ${{ env.TAG_NAME }}
-        draft: false
-        prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/${{ env.TAG_NAME }}.whl
-        asset_name: ${{ env.TAG_NAME }}.whl
-        asset_content_type: application/zip
+      run: |
+        gh release create ${{ env.TAG_NAME }} dist/${{ env.TAG_NAME }}.whl --title "Release ${{ env.TAG_NAME }}" --notes "Automated release of ${{ env.TAG_NAME }}"
