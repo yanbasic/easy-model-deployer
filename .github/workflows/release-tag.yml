@@ -3,7 +3,7 @@ name: Release Package
 on:
   push:
     tags:
-      - 'emd-*'  # Triggers on tags starting with 'emd-'
+      - 'emd-*'
 
 jobs:
   release:
@@ -16,12 +16,12 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'  # Specify your Python version
+        python-version: '3.x'
 
     - name: Install Poetry
       run: |
         curl -sSL https://install.python-poetry.org | python3
-        
+
     - name: Get tag name and commit hash
       id: vars
       run: |
@@ -35,7 +35,10 @@ jobs:
       run: |
         sed -i 's/VERSION = ".*"/VERSION = "'"${{ env.VERSION }}"'"/' src/emd/revision.py
         sed -i 's/COMMIT_HASH = ".*"/COMMIT_HASH = "'"${{ env.COMMIT_HASH }}"'"/' src/emd/revision.py
-
+        for file in src/emd/cfn/*.template; do
+          sed -i '/Description:/ s/$/ (TAG: '"${{ env.TAG_NAME }}"', COMMIT: '"${{ env.COMMIT_HASH }}"')/' "$file"
+        done
+        
     - name: Build wheel
       run: poetry build -f wheel
 
@@ -46,7 +49,7 @@ jobs:
     - name: Rename wheel
       run: |
         WHEEL_FILE=$(ls dist/*.whl)
-        mv "$WHEEL_FILE" "dist/${{ env.TAG_NAME }}.whl"
+        mv "$WHEEL_FILE" "dist/${{ env.TAG_NAME }}-py3-none-any.whl"
 
     - name: Install GitHub CLI
       run: sudo apt-get install -y gh
@@ -55,4 +58,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh release create ${{ env.TAG_NAME }} dist/${{ env.TAG_NAME }}.whl --title "Release ${{ env.TAG_NAME }}" --notes "Automated release of ${{ env.TAG_NAME }}"
+        gh release create ${{ env.TAG_NAME }} dist/${{ env.TAG_NAME }}-py3-none-any.whl --title "Release ${{ env.TAG_NAME }}" --notes "Release on tag ${{ env.TAG_NAME }}"
