@@ -3,10 +3,15 @@ import functools
 import random
 import os
 import json
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 from transformers import AutoTokenizer
 
 from userdef import UserDef as BaseUserDef
+
+model_id = os.environ.get("MODEL_ID", "Qwen2.5-7B-Instruct")
 
 try:
     max_tokens = int(os.environ.get("MAX_TOKENS"))
@@ -73,7 +78,8 @@ def get_prompt_set(min_input_length=0, max_input_length=500):
     ]
 
 # prompts = get_prompt_set(30, 150)
-with open("prompts.txt", "r") as f:
+user_prompt_file = os.environ.get("PROMPT_FILE")
+with open(user_prompt_file, "r") as f:
     prompt = f.read()
     print(f"The tokens of the prompt is {len(tokenizer(prompt)['input_ids'])}")
 prompts = [prompt]
@@ -106,7 +112,7 @@ class OpenAIUserDef(BaseUserDef):
                 "role": "user",
                 "content": selected_prompt
             }],
-            "model": "Qwen2.5-7B-Instruct",
+            "model": model_id,
             "max_tokens": max_tokens,
             "stream": False,
             "extra_body": {
@@ -159,7 +165,7 @@ class OpenAIStreamUserDef(BaseUserDef):
                 "role": "user",
                 "content": selected_prompt
             }],
-            "model": "Qwen2.5-7B-Instruct",
+            "model": model_id,
             "max_tokens": max_tokens,
             "stream": True,
             "extra_body": {
@@ -177,7 +183,10 @@ class OpenAIStreamUserDef(BaseUserDef):
         try:
             data = json.loads(decoded_content[6:])
             content = data.get("choices")[0].get("delta").get("content")
+            if content is None:
+                content = ""
         except json.JSONDecodeError:
+            logger.error(f"Failed to decode content: {decoded_content}")
             content = ""
 
         # Convert text to token IDs for benchmarking
