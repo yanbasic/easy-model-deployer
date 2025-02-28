@@ -34,8 +34,6 @@ jobs:
         draft: false
         prerelease: false
         generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload wheel to release
       uses: actions/upload-release-asset@v1
