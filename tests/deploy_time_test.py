@@ -6,7 +6,7 @@ import pandas as pd
 
 
 extra_params = {
-    "model_params":{"need_prepare_model":False}
+    "model_params":{"need_prepare_model":True}
 }
 
 service_type = "ecs"

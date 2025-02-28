@@ -8,6 +8,7 @@ class OpenAICompitableEngine(Engine):
     cli_args: str = ""
     default_cli_args: str = ""
     custom_gpu_num: Union[int,None] = None
+    custom_neuron_core_num: Union[int,None] = None
 
 
 class VllmEngine(OpenAICompitableEngine):
