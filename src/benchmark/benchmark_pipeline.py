@@ -14,8 +14,8 @@ from common import start_benchmark_session
 
 session_time = 300
 ping_correction = True
-max_users_list = [1, 5, 10]
-# max_users_list = [1]
+# max_users_list = [1, 5, 10]
+max_users_list = [20]
 
 for max_users in max_users_list:
     args = argparse.Namespace(max_users=max_users, session_time=session_time, ping_correction=ping_correction)
