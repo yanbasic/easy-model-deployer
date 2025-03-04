@@ -741,7 +741,48 @@ framework type: fastapi
 ? Select the inference engine to use: tgi
 framework type: fastapi
 ? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
-</code></pre></div></section><section class="print-page" id="emd_client"><h1 id="emd_client-usse-emd-client-to-invoke-deployed-models">Usse EMD client to invoke deployed models</h1>
+</code></pre></div>
+<h1 id="deployment-advanced-deployments">Advanced deployments</h1>
+<ul>
+<li>Customize model download methods
+  You can load models from different locations by adding appropriate values in the extra-params parameter</li>
+<li>Load model from S3
+     <code>json
+     {
+       "model_params": {
+        "model_files_s3_path":"&lt;S3_PATH&gt;"
+        }
+      }</code></li>
+<li>Load model from local path (only applicable for local deployment)
+     <code>json
+     {
+       "model_params": {
+        "model_files_local_path":"&lt;LOCAL_PATH&gt;"
+        }
+      }</code></li>
+<li>Skip downloading and uploading model files in codebuild, which will significantly reduce deployment time
+  <code>json
+     {
+       "model_params": {
+        "need_prepare_model":false
+        }
+      }</code></li>
+<li>Specify the download source for model files
+  <code>json
+     {
+       "model_params": {
+        "model_files_download_source":"huggingface|modelscope|auto(default)"
+        }
+      }</code></li>
+<li>Specify the model ID on huggingface or modelscope
+  <code>json
+     {
+       "model_params": {
+        "huggingface_model_id":"model id on huggingface",
+        "modelscope_model_id":"model id on modelscope"
+      }
+      }</code></li>
+</ul></section><section class="print-page" id="emd_client"><h1 id="emd_client-usse-emd-client-to-invoke-deployed-models">Usse EMD client to invoke deployed models</h1>
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
 </code></pre></div>
 <h2 id="emd_client-llm-models">LLM models</h2>
