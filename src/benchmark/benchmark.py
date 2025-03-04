@@ -185,7 +185,7 @@ class OpenAIStreamUserDef(BaseUserDef):
             content = data.get("choices")[0].get("delta").get("content")
             if content is None:
                 content = ""
-        except json.JSONDecodeError:
+        except Exception as e:
             logger.error(f"Failed to decode content: {decoded_content}")
             content = ""
 
