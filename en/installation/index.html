@@ -14,7 +14,7 @@
         <link rel="prev" href="../architecture/">
       
       
-        <link rel="next" href="../deployment/">
+        <link rel="next" href="../best_deployment_practices/">
       
       
       <link rel="icon" href="https://s3.cn-north-1.amazonaws.com.cn/aws-assets-prod/libra-css/images/site/fav/favicon.ico">
@@ -254,12 +254,12 @@
   
   
     <li class="md-tabs__item">
-      <a href="../deployment/" class="md-tabs__link">
+      <a href="../best_deployment_practices/" class="md-tabs__link">
         
   
     
   
-  Deployment
+  Best-Deployment-Practices
 
       </a>
     </li>
@@ -412,8 +412,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -444,8 +442,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -454,6 +450,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       Prerequisites
@@ -461,11 +467,178 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#setting-up-the-environment" class="md-nav__link">
     <span class="md-ellipsis">
       Setting up the Environment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment parameters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-force-update-env-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      --force-update-env-stack
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-extra-params" class="md-nav__link">
+    <span class="md-ellipsis">
+      --extra-params
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-deployment-on-the-ec2-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local deployment on the ec2 instance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local deployment on the ec2 instance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-requisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-requisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start-and-connect-to-ec2-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start and connect to EC2 instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-model-using-emd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy model using EMD
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy model using EMD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-reasoning-model-deployment-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-reasoning Model deployment configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Non-reasoning Model deployment configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qwen25-72b-instruct-awq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Qwen2.5-72B-Instruct-AWQ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llama-33-70b-instruct-awq" class="md-nav__link">
+    <span class="md-ellipsis">
+      llama-3.3-70b-instruct-awq
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning-model-deployment-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reasoning Model deployment configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reasoning Model deployment configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-r1-distill-qwen-32b" class="md-nav__link">
+    <span class="md-ellipsis">
+      DeepSeek-R1-Distill-Qwen-32B
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-r1-distill-llama-70b-awq" class="md-nav__link">
+    <span class="md-ellipsis">
+      deepseek-r1-distill-llama-70b-awq
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
     </span>
   </a>
   
@@ -486,11 +659,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment/" class="md-nav__link">
+      <a href="../best_deployment_practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Deployment
+    Best-Deployment-Practices
     
   </span>
   
@@ -601,8 +774,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -611,6 +782,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       Prerequisites
@@ -618,11 +799,178 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#setting-up-the-environment" class="md-nav__link">
     <span class="md-ellipsis">
       Setting up the Environment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment parameters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-force-update-env-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      --force-update-env-stack
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-extra-params" class="md-nav__link">
+    <span class="md-ellipsis">
+      --extra-params
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-deployment-on-the-ec2-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local deployment on the ec2 instance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local deployment on the ec2 instance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-requisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-requisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#start-and-connect-to-ec2-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start and connect to EC2 instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-model-using-emd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy model using EMD
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy model using EMD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-reasoning-model-deployment-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-reasoning Model deployment configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Non-reasoning Model deployment configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qwen25-72b-instruct-awq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Qwen2.5-72B-Instruct-AWQ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llama-33-70b-instruct-awq" class="md-nav__link">
+    <span class="md-ellipsis">
+      llama-3.3-70b-instruct-awq
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reasoning-model-deployment-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reasoning Model deployment configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reasoning Model deployment configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-r1-distill-qwen-32b" class="md-nav__link">
+    <span class="md-ellipsis">
+      DeepSeek-R1-Distill-Qwen-32B
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deepseek-r1-distill-llama-70b-awq" class="md-nav__link">
+    <span class="md-ellipsis">
+      deepseek-r1-distill-llama-70b-awq
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
     </span>
   </a>
   
@@ -647,13 +995,15 @@
   
 
 
-<h1 id="installation-guide">Installation Guide</h1>
-<h2 id="prerequisites">Prerequisites</h2>
+  <h1>Installation</h1>
+
+<h2 id="installation-guide">Installation Guide</h2>
+<h3 id="prerequisites">Prerequisites</h3>
 <ul>
 <li>Python 3.9 or higher</li>
 <li>pip (Python package installer)</li>
 </ul>
-<h2 id="setting-up-the-environment">Setting up the Environment</h2>
+<h3 id="setting-up-the-environment">Setting up the Environment</h3>
 <ol>
 <li>
 <p>Create a virtual environment:
@@ -671,6 +1021,78 @@
 </code></pre></div></p>
 </li>
 </ol>
+<h2 id="deployment-parameters">Deployment parameters</h2>
+<h3 id="-force-update-env-stack">--force-update-env-stack</h3>
+<p>No additional <code>emd bootstrap</code> required for deployment. Because of other commands, status/destroy etc. require pre-bootstrapping. Therefore, it is recommended to run <code>emd bootstrap</code> separately after each upgrade.</p>
+<h3 id="-extra-params">--extra-params</h3>
+<p>Extra parameters passed to the model deployment. extra-params should be a Json object of dictionary format as follows:</p>
+<p><div class="highlight"><pre><span></span><code><span class="p">{</span>
+
+<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:{</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;instance_params&quot;</span><span class="p">:{</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:{</span>
+<span class="w">      </span><span class="nt">&quot;cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;command line arguments of current engine&gt;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;api key&gt;&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;framework_params&quot;</span><span class="p">:{</span>
+<span class="w">      </span><span class="nt">&quot;uvicorn_log_level&quot;</span><span class="p">:</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;limit_concurrency&quot;</span><span class="p">:</span><span class="mi">200</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+To learn some practice examples, please refer to the <a href="docs/en/best_deployment_practices.md">Best Deployment Practices</a>.</p>
+<h2 id="local-deployment-on-the-ec2-instance">Local deployment on the ec2 instance</h2>
+<p>This is suitable for deploying models using local GPU resources.</p>
+<h3 id="pre-requisites">Pre-requisites</h3>
+<h4 id="start-and-connect-to-ec2-instance">Start and connect to EC2 instance</h4>
+<p>It is recommended to launch the instance using the AMI "<strong>Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.6 (Ubuntu 22.04)</strong>".</p>
+<h3 id="deploy-model-using-emd">Deploy model using EMD</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--allow-local-deploy
+</code></pre></div>
+<p>There some EMD configuration sample settings for model deployment in the following two sections: <a href="#non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</a> and <a href="#reasoning-model-deployment-configuration">Reasoning Model deployment configuration</a>.
+Wait for the model deployment to complete.</p>
+<h4 id="non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</h4>
+<h5 id="qwen25-72b-instruct-awq">Qwen2.5-72B-Instruct-AWQ</h5>
+<div class="highlight"><pre><span></span><code>? Select the model series: qwen2.5
+? Select the model name: Qwen2.5-72B-Instruct-AWQ
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+? Select the inference engine to use: tgi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
+</code></pre></div>
+<h5 id="llama-33-70b-instruct-awq">llama-3.3-70b-instruct-awq</h5>
+<div class="highlight"><pre><span></span><code>? Select the model series: llama
+? Select the model name: llama-3.3-70b-instruct-awq
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+engine type: tgi
+framework type: fastapi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
+</code></pre></div>
+<h4 id="reasoning-model-deployment-configuration">Reasoning Model deployment configuration</h4>
+<h5 id="deepseek-r1-distill-qwen-32b">DeepSeek-R1-Distill-Qwen-32B</h5>
+<div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
+? Select the model name: DeepSeek-R1-Distill-Qwen-32B
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+engine type: vllm
+framework type: fastapi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--enable-reasoning --reasoning-parser deepseek_r1 --max_model_len 16000 --disable-log-stats --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja --max_num_seq 20 --gpu_memory_utilization 0.9&quot;}}
+</code></pre></div>
+<h5 id="deepseek-r1-distill-llama-70b-awq">deepseek-r1-distill-llama-70b-awq</h5>
+<div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
+? Select the model name: deepseek-r1-distill-llama-70b-awq
+? Select the service for deployment: Local
+? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
+? Select the inference engine to use: tgi
+framework type: fastapi
+? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
+</code></pre></div>
+<h2 id="examples">Examples</h2>
 
 
 

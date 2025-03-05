@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/deployment/">
+        <link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/best_deployment_practices/">
       
       
         <link rel="prev" href="../installation/">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Deployment - Easy Model Deployer</title>
+        <title>Best-Deployment-Practices - Easy Model Deployer</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#deployment-parameters" class="md-skip">
+        <a href="#best-deployment-practices" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Deployment
+              Best-Deployment-Practices
             
           </span>
         </div>
@@ -259,7 +259,7 @@
   
     
   
-  Deployment
+  Best-Deployment-Practices
 
       </a>
     </li>
@@ -440,7 +440,7 @@
           
   
   <span class="md-ellipsis">
-    Deployment
+    Best-Deployment-Practices
     
   </span>
   
@@ -452,7 +452,7 @@
         
   
   <span class="md-ellipsis">
-    Deployment
+    Best-Deployment-Practices
     
   </span>
   
@@ -475,18 +475,66 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#-force-update-env-stack" class="md-nav__link">
+  <a href="#deploying-to-specific-gpu-types" class="md-nav__link">
     <span class="md-ellipsis">
-      --force-update-env-stack
+      Deploying to Specific GPU Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying to Specific GPU Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-deploying-qwen25-7b-on-g52xlarge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Deploying Qwen2.5-7B on g5.2xlarge
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#-allow-local-deploy" class="md-nav__link">
+  <a href="#achieving-longer-context-windows" class="md-nav__link">
     <span class="md-ellipsis">
-      --allow-local-deploy
+      Achieving Longer Context Windows
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Achieving Longer Context Windows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-deploying-model-with-16k-context-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Deploying model with 16k context window
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-deploying-model-on-g4dn-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Deploying model on G4dn instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Troubleshooting
     </span>
   </a>
   
@@ -611,18 +659,66 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#-force-update-env-stack" class="md-nav__link">
+  <a href="#deploying-to-specific-gpu-types" class="md-nav__link">
     <span class="md-ellipsis">
-      --force-update-env-stack
+      Deploying to Specific GPU Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying to Specific GPU Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-deploying-qwen25-7b-on-g52xlarge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Deploying Qwen2.5-7B on g5.2xlarge
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#-allow-local-deploy" class="md-nav__link">
+  <a href="#achieving-longer-context-windows" class="md-nav__link">
     <span class="md-ellipsis">
-      --allow-local-deploy
+      Achieving Longer Context Windows
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Achieving Longer Context Windows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-deploying-model-with-16k-context-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Deploying model with 16k context window
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-deploying-model-on-g4dn-instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Deploying model on G4dn instance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Troubleshooting
     </span>
   </a>
   
@@ -647,116 +743,36 @@
   
 
 
-<h1 id="deployment-parameters">Deployment parameters</h1>
-<h2 id="-force-update-env-stack">--force-update-env-stack</h2>
-<p>No additional <code>emd bootstrap</code> required for deployment. Because of other commands, status/destroy etc. require pre-bootstrapping. Therefore, it is recommended to run <code>emd bootstrap</code> separately after each upgrade.</p>
-<h2 id="-allow-local-deploy">--allow-local-deploy</h2>
-<p>Extra parameters passed to the model deployment. extra-params should be a Json object of dictionary format as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-
-<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:{</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;instance_params&quot;</span><span class="p">:{</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:{</span>
-<span class="w">      </span><span class="nt">&quot;cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;command line arguments of current engine&gt;&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;api key&gt;&quot;</span>
-<span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;framework_params&quot;</span><span class="p">:{</span>
-<span class="w">      </span><span class="nt">&quot;uvicorn_log_level&quot;</span><span class="p">:</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;limit_concurrency&quot;</span><span class="p">:</span><span class="mi">200</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+<h1 id="best-deployment-practices">Best Deployment Practices</h1>
+<p>This document provides examples of best practices for deploying models using EMD for various use cases.</p>
+<h2 id="deploying-to-specific-gpu-types">Deploying to Specific GPU Types</h2>
+<p>Choosing the right GPU type is critical for optimal performance and cost-efficiency. Use the <code>--instance-type</code> parameter to specify the GPU instance.</p>
+<h3 id="example-deploying-qwen25-7b-on-g52xlarge">Example: Deploying Qwen2.5-7B on g5.2xlarge</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker
 </code></pre></div>
-<h1 id="local-deployment-on-the-ec2-instance">Local deployment on the ec2 instance</h1>
-<p>This is suitable for deploying models using local GPU resources.</p>
-<h2 id="pre-requisites">Pre-requisites</h2>
-<h3 id="start-and-connect-to-ec2-instance">Start and connect to EC2 instance</h3>
-<p>It is recommended to launch the instance using the AMI "<strong>Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.6 (Ubuntu 22.04)</strong>".</p>
-<h2 id="deploy-model-using-emd">Deploy model using EMD</h2>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--allow-local-deploy
+<h2 id="achieving-longer-context-windows">Achieving Longer Context Windows</h2>
+<p>To enable longer context windows, use the <code>--extra-params</code> option with engine-specific parameters.</p>
+<h3 id="example-deploying-model-with-16k-context-window">Example: Deploying model with 16k context window</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.4xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;engine_params&quot;: {</span>
+<span class="s1">    &quot;vllm_cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
+<span class="s1">  }</span>
+<span class="s1">}&#39;</span>
 </code></pre></div>
-<p>There some EMD configuration sample settings for model deployment in the following two sections: <a href="#non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</a> and <a href="#reasoning-model-deployment-configuration">Reasoning Model deployment configuration</a>.
-Wait for the model deployment to complete.</p>
-<h3 id="non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</h3>
-<h4 id="qwen25-72b-instruct-awq">Qwen2.5-72B-Instruct-AWQ</h4>
-<div class="highlight"><pre><span></span><code>? Select the model series: qwen2.5
-? Select the model name: Qwen2.5-72B-Instruct-AWQ
-? Select the service for deployment: Local
-? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
-? Select the inference engine to use: tgi
-? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
+<h3 id="example-deploying-model-on-g4dn-instance">Example: Deploying model on G4dn instance</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-14B-Instruct-AWQ<span class="w"> </span>--instance-type<span class="w"> </span>g4dn.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;engine_params&quot;: {</span>
+<span class="s1">    &quot;environment_variables&quot;: &quot;export VLLM_ATTENTION_BACKEND=XFORMERS &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;,</span>
+<span class="s1">    &quot;default_cli_args&quot;: &quot; --chat-template emd/models/chat_templates/qwen_2d5_add_prefill_chat_template.jinja --max_model_len 12000 --max_num_seqs 10  --gpu_memory_utilization 0.95 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes&quot;</span>
+<span class="s1">  }</span>
+<span class="s1">}&#39;</span>
 </code></pre></div>
-<h4 id="llama-33-70b-instruct-awq">llama-3.3-70b-instruct-awq</h4>
-<div class="highlight"><pre><span></span><code>? Select the model series: llama
-? Select the model name: llama-3.3-70b-instruct-awq
-? Select the service for deployment: Local
-? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
-engine type: tgi
-framework type: fastapi
-? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
-</code></pre></div>
-<h3 id="reasoning-model-deployment-configuration">Reasoning Model deployment configuration</h3>
-<h4 id="deepseek-r1-distill-qwen-32b">DeepSeek-R1-Distill-Qwen-32B</h4>
-<div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
-? Select the model name: DeepSeek-R1-Distill-Qwen-32B
-? Select the service for deployment: Local
-? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
-engine type: vllm
-framework type: fastapi
-? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--enable-reasoning --reasoning-parser deepseek_r1 --max_model_len 16000 --disable-log-stats --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja --max_num_seq 20 --gpu_memory_utilization 0.9&quot;}}
-</code></pre></div>
-<h4 id="deepseek-r1-distill-llama-70b-awq">deepseek-r1-distill-llama-70b-awq</h4>
-<div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
-? Select the model name: deepseek-r1-distill-llama-70b-awq
-? Select the service for deployment: Local
-? input the local gpu ids to deploy the model (e.g. 0,1,2): 0,1,2,3
-? Select the inference engine to use: tgi
-framework type: fastapi
-? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
-</code></pre></div>
-<h1 id="advanced-deployments">Advanced deployments</h1>
+<h2 id="common-troubleshooting">Common Troubleshooting</h2>
+<p>If your deployment fails due to out-of-memory issues, try:</p>
 <ul>
-<li>Customize model download methods
-  You can load models from different locations by adding appropriate values in the extra-params parameter</li>
-<li>Load model from S3
-     <code>json
-     {
-       "model_params": {
-        "model_files_s3_path":"&lt;S3_PATH&gt;"
-        }
-      }</code></li>
-<li>Load model from local path (only applicable for local deployment)
-     <code>json
-     {
-       "model_params": {
-        "model_files_local_path":"&lt;LOCAL_PATH&gt;"
-        }
-      }</code></li>
-<li>Skip downloading and uploading model files in codebuild, which will significantly reduce deployment time
-  <code>json
-     {
-       "model_params": {
-        "need_prepare_model":false
-        }
-      }</code></li>
-<li>Specify the download source for model files
-  <code>json
-     {
-       "model_params": {
-        "model_files_download_source":"huggingface|modelscope|auto(default)"
-        }
-      }</code></li>
-<li>Specify the model ID on huggingface or modelscope
-  <code>json
-     {
-       "model_params": {
-        "huggingface_model_id":"model id on huggingface",
-        "modelscope_model_id":"model id on modelscope"
-      }
-      }</code></li>
+<li>Using a larger instance type</li>
+<li>Reducing max_model_len and max_num_seqs in the engine parameters</li>
+<li>Setting a lower gpu_memory_utilization value (e.g., 0.8 instead of the default)</li>
 </ul>
 
 

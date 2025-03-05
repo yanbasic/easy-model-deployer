@@ -254,12 +254,12 @@
   
   
     <li class="md-tabs__item">
-      <a href="../deployment/" class="md-tabs__link">
+      <a href="../best_deployment_practices/" class="md-tabs__link">
         
   
     
   
-  Deployment
+  Best-Deployment-Practices
 
       </a>
     </li>
@@ -427,11 +427,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../deployment/" class="md-nav__link">
+      <a href="../best_deployment_practices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Deployment
+    Best-Deployment-Practices
     
   </span>
   
@@ -568,9 +568,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deployment" class="md-nav__link">
+  <a href="#best_deployment_practices" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Deployment
+      3. Best-Deployment-Practices
     </span>
   </a>
   
@@ -649,13 +649,13 @@
 <li>
 <p>AWS CloudFormation creates a model infrastructure stack based on user selection and deploys the model from ECR to AWS services (Amazon SageMaker, EC2, ECS).</p>
 </li>
-</ol></section><section class="print-page" id="installation"><h1 id="installation-installation-guide">Installation Guide</h1>
-<h2 id="installation-prerequisites">Prerequisites</h2>
+</ol></section><section class="print-page" id="installation"><h1 id="installation-installation">Installation</h1><h2 id="installation-guide">Installation Guide</h2>
+<h3 id="installation-prerequisites">Prerequisites</h3>
 <ul>
 <li>Python 3.9 or higher</li>
 <li>pip (Python package installer)</li>
 </ul>
-<h2 id="installation-setting-up-the-environment">Setting up the Environment</h2>
+<h3 id="installation-setting-up-the-environment">Setting up the Environment</h3>
 <ol>
 <li>
 <p>Create a virtual environment:
@@ -672,12 +672,13 @@
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/aws-samples/easy-model-deployer/releases/download/main/emd-0.6.0-py3-none-any.whl
 </code></pre></div></p>
 </li>
-</ol></section><section class="print-page" id="deployment"><h1 id="deployment-deployment-parameters">Deployment parameters</h1>
-<h2 id="deployment--force-update-env-stack">--force-update-env-stack</h2>
+</ol>
+<h2 id="installation-deployment-parameters">Deployment parameters</h2>
+<h3 id="installation--force-update-env-stack">--force-update-env-stack</h3>
 <p>No additional <code>emd bootstrap</code> required for deployment. Because of other commands, status/destroy etc. require pre-bootstrapping. Therefore, it is recommended to run <code>emd bootstrap</code> separately after each upgrade.</p>
-<h2 id="deployment--allow-local-deploy">--allow-local-deploy</h2>
+<h3 id="installation--extra-params">--extra-params</h3>
 <p>Extra parameters passed to the model deployment. extra-params should be a Json object of dictionary format as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<p><div class="highlight"><pre><span></span><code><span class="p">{</span>
 
 <span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="p">},</span>
@@ -695,18 +696,19 @@
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h1 id="deployment-local-deployment-on-the-ec2-instance">Local deployment on the ec2 instance</h1>
+To learn some practice examples, please refer to the <a href="#installation-docs-en-best_deployment_practices.md">Best Deployment Practices</a>.</p>
+<h2 id="installation-local-deployment-on-the-ec2-instance">Local deployment on the ec2 instance</h2>
 <p>This is suitable for deploying models using local GPU resources.</p>
-<h2 id="deployment-pre-requisites">Pre-requisites</h2>
-<h3 id="deployment-start-and-connect-to-ec2-instance">Start and connect to EC2 instance</h3>
+<h3 id="installation-pre-requisites">Pre-requisites</h3>
+<h4 id="installation-start-and-connect-to-ec2-instance">Start and connect to EC2 instance</h4>
 <p>It is recommended to launch the instance using the AMI "<strong>Deep Learning OSS Nvidia Driver AMI GPU PyTorch 2.6 (Ubuntu 22.04)</strong>".</p>
-<h2 id="deployment-deploy-model-using-emd">Deploy model using EMD</h2>
+<h3 id="installation-deploy-model-using-emd">Deploy model using EMD</h3>
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--allow-local-deploy
 </code></pre></div>
-<p>There some EMD configuration sample settings for model deployment in the following two sections: <a href="#deployment-non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</a> and <a href="#deployment-reasoning-model-deployment-configuration">Reasoning Model deployment configuration</a>.
+<p>There some EMD configuration sample settings for model deployment in the following two sections: <a href="#installation-non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</a> and <a href="#installation-reasoning-model-deployment-configuration">Reasoning Model deployment configuration</a>.
 Wait for the model deployment to complete.</p>
-<h3 id="deployment-non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</h3>
-<h4 id="deployment-qwen25-72b-instruct-awq">Qwen2.5-72B-Instruct-AWQ</h4>
+<h4 id="installation-non-reasoning-model-deployment-configuration">Non-reasoning Model deployment configuration</h4>
+<h5 id="installation-qwen25-72b-instruct-awq">Qwen2.5-72B-Instruct-AWQ</h5>
 <div class="highlight"><pre><span></span><code>? Select the model series: qwen2.5
 ? Select the model name: Qwen2.5-72B-Instruct-AWQ
 ? Select the service for deployment: Local
@@ -714,7 +716,7 @@ Wait for the model deployment to complete.</p>
 ? Select the inference engine to use: tgi
 ? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
 </code></pre></div>
-<h4 id="deployment-llama-33-70b-instruct-awq">llama-3.3-70b-instruct-awq</h4>
+<h5 id="installation-llama-33-70b-instruct-awq">llama-3.3-70b-instruct-awq</h5>
 <div class="highlight"><pre><span></span><code>? Select the model series: llama
 ? Select the model name: llama-3.3-70b-instruct-awq
 ? Select the service for deployment: Local
@@ -723,8 +725,8 @@ engine type: tgi
 framework type: fastapi
 ? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
 </code></pre></div>
-<h3 id="deployment-reasoning-model-deployment-configuration">Reasoning Model deployment configuration</h3>
-<h4 id="deployment-deepseek-r1-distill-qwen-32b">DeepSeek-R1-Distill-Qwen-32B</h4>
+<h4 id="installation-reasoning-model-deployment-configuration">Reasoning Model deployment configuration</h4>
+<h5 id="installation-deepseek-r1-distill-qwen-32b">DeepSeek-R1-Distill-Qwen-32B</h5>
 <div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
 ? Select the model name: DeepSeek-R1-Distill-Qwen-32B
 ? Select the service for deployment: Local
@@ -733,7 +735,7 @@ engine type: vllm
 framework type: fastapi
 ? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--enable-reasoning --reasoning-parser deepseek_r1 --max_model_len 16000 --disable-log-stats --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja --max_num_seq 20 --gpu_memory_utilization 0.9&quot;}}
 </code></pre></div>
-<h4 id="deployment-deepseek-r1-distill-llama-70b-awq">deepseek-r1-distill-llama-70b-awq</h4>
+<h5 id="installation-deepseek-r1-distill-llama-70b-awq">deepseek-r1-distill-llama-70b-awq</h5>
 <div class="highlight"><pre><span></span><code>? Select the model series: deepseek reasoning model
 ? Select the model name: deepseek-r1-distill-llama-70b-awq
 ? Select the service for deployment: Local
@@ -742,46 +744,36 @@ framework type: fastapi
 framework type: fastapi
 ? (Optional) Additional deployment parameters (JSON string or local file path), you can skip by pressing Enter: {&quot;engine_params&quot;:{&quot;api_key&quot;:&quot;&lt;YOUR_API_KEY&gt;&quot;, &quot;default_cli_args&quot;: &quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;}}
 </code></pre></div>
-<h1 id="deployment-advanced-deployments">Advanced deployments</h1>
+<h2 id="installation-examples">Examples</h2></section><section class="print-page" id="best_deployment_practices"><h1 id="best_deployment_practices-best-deployment-practices">Best Deployment Practices</h1>
+<p>This document provides examples of best practices for deploying models using EMD for various use cases.</p>
+<h2 id="best_deployment_practices-deploying-to-specific-gpu-types">Deploying to Specific GPU Types</h2>
+<p>Choosing the right GPU type is critical for optimal performance and cost-efficiency. Use the <code>--instance-type</code> parameter to specify the GPU instance.</p>
+<h3 id="best_deployment_practices-example-deploying-qwen25-7b-on-g52xlarge">Example: Deploying Qwen2.5-7B on g5.2xlarge</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker
+</code></pre></div>
+<h2 id="best_deployment_practices-achieving-longer-context-windows">Achieving Longer Context Windows</h2>
+<p>To enable longer context windows, use the <code>--extra-params</code> option with engine-specific parameters.</p>
+<h3 id="best_deployment_practices-example-deploying-model-with-16k-context-window">Example: Deploying model with 16k context window</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.4xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;engine_params&quot;: {</span>
+<span class="s1">    &quot;vllm_cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
+<span class="s1">  }</span>
+<span class="s1">}&#39;</span>
+</code></pre></div>
+<h3 id="best_deployment_practices-example-deploying-model-on-g4dn-instance">Example: Deploying model on G4dn instance</h3>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-14B-Instruct-AWQ<span class="w"> </span>--instance-type<span class="w"> </span>g4dn.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;engine_params&quot;: {</span>
+<span class="s1">    &quot;environment_variables&quot;: &quot;export VLLM_ATTENTION_BACKEND=XFORMERS &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;,</span>
+<span class="s1">    &quot;default_cli_args&quot;: &quot; --chat-template emd/models/chat_templates/qwen_2d5_add_prefill_chat_template.jinja --max_model_len 12000 --max_num_seqs 10  --gpu_memory_utilization 0.95 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes&quot;</span>
+<span class="s1">  }</span>
+<span class="s1">}&#39;</span>
+</code></pre></div>
+<h2 id="best_deployment_practices-common-troubleshooting">Common Troubleshooting</h2>
+<p>If your deployment fails due to out-of-memory issues, try:</p>
 <ul>
-<li>Customize model download methods
-  You can load models from different locations by adding appropriate values in the extra-params parameter</li>
-<li>Load model from S3
-     <code>json
-     {
-       "model_params": {
-        "model_files_s3_path":"&lt;S3_PATH&gt;"
-        }
-      }</code></li>
-<li>Load model from local path (only applicable for local deployment)
-     <code>json
-     {
-       "model_params": {
-        "model_files_local_path":"&lt;LOCAL_PATH&gt;"
-        }
-      }</code></li>
-<li>Skip downloading and uploading model files in codebuild, which will significantly reduce deployment time
-  <code>json
-     {
-       "model_params": {
-        "need_prepare_model":false
-        }
-      }</code></li>
-<li>Specify the download source for model files
-  <code>json
-     {
-       "model_params": {
-        "model_files_download_source":"huggingface|modelscope|auto(default)"
-        }
-      }</code></li>
-<li>Specify the model ID on huggingface or modelscope
-  <code>json
-     {
-       "model_params": {
-        "huggingface_model_id":"model id on huggingface",
-        "modelscope_model_id":"model id on modelscope"
-      }
-      }</code></li>
+<li>Using a larger instance type</li>
+<li>Reducing max_model_len and max_num_seqs in the engine parameters</li>
+<li>Setting a lower gpu_memory_utilization value (e.g., 0.8 instead of the default)</li>
 </ul></section><section class="print-page" id="emd_client"><h1 id="emd_client-usse-emd-client-to-invoke-deployed-models">Usse EMD client to invoke deployed models</h1>
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
 </code></pre></div>
