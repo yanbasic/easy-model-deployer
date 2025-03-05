@@ -35,7 +35,9 @@ EMD (Easy Model Deployer) is a lightweight tool designed to simplify model deplo
 
 ![alt text](docs/images/output_optimized.gif)
 
+
 ![alt text](docs/images/720-100r.avif)
+
 
 ## Getting Started
 
