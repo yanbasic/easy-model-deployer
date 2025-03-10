@@ -649,15 +649,6 @@
 <td style="text-align: left;">✅</td>
 </tr>
 <tr>
-<td style="text-align: left;">Qwen2.5-72B-Instruct-AWQ-inf2</td>
-<td style="text-align: left;">qwen2.5</td>
-<td style="text-align: left;">llm</td>
-<td style="text-align: left;">tgi</td>
-<td style="text-align: left;">inf2.24xlarge</td>
-<td style="text-align: left;">sagemaker,sagemaker_async,ecs</td>
-<td style="text-align: left;">✅</td>
-</tr>
-<tr>
 <td style="text-align: left;">Qwen2.5-72B-Instruct</td>
 <td style="text-align: left;">qwen2.5</td>
 <td style="text-align: left;">llm</td>
@@ -681,15 +672,6 @@
 <td style="text-align: left;">llm</td>
 <td style="text-align: left;">vllm</td>
 <td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
-<td style="text-align: left;">sagemaker,sagemaker_async,ecs</td>
-<td style="text-align: left;">✅</td>
-</tr>
-<tr>
-<td style="text-align: left;">Qwen2.5-32B-Instruct-inf2</td>
-<td style="text-align: left;">qwen2.5</td>
-<td style="text-align: left;">llm</td>
-<td style="text-align: left;">tgi</td>
-<td style="text-align: left;">inf2.24xlarge</td>
 <td style="text-align: left;">sagemaker,sagemaker_async,ecs</td>
 <td style="text-align: left;">✅</td>
 </tr>
@@ -742,7 +724,16 @@
 <td style="text-align: left;">QwQ-32B-Preview</td>
 <td style="text-align: left;">qwen reasoning model</td>
 <td style="text-align: left;">llm</td>
-<td style="text-align: left;">huggingface,vllm</td>
+<td style="text-align: left;">vllm</td>
+<td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
+<td style="text-align: left;">sagemaker,sagemaker_async,ecs</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">QwQ-32B</td>
+<td style="text-align: left;">qwen reasoning model</td>
+<td style="text-align: left;">llm</td>
+<td style="text-align: left;">vllm</td>
 <td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
 <td style="text-align: left;">sagemaker,sagemaker_async,ecs</td>
 <td style="text-align: left;">✅</td>
@@ -760,7 +751,7 @@
 <td style="text-align: left;">DeepSeek-R1-Distill-Qwen-32B</td>
 <td style="text-align: left;">deepseek reasoning model</td>
 <td style="text-align: left;">llm</td>
-<td style="text-align: left;">vllm</td>
+<td style="text-align: left;">vllm,tgi</td>
 <td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
 <td style="text-align: left;">sagemaker,sagemaker_async,ecs</td>
 <td style="text-align: left;">✅</td>
@@ -862,10 +853,19 @@
 <td style="text-align: left;">vllm,huggingface</td>
 <td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
 <td style="text-align: left;">sagemaker,sagemaker_async,ecs</td>
-<td style="text-align: left;">❎</td>
+<td style="text-align: left;">✅</td>
 </tr>
 <tr>
 <td style="text-align: left;">Qwen2-VL-72B-Instruct-AWQ</td>
+<td style="text-align: left;">qwen2vl</td>
+<td style="text-align: left;">vlm</td>
+<td style="text-align: left;">vllm</td>
+<td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
+<td style="text-align: left;">sagemaker,sagemaker_async</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Qwen2.5-VL-72B-Instruct-AWQ</td>
 <td style="text-align: left;">qwen2vl</td>
 <td style="text-align: left;">vlm</td>
 <td style="text-align: left;">vllm</td>
@@ -924,7 +924,7 @@
 <td style="text-align: left;">embedding</td>
 <td style="text-align: left;">vllm</td>
 <td style="text-align: left;">g5.xlarge,g5.2xlarge,g5.4xlarge,g5.8xlarge,g5.16xlarge</td>
-<td style="text-align: left;">sagemaker</td>
+<td style="text-align: left;">sagemaker,ecs</td>
 <td style="text-align: left;">✅</td>
 </tr>
 <tr>
@@ -942,7 +942,7 @@
 <td style="text-align: left;">rerank</td>
 <td style="text-align: left;">vllm</td>
 <td style="text-align: left;">g5.xlarge,g5.2xlarge,g5.4xlarge,g5.8xlarge,g5.16xlarge</td>
-<td style="text-align: left;">sagemaker</td>
+<td style="text-align: left;">sagemaker,ecs</td>
 <td style="text-align: left;">✅</td>
 </tr>
 </tbody>
