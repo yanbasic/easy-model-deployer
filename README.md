@@ -11,6 +11,12 @@ Easy Model Deployer - Simple, Efficient, and Easy-to-Integrate
 ---
 [![Releases](https://img.shields.io/pypi/v/easy_model_deployer.svg?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/easy_model_deployer)
 
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellowgreen.svg" alt="MIT License"></a>
+  <a href="https://github.com/aws-samples/easy-model-deployer/releases"><img src="https://img.shields.io/github/v/release/aws-samples/easy-model-deployer?include_prereleases"></a>
+  <a href="https://github.com/aws-samples/easy-model-deployer/actions/workflows/release-package.yml"><img src="https://github.com/aws-samples/easy-model-deployer/actions/workflows/release-package.yml/badge.svg" alt="Build Status"></a>
+  <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/aws-samples/easy-model-deployer">
+</p>
 ## About
 
 EMD (Easy Model Deployer) is a lightweight tool designed to simplify model deployment. Built for developers who need reliable and scalable model serving without complex setup.
