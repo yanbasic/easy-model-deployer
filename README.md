@@ -9,6 +9,7 @@ Easy Model Deployer - Simple, Efficient, and Easy-to-Integrate
 - [2025/03] We officially released EMD!
 
 ---
+[![Releases](https://img.shields.io/pypi/v/easy_model_deployer.svg?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/easy_model_deployer)
 
 ## About
 
