@@ -19,6 +19,9 @@ Easy Model Deployer - Simple, Efficient, and Easy-to-Integrate
 </p>
 ## About
 
+<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/:period/:easy_model_deployer">
+
+
 EMD (Easy Model Deployer) is a lightweight tool designed to simplify model deployment. Built for developers who need reliable and scalable model serving without complex setup.
 
 **Key Features**
