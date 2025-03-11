@@ -1,6 +1,7 @@
 cd src/pipeline
 # export model_id=DeepSeek-R1-Distill-Qwen-32B-GGUF
-export model_id=DeepSeek-R1-Distill-Qwen-32B
+export model_id=Qwen2.5-72B-Instruct-AWQ
+# export model_id=DeepSeek-R1-Distill-Qwen-32B
 export model_tag=latest
 python pipeline.py \
     --model_id ${model_id} \
