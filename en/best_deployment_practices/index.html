@@ -843,28 +843,28 @@
 <p>This document provides examples of best practices for deploying models using EMD for various use cases.</p>
 <h2 id="famous-models">Famous Models</h2>
 <h3 id="gemma-3-series">Gemma 3 Series</h3>
-<div class="highlight"><pre><span></span><code>emd deploy --model-id gemma-3-27b-it --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker
+<div class="highlight"><pre><span></span><code>emd deploy --model-id gemma-3-27b-it --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
 </code></pre></div>
 <h3 id="qwen-series">Qwen Series</h3>
 <h4 id="qwq-32b">QwQ-32B</h4>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>QwQ-32B<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>QwQ-32B<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
 </code></pre></div>
 <h2 id="deploying-to-specific-gpu-types">Deploying to Specific GPU Types</h2>
 <p>Choosing the right GPU type is critical for optimal performance and cost-efficiency. Use the <code>--instance-type</code> parameter to specify the GPU instance.</p>
 <h3 id="example-deploying-qwen25-7b-on-g52xlarge">Example: Deploying Qwen2.5-7B on g5.2xlarge</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
 </code></pre></div>
 <h2 id="achieving-longer-context-windows">Achieving Longer Context Windows</h2>
 <p>To enable longer context windows, use the <code>--extra-params</code> option with engine-specific parameters.</p>
 <h3 id="example-deploying-model-with-16k-context-window">Example: Deploying model with 16k context window</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.4xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.4xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
 <span class="s1">  &quot;engine_params&quot;: {</span>
 <span class="s1">    &quot;vllm_cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
 <span class="s1">  }</span>
 <span class="s1">}&#39;</span>
 </code></pre></div>
 <h3 id="example-deploying-model-on-g4dn-instance">Example: Deploying model on G4dn instance</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-14B-Instruct-AWQ<span class="w"> </span>--instance-type<span class="w"> </span>g4dn.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-14B-Instruct-AWQ<span class="w"> </span>--instance-type<span class="w"> </span>g4dn.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
 <span class="s1">  &quot;engine_params&quot;: {</span>
 <span class="s1">    &quot;environment_variables&quot;: &quot;export VLLM_ATTENTION_BACKEND=XFORMERS &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;,</span>
 <span class="s1">    &quot;default_cli_args&quot;: &quot; --chat-template emd/models/chat_templates/qwen_2d5_add_prefill_chat_template.jinja --max_model_len 12000 --max_num_seqs 10  --gpu_memory_utilization 0.95 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes&quot;</span>
