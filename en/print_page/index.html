@@ -751,6 +751,9 @@ framework type: fastapi
 <div class="highlight"><pre><span></span><code>emd deploy --model-id gemma-3-27b-it --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
 </code></pre></div>
 <h3 id="best_deployment_practices-qwen-series">Qwen Series</h3>
+<h4 id="best_deployment_practices-qwen25-vl-32b-instruct">Qwen2.5-VL-32B-Instruct</h4>
+<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-VL-32B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
+</code></pre></div>
 <h4 id="best_deployment_practices-qwq-32b">QwQ-32B</h4>
 <div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>QwQ-32B<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
 </code></pre></div>
@@ -1042,7 +1045,7 @@ Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err
 <td style="text-align: left;">Qwen2.5-7B-Instruct</td>
 <td style="text-align: left;">qwen2.5</td>
 <td style="text-align: left;">llm</td>
-<td style="text-align: left;">vllm,tgi</td>
+<td style="text-align: left;">vllm,tgi,tgi</td>
 <td style="text-align: left;">g5.2xlarge,g5.4xlarge,g5.8xlarge,g5.12xlarge,g5.16xlarge,g5.24xlarge,g5.48xlarge,inf2.8xlarge</td>
 <td style="text-align: left;">sagemaker_realtime,sagemaker_async,ecs</td>
 <td style="text-align: left;">✅</td>
@@ -1115,7 +1118,7 @@ Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err
 <td style="text-align: left;">qwen2.5</td>
 <td style="text-align: left;">llm</td>
 <td style="text-align: left;">vllm</td>
-<td style="text-align: left;">g5.2xlarge,g5.4xlarge,g5.8xlarge,g5.16xlarge</td>
+<td style="text-align: left;">g5.2xlarge,g5.4xlarge,g5.8xlarge,g5.16xlarge,g4dn.2xlarge</td>
 <td style="text-align: left;">sagemaker_realtime,sagemaker_async,ecs</td>
 <td style="text-align: left;">✅</td>
 </tr>
@@ -1206,6 +1209,15 @@ Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err
 <td style="text-align: left;">llm</td>
 <td style="text-align: left;">llama.cpp</td>
 <td style="text-align: left;">g5.2xlarge,g5.4xlarge,g5.8xlarge,g5.16xlarge</td>
+<td style="text-align: left;">sagemaker_realtime,sagemaker_async,ecs</td>
+<td style="text-align: left;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">DeepSeek-R1-Distill-Qwen-32B-GGUF</td>
+<td style="text-align: left;">deepseek reasoning model</td>
+<td style="text-align: left;">llm</td>
+<td style="text-align: left;">llama.cpp</td>
+<td style="text-align: left;">g5.12xlarge,g5.24xlarge</td>
 <td style="text-align: left;">sagemaker_realtime,sagemaker_async,ecs</td>
 <td style="text-align: left;">✅</td>
 </tr>
