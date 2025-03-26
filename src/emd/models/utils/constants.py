@@ -32,6 +32,7 @@ class EngineType(ConstantBase):
     LLAMA_CPP = "llama.cpp"
     TGI = "tgi"
     LMDEPLOY = 'lmdeploy'
+    CUSTOM = "custom"
     KTRANFORMERS = 'ktransformers'
 
     # @classmethod
