@@ -589,6 +589,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#environmental-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environmental variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#common-troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       Common Troubleshooting
@@ -830,6 +839,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#environmental-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environmental variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#common-troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       Common Troubleshooting
@@ -892,9 +910,13 @@
 <span class="s1">  }</span>
 <span class="s1">}&#39;</span>
 </code></pre></div>
-<h2 id="common-troubleshooting">Common Troubleshooting</h2>
-<p>If your deployment fails due to out-of-memory issues, try:</p>
+<h2 id="environmental-variables">Environmental variables</h2>
 <ul>
+<li><code>LOCAL_DEPLOY_PORT:</code> Local deployment port, default: <code>8080</code></li>
+</ul>
+<h2 id="common-troubleshooting">Common Troubleshooting</h2>
+<ul>
+<li>If your deployment fails due to out-of-memory issues, try:</li>
 <li>Using a larger instance type</li>
 <li>Reducing max_model_len and max_num_seqs in the engine parameters</li>
 <li>Setting a lower gpu_memory_utilization value (e.g., 0.8 instead of the default)</li>
