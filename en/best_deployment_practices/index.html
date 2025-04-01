@@ -485,6 +485,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#mistral-small-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistral Small Series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gemma-3-series" class="md-nav__link">
     <span class="md-ellipsis">
       Gemma 3 Series
@@ -735,6 +744,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#mistral-small-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mistral Small Series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#gemma-3-series" class="md-nav__link">
     <span class="md-ellipsis">
       Gemma 3 Series
@@ -878,6 +896,9 @@
 <h1 id="best-deployment-practices">Best Deployment Practices</h1>
 <p>This document provides examples of best practices for deploying models using EMD for various use cases.</p>
 <h2 id="famous-models">Famous Models</h2>
+<h3 id="mistral-small-series">Mistral Small Series</h3>
+<div class="highlight"><pre><span></span><code>emd deploy --model-id Mistral-Small-3.1-24B-Instruct-2503 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</code></pre></div>
 <h3 id="gemma-3-series">Gemma 3 Series</h3>
 <div class="highlight"><pre><span></span><code>emd deploy --model-id gemma-3-27b-it --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
 </code></pre></div>

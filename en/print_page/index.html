@@ -747,6 +747,9 @@ framework type: fastapi
 <h2 id="installation-examples">Examples</h2></section><section class="print-page" id="best_deployment_practices"><h1 id="best_deployment_practices-best-deployment-practices">Best Deployment Practices</h1>
 <p>This document provides examples of best practices for deploying models using EMD for various use cases.</p>
 <h2 id="best_deployment_practices-famous-models">Famous Models</h2>
+<h3 id="best_deployment_practices-mistral-small-series">Mistral Small Series</h3>
+<div class="highlight"><pre><span></span><code>emd deploy --model-id Mistral-Small-3.1-24B-Instruct-2503 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</code></pre></div>
 <h3 id="best_deployment_practices-gemma-3-series">Gemma 3 Series</h3>
 <div class="highlight"><pre><span></span><code>emd deploy --model-id gemma-3-27b-it --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
 </code></pre></div>
@@ -1381,6 +1384,15 @@ Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err
 <tr>
 <td style="text-align: left;">gemma-3-27b-it</td>
 <td style="text-align: left;">gemma3</td>
+<td style="text-align: left;">vlm</td>
+<td style="text-align: left;">vllm</td>
+<td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
+<td style="text-align: left;">sagemaker_realtime,sagemaker_async,ecs</td>
+<td style="text-align: left;">❎</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mistral-Small-3.1-24B-Instruct-2503</td>
+<td style="text-align: left;">mistral</td>
 <td style="text-align: left;">vlm</td>
 <td style="text-align: left;">vllm</td>
 <td style="text-align: left;">g5.12xlarge,g5.24xlarge,g5.48xlarge</td>
