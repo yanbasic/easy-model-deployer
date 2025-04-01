@@ -7,7 +7,8 @@ from ..engines import (
     tgi_qwen2d5_on_inf2,
     tgi_qwen2d5_72b_on_inf2,
     vllm_qwen2d5_72b_engine064,
-    vllm_qwq_engine073
+    vllm_qwq_engine073,
+    vllm_qwq_engine082
 )
 from ..services import (
     sagemaker_service,
@@ -471,7 +472,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "QwQ-32B",
-        supported_engines=[vllm_qwq_engine073],
+        supported_engines=[vllm_qwq_engine082],
         supported_instances=[
             g5d12xlarge_instance,
             g5d24xlarge_instance,

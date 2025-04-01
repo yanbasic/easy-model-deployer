@@ -77,6 +77,17 @@ vllm_gemma3_engine = VllmEngine(
     }
 )
 
+
+vllm_mistral_small_engine082 = VllmEngine(
+    **{
+    **vllm_engine064.model_dump(),
+    "engine_dockerfile_config": {"VERSION":"v0.8.2"},
+    "dockerfile_name":"Dockerfile",
+    "default_cli_args": " --tokenizer-mode mistral --config-format mistral --load-format mistral  --limit-mm-per-prompt 'image=4' --max-model-len 16384",
+    "environment_variables": ""
+    }
+)
+
 vllm_deepseek_r1_distill_qwen_engine071 = VllmEngine(**{
             **vllm_engine064.model_dump(),
             "engine_dockerfile_config": {"VERSION":"v0.7.1"},
@@ -122,6 +133,13 @@ vllm_qwq_engine073 = VllmEngine(**{
             **vllm_qwen25vl72b_engine073.model_dump(),
             "environment_variables": "export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
             "default_cli_args": " --chat-template emd/models/chat_templates/qwq_32b_add_prefill_chat_template.jinja --max_model_len 16000  --max_num_seq 10 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes"
+})
+
+vllm_qwq_engine082 = VllmEngine(**{
+            **vllm_qwen25vl72b_engine073.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"v0.8.2"},
+            "environment_variables": "export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --chat-template emd/models/chat_templates/qwq_32b_add_prefill_chat_template.jinja --max_model_len 16000  --max_num_seq 10 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes  --enable-reasoning --reasoning-parser deepseek_r1"
 })
 
 

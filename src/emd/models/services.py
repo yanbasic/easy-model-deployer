@@ -91,6 +91,7 @@ ecs_service = Service(
         "ServiceType":"service_type",
         "EngineType":"engine_type",
         "Region": "region",
+        "DesiredCapacity": "desired_capacity",
         "ContainerCpu": "container_cpu",
         "ContainerMemory": "container_memory",
         "ContainerGpu":"instance_gpu_num"
