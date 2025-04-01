@@ -134,9 +134,10 @@ class OpenAICompitableProxyBackendBase(BackendBase):
         logger.info(f"Starting {self.engine_type} server with command: {server_start_command}")
         t = threading.Thread(target=os.system,args=(server_start_command,),daemon=True)
         t.start()
-        t2 = threading.Thread(target=self.check_model_serve_ready,args=(t, "127.0.0.1", self.server_port),daemon=True)
-        t2.start()
-        t2.join()
+        self.check_model_serve_ready(t, "127.0.0.1", self.server_port)
+        logger.info(f"Server started successfully.")
+        # t2.start()
+        # t2.join()
         return
 
 

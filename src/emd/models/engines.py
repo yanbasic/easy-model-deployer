@@ -135,6 +135,13 @@ vllm_qwq_engine073 = VllmEngine(**{
             "default_cli_args": " --chat-template emd/models/chat_templates/qwq_32b_add_prefill_chat_template.jinja --max_model_len 16000  --max_num_seq 10 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes"
 })
 
+vllm_qwq_engine082 = VllmEngine(**{
+            **vllm_qwen25vl72b_engine073.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"v0.8.2"},
+            "environment_variables": "export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --chat-template emd/models/chat_templates/qwq_32b_add_prefill_chat_template.jinja --max_model_len 16000  --max_num_seq 10 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes  --enable-reasoning --reasoning-parser deepseek_r1"
+})
+
 
 vllm_internvl2d5_76b_engine064 = VllmEngine(**{
              **vllm_engine064.model_dump(),
