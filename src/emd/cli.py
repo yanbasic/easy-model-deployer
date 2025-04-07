@@ -83,11 +83,17 @@ app.add_typer(
 
 @app.command(help="List supported models")
 @catch_aws_credential_errors
-def list_supported_models(model_id: Annotated[
+def list_supported_models(
+    model_id: Annotated[
         str, typer.Argument(help="Model ID")
-    ] = None):
+    ] = None,
+    detail: Annotated[
+        Optional[bool],
+        typer.Option("-a", "--detail", help="output model information in details.")
+    ] = False
+):
     # console.print("[bold blue]Retrieving models...[/bold blue]")
-    support_models = Model.get_supported_models()
+    support_models = Model.get_supported_models(detail=detail)
     if model_id:
         support_models = [model for _model_id,model in support_models.items() if _model_id == model_id]
     r = json.dumps(support_models,indent=2,ensure_ascii=False)
