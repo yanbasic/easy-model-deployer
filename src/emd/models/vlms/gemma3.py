@@ -10,6 +10,7 @@ from ..services import (
 from emd.models.utils.constants import ModelType
 from ..model_series import Gemma3_SERIES
 from ..instances import (
+    g4dn12xlarge_instance,
     g5d2xlarge_instance,
     g5d4xlarge_instance,
     g5d8xlarge_instance,
@@ -43,6 +44,7 @@ Model.register(
         supported_frameworks=[
             fastapi_framework
         ],
+        allow_china_region = True,
         modelscope_model_id="LLM-Research/gemma-3-4b-it",
         model_files_download_source=ModelFilesDownloadSource.MODELSCOPE,
         # require_huggingface_token=False,
@@ -74,6 +76,7 @@ Model.register(
         supported_frameworks=[
             fastapi_framework
         ],
+        allow_china_region = True,
         # huggingface_model_id="google/gemma-3-12b-it",
         # require_huggingface_token=False,
         modelscope_model_id="LLM-Research/gemma-3-12b-it",
@@ -106,6 +109,7 @@ Model.register(
         supported_frameworks=[
             fastapi_framework
         ],
+        allow_china_region = True,
         # huggingface_model_id="unsloth/gemma-3-27b-it",
         modelscope_model_id="LLM-Research/gemma-3-27b-it",
         model_files_download_source=ModelFilesDownloadSource.MODELSCOPE,
