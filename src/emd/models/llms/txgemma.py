@@ -47,6 +47,7 @@ Model.register(
         supported_frameworks=[
             fastapi_framework
         ],
+        allow_china_region=True,
         huggingface_model_id="google/txgemma-9b-chat",
         modelscope_model_id="AI-ModelScope/txgemma-9b-chat",
         model_files_download_source=ModelFilesDownloadSource.MODELSCOPE,
@@ -79,6 +80,7 @@ Model.register(
         supported_frameworks=[
             fastapi_framework
         ],
+        allow_china_region=True,
         huggingface_model_id="google/txgemma-27b-chat",
         modelscope_model_id="AI-ModelScope/txgemma-27b-chat",
         model_files_download_source=ModelFilesDownloadSource.MODELSCOPE,
