@@ -11,7 +11,7 @@ ENV PATH="/root/miniconda3/bin:${PATH}"
 
 RUN mkdir -p /opt/ml/code
 RUN mkdir -p /opt/ml/code/emd_models
-RUN git clone https://github.com/kvcache-ai/ktransformers.git /opt/ml/code/ktransformers
+RUN git clone https://github.com/kvcache-ai/ktransformers.git /opt/ml/code/ktransformers && cd /opt/ml/code/ktransformers && git checkout tags/v0.2.3
 
 RUN conda install -c conda-forge libstdcxx-ng
 RUN python -m venv /opt/ml/code/venv
