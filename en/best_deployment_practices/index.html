@@ -592,6 +592,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-customize-model-download-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Customize model download methods
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -851,6 +860,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-customize-model-download-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Customize model download methods
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -931,6 +949,44 @@
 <span class="s1">  }</span>
 <span class="s1">}&#39;</span>
 </code></pre></div>
+<h3 id="example-customize-model-download-methods">Example: Customize model download methods</h3>
+<ul>
+<li>You can load models from different locations by addingappropriate values in the extra-params parameter</li>
+<li>Load model from S3
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;model_files_s3_path&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;S3_PATH&gt;&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li>Load model from local path (only applicable for local deployment)
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="nt">&quot;model_files_local_path&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;LOCAL_PATH&gt;&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li>Skip downloading and uploading model files in codebuild, which will significantly reducedeployment time
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;need_prepare_model&quot;</span><span class="p">:</span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li>Specify the download source for model files
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;model_files_download_source&quot;</span><span class="p">:</span><span class="s2">&quot;huggingface|modelscope|auto(default)&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li>Specify the model ID on huggingface or modelscope
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;huggingface_model_id&quot;</span><span class="p">:</span><span class="s2">&quot;model id on huggingface&quot;</span><span class="p">,</span><span class="nt">&quot;modelscope_model_id&quot;</span><span class="p">:</span><span class="s2">&quot;model id on modelscope&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></li>
+</ul>
 <h2 id="environmental-variables">Environmental variables</h2>
 <ul>
 <li><code>LOCAL_DEPLOY_PORT:</code> Local deployment port, default: <code>8080</code></li>
