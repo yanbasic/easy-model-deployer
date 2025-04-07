@@ -89,7 +89,7 @@ def list_supported_models(
     ] = None,
     detail: Annotated[
         Optional[bool],
-        typer.Option("-a", "--detail", help="output model infomation in details.")
+        typer.Option("-a", "--detail", help="output model information in details.")
     ] = False
 ):
     # console.print("[bold blue]Retrieving models...[/bold blue]")
