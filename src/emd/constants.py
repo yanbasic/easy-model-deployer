@@ -1,4 +1,5 @@
 from .revision import VERSION, convert_version_name_to_stack_name
+import os
 ENV_STACK_NAME = f'EMD-Env'
 MODEL_STACK_NAME_PREFIX = f"EMD-Model"
 ENV_BUCKET_NAME_PREFIX = "emd-env-artifactbucket"
@@ -25,3 +26,8 @@ MODEL_TAG_PATTERN = r'^[a-z0-9]([a-z0-9-_]{0,61}[a-z0-9])?$'
 
 LOCAL_REGION = "local"
 # EMD_USE_NO_PROFILE_CHOICE = "Don't set"
+
+LOCAL_DEPLOY_PIPELINE_ZIP_DIR = os.path.join(
+    os.path.expanduser("~"),
+    f"emd_{VERSION}"
+)

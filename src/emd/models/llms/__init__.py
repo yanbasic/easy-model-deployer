@@ -5,5 +5,6 @@ from . import (
     llama,
     deepseek,
     baichuan,
-    jina
+    jina,
+    txgemma
 )

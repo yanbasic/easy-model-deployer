@@ -14,8 +14,10 @@ from emd.constants import (
     MODEL_DEFAULT_TAG,
     MODEL_STACK_NAME_PREFIX,
     VERSION,
-    LOCAL_REGION
+    LOCAL_REGION,
+    LOCAL_DEPLOY_PIPELINE_ZIP_DIR
 )
+from emd.utils.file_utils import mkdir_with_mode
 from emd.models import Model
 from emd.models.utils.constants import FrameworkType, ServiceType,InstanceType
 from emd.models.utils.serialize_utils import dump_extra_params
@@ -318,7 +320,10 @@ def deploy_local(
     # region: Optional[str] = None,
     # model_stack_name=None,
     extra_params=None,
-    pipeline_zip_local_path=f"/tmp/emd_{VERSION}/pipeline.zip",
+    pipeline_zip_local_path=os.path.join(
+        LOCAL_DEPLOY_PIPELINE_ZIP_DIR,
+        "pipeline.zip"
+    ),
     # env_stack_on_failure = "ROLLBACK",
     # force_env_stack_update = False,
     # waiting_until_deploy_complete = True
@@ -328,7 +333,9 @@ def deploy_local(
     logger.info(f"parsed extra_params: {extra_params}")
     extra_params = dump_extra_params(extra_params or {})
     dir = os.path.dirname(pipeline_zip_local_path)
-    os.makedirs(dir, exist_ok=True)
+
+    mkdir_with_mode(dir, exist_ok=True,mode=0o777)
+    # os.makedirs(dir, exist_ok=True,mode=0o777)
     with open(pipeline_zip_local_path, "wb") as f:
         buffer = ziped_pipeline()
         f.write(buffer.read())

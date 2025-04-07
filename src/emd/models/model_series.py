@@ -97,6 +97,13 @@ Gemma3_SERIES = ModelSeries(
     reference_link="https://blog.google/technology/developers/gemma-3/"
 )
 
+TXGEMMA_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.TXGEMMA,
+    description="TXGemma is a series of open models to accelerate the development of therapeutics.",
+    reference_link="https://huggingface.co/collections/google/txgemma-release-67dd92e931c857d15e4d1e87"
+)
+
+
 MISTRAL_SERIES = ModelSeries(
     model_series_name=ModelSeriesType.MISTRAL,
     description="LLMs and VLMs provided by MISTRAL AI.",

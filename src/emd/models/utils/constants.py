@@ -214,6 +214,7 @@ class ServiceQuotaCode(ConstantBase):
 
 class ModelSeriesType(ConstantBase):
     GEMMA3 = "gemma3"
+    TXGEMMA = "txgemma"
     MISTRAL = "mistral"
     QWEN2D5 = "qwen2.5"
     GLM4 = "glm4"
