@@ -239,6 +239,9 @@ def deploy(
     dockerfile_local_path: Annotated[
         str, typer.Option("--dockerfile-local-path", help="Your custom Dockerfile path for building the model image, all files must be in the same directory")
     ] = None,
+    local_gpus:Annotated[
+        str, typer.Option("--local-gpus", help="Local gpu ids to deploy the model (e.g. `0,1,2`), only working with local deployment mode.")
+    ] = None,
 ):
     if only_allow_local_deploy:
         allow_local_deploy = True
@@ -389,8 +392,10 @@ def deploy(
     )
     if service_type == ServiceType.LOCAL:
         if check_cuda_exists():
-            if os.environ.get('CUDA_VISIBLE_DEVICES'):
-                console.print(f"[bold blue]local gpus: {os.environ.get('CUDA_VISIBLE_DEVICES')}[/bold blue]")
+            if local_gpus is not None:
+                os.environ['CUDA_VISIBLE_DEVICES']=local_gpus
+            elif os.environ.get('CUDA_VISIBLE_DEVICES'):
+                pass
             else:
                 gpu_num = get_gpu_num()
                 support_gpu_num = model.supported_instances[0].gpu_num
@@ -400,6 +405,7 @@ def deploy(
                         default=f"{default_gpus_str}"
                     ).ask()
                 os.environ['CUDA_VISIBLE_DEVICES']=gpus_to_deploy
+            console.print(f"[bold blue]local gpus: {os.environ.get('CUDA_VISIBLE_DEVICES')}[/bold blue]")
         instance_type = InstanceType.LOCAL
     else:
         if instance_type is None:
