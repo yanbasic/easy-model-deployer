@@ -2,7 +2,7 @@ import httpx
 import sys
 import os
 from emd.models.utils.constants import ModelType
-
+import inspect
 from backend.backend import OpenAICompitableProxyBackendBase
 from emd.utils.logger_utils import get_logger
 
@@ -22,6 +22,13 @@ class VLLMBackend(OpenAICompitableProxyBackendBase):
             serve_command += f" --api-key {self.api_key}"
         return serve_command
 
+    def openai_create_helper(self,fn:callable,request:dict):
+        sig = inspect.signature(fn)
+        extra_body = request.get("extra_body",{})
+        extra_params = {k:request.pop(k) for k in list(request.keys()) if k not in sig.parameters}
+        extra_body.update(extra_params)
+        request['extra_body'] = extra_body
+        return fn(**request)
 
     def invoke(self, request):
         # Transform input to vllm format
@@ -30,7 +37,7 @@ class VLLMBackend(OpenAICompitableProxyBackendBase):
         logger.info(f"Chat request:{request}")
         if self.model_type == ModelType.EMBEDDING:
             # print('cal embedding....')
-            response = self.client.embeddings.create(**request)
+            response =self.openai_create_helper(self.client.embeddings.create,request)
             # print('end cal embedding....')
         elif self.model_type == ModelType.RERANK:
             headers = {
@@ -43,7 +50,8 @@ class VLLMBackend(OpenAICompitableProxyBackendBase):
                 headers=headers
             ).json()
         else:
-            response = self.client.chat.completions.create(**request)
+            # response = self.client.chat.completions.create(**request)
+            response = self.openai_create_helper(self.client.chat.completions.create,request)
         logger.info(f"response:{response},{request}")
 
         if request.get("stream", False):
@@ -58,7 +66,7 @@ class VLLMBackend(OpenAICompitableProxyBackendBase):
         logger.info(f"Chat request:{request}")
         if self.model_type == ModelType.EMBEDDING:
             # print('cal embedding....')
-            response = await self.async_client.embeddings.create(**request)
+            response = await self.openai_create_helper(self.async_client.embeddings.create,request)
             # print('end cal embedding....')
         elif self.model_type == ModelType.RERANK:
             headers = {
@@ -71,7 +79,10 @@ class VLLMBackend(OpenAICompitableProxyBackendBase):
                 headers=headers
             ).json()
         else:
-            response = await self.async_client.chat.completions.create(**request)
+            response = await self.openai_create_helper(
+                self.async_client.chat.completions.create,
+                request
+            )
         logger.info(f"response:{response},{request}")
 
         if request.get("stream", False):
