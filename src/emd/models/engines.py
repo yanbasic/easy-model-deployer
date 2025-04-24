@@ -165,6 +165,25 @@ vllm_internvl2d5_76b_engine064 = VllmEngine(**{
 
 vllm_glm4_engine064 = vllm_engine064
 
+
+vllm_glm4_0414_engine082 = VllmEngine(**{
+            **vllm_qwen25vl72b_engine073.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"glm_z1_and_0414"},
+            "environment_variables": "export VLLM_USE_V1=0 && export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            # "default_cli_args": "--max_model_len 16000  --max_num_seq 10 --disable-log-stats --enable-auto-tool-choice --tool-call-parser pythonic"
+            "default_cli_args": "--max_model_len 16000  --max_num_seq 10 --disable-log-stats"
+})
+
+
+vllm_glm4_z1_engine082 = VllmEngine(**{
+            **vllm_qwen25vl72b_engine073.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"glm_z1_and_0414"},
+            "environment_variables": "export VLLM_USE_V1=0 && export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            # "default_cli_args": "--max_model_len 16000  --max_num_seq 10 --disable-log-stats --enable-auto-tool-choice --tool-call-parser pythonic --enable-reasoning --reasoning-parser granite"
+            "default_cli_args": "--max_model_len 16000  --max_num_seq 10 --disable-log-stats --enable-reasoning --reasoning-parser granite"
+})
+
+
 vllm_glm4_wo_flashinfer_engine064 = VllmEngine(**{
              **vllm_engine064.model_dump(),
             #  "engine_dockerfile_config": {"VERSION":"v0.6.0"},

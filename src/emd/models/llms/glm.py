@@ -1,5 +1,10 @@
 from .. import Model
-from ..engines import vllm_glm4_engine064,vllm_glm4_wo_flashinfer_engine064
+from ..engines import (
+    vllm_glm4_engine064,
+    vllm_glm4_wo_flashinfer_engine064,
+    vllm_glm4_0414_engine082,
+    vllm_glm4_z1_engine082
+)
 from ..services import (
     sagemaker_service,
     sagemaker_async_service,
@@ -75,6 +80,151 @@ Model.register(
         require_huggingface_token=False,
         application_scenario="Agent, tool use, translation, summary",
         description="glm-4-9b-chat-GPTQ-Int4",
+        model_type=ModelType.LLM,
+        model_series=GLM4_SERIES
+    )
+)
+
+
+Model.register(
+    dict(
+        model_id = "GLM-4-9B-0414",
+        supported_engines=[vllm_glm4_0414_engine082],
+        supported_instances=[
+            g5d12xlarge_instance,
+            g5d24xlarge_instance,
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        allow_china_region=True,
+        supported_frameworks=[fastapi_framework],
+        huggingface_model_id="THUDM/GLM-4-9B-0414",
+        modelscope_model_id="ZhipuAI/GLM-4-9B-0414",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="GLM-4-32B-0414 series",
+        model_type=ModelType.LLM,
+        model_series=GLM4_SERIES
+    )
+)
+
+Model.register(
+    dict(
+        model_id = "GLM-4-32B-0414",
+        supported_engines=[vllm_glm4_0414_engine082],
+        supported_instances=[
+            g5d12xlarge_instance,
+            g5d24xlarge_instance,
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        allow_china_region=True,
+        supported_frameworks=[fastapi_framework],
+        huggingface_model_id="THUDM/GLM-4-32B-0414",
+        modelscope_model_id="ZhipuAI/GLM-4-32B-0414",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="GLM-4-32B-0414 series",
+        model_type=ModelType.LLM,
+        model_series=GLM4_SERIES
+    )
+)
+
+
+
+Model.register(
+    dict(
+        model_id = "GLM-Z1-9B-0414",
+        supported_engines=[vllm_glm4_z1_engine082],
+        supported_instances=[
+            g5d12xlarge_instance,
+            g5d24xlarge_instance,
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        allow_china_region=True,
+        supported_frameworks=[fastapi_framework],
+        huggingface_model_id="THUDM/GLM-Z1-9B-0414",
+        modelscope_model_id="ZhipuAI/GLM-Z1-9B-0414",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="GLM-4-32B-0414 series",
+        model_type=ModelType.LLM,
+        model_series=GLM4_SERIES
+    )
+)
+
+
+Model.register(
+    dict(
+        model_id = "GLM-Z1-32B-0414",
+        supported_engines=[vllm_glm4_z1_engine082],
+        supported_instances=[
+            g5d12xlarge_instance,
+            g5d24xlarge_instance,
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        allow_china_region=True,
+        supported_frameworks=[fastapi_framework],
+        huggingface_model_id="THUDM/GLM-Z1-32B-0414",
+        modelscope_model_id="ZhipuAI/GLM-Z1-32B-0414",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="GLM-4-32B-0414 series",
+        model_type=ModelType.LLM,
+        model_series=GLM4_SERIES
+    )
+)
+
+
+Model.register(
+    dict(
+        model_id = "GLM-Z1-Rumination-32B-0414",
+        supported_engines=[vllm_glm4_z1_engine082],
+        supported_instances=[
+            g5d12xlarge_instance,
+            g5d24xlarge_instance,
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        allow_china_region=True,
+        supported_frameworks=[fastapi_framework],
+        huggingface_model_id="THUDM/GLM-Z1-Rumination-32B-0414",
+        modelscope_model_id="ZhipuAI/GLM-Z1-Rumination-32B-0414",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="GLM-4-32B-0414 series",
         model_type=ModelType.LLM,
         model_series=GLM4_SERIES
     )
