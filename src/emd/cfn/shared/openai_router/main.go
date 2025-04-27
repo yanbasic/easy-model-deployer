@@ -43,7 +43,7 @@ func main() {
 	// Load configuration from environment
 	port := getEnv("PORT", "8080")
 	host := getEnv("HOST", "0.0.0.0")
-	logLevel := getEnv("LOG_LEVEL", "DEBUG")
+	logLevel := getEnv("LOG_LEVEL", "INFO")
 
 	// Configure logging
 	if logLevel == "DEBUG" {
@@ -228,15 +228,14 @@ func discoverModelEndpoints() error {
 			case "Model":
 				model = *output.OutputValue
 			case "SageMakerEndpointName":
-				endpoint = *output.OutputValue
-			case "PublicLoadBalancerDNSName":
-				endpoint = *output.OutputValue
+				endpoint = "sagemaker:" + *output.OutputValue
+			case "ECSServiceConnect":
+				endpoint = "ecs:" + *output.OutputValue
 			}
 		}
 
 		if model != "" && endpoint != "" {
 			modelEndpointMap[model] = endpoint
-			log.Printf("Discovered model %s -> endpoint %s", model, endpoint)
 		}
 	}
 	return nil
@@ -264,6 +263,7 @@ func httpProxyHandler(c *gin.Context, endpointURL string, inputBytes []byte) {
 	baseURL := strings.TrimRight(endpointURL, "/")
 	path := c.Request.URL.Path
 	fullURL := baseURL + path
+	// log.Printf("[DEBUG] Proxying request to URL %s", fullURL)
 
 	req, err := http.NewRequest(c.Request.Method, fullURL, bytes.NewReader(inputBytes))
 	if err != nil {
@@ -424,10 +424,16 @@ func requestHandler(c *gin.Context) {
 		return
 	}
 
-	// Check if endpoint is HTTP URL
-	if strings.HasPrefix(endpointName, "http://") || strings.HasPrefix(endpointName, "https://") {
-		log.Printf("[DEBUG] Proxying request to external endpoint %s", endpointName)
-		httpProxyHandler(c, endpointName, modifiedBytes)
+	// Parse endpoint type
+	var endpointType, endpointAddress string
+	if strings.HasPrefix(endpointName, "sagemaker:") {
+		endpointType = "sagemaker"
+		endpointAddress = strings.TrimPrefix(endpointName, "sagemaker:")
+	} else if strings.HasPrefix(endpointName, "ecs:") {
+		endpointType = "ecs"
+		endpointAddress = strings.TrimPrefix(endpointName, "ecs:")
+	} else {
+		c.JSON(500, gin.H{"error": "invalid endpoint format"})
 		return
 	}
 
@@ -437,15 +443,16 @@ func requestHandler(c *gin.Context) {
 	}
 	_ = json.Unmarshal(modifiedBytes, &streamRequest) // Best effort check
 
-	if streamRequest.Stream {
-		// Set streaming headers
-		c.Header("Content-Type", "text/event-stream")
-		c.Header("Cache-Control", "no-cache")
-		c.Header("Connection", "keep-alive")
+	if endpointType == "sagemaker" {
+		if streamRequest.Stream {
+			// Set streaming headers
+			c.Header("Content-Type", "text/event-stream")
+			c.Header("Cache-Control", "no-cache")
+			c.Header("Connection", "keep-alive")
 
-		// Create channel for streaming responses
-		stream := make(chan []byte)
-		closeOnce := sync.Once{}
+			// Create channel for streaming responses
+			stream := make(chan []byte)
+			closeOnce := sync.Once{}
 
 			// Start streaming in a goroutine
 			go func() {
@@ -455,7 +462,7 @@ func requestHandler(c *gin.Context) {
 				defer cancel()
 
 				input := &sagemakerruntime.InvokeEndpointWithResponseStreamInput{
-					EndpointName: aws.String(endpointName),
+					EndpointName: aws.String(endpointAddress),
 					ContentType:  aws.String("application/json"),
 					Body:         modifiedBytes,
 				}
@@ -466,33 +473,35 @@ func requestHandler(c *gin.Context) {
 					stream <- []byte(`data: {"error": "` + err.Error() + `"}` + "\n\n")
 					return
 				}
-				log.Println("[DEBUG] Successfully established streaming connection")
+				// log.Println("[DEBUG] Successfully established streaming connection")
 
 				eventStream := resp.GetStream()
 				defer eventStream.Close()
-
 
 				for event := range eventStream.Events() {
 					switch e := event.(type) {
 					case *sagemakerruntime.PayloadPart:
 						if len(e.Bytes) == 0 {
-							log.Printf("[WARNING] Received empty payload chunk")
+							// log.Printf("[WARNING] Received empty payload chunk")
 							continue
 						}
 
-						chunk := string(e.Bytes)
-						log.Printf("[DEBUG] Received chunk: %s", chunk)
+                chunk := string(e.Bytes)
+                // log.Printf("[DEBUG] Received chunk: %s", chunk)
 
-						// Check for finish_reason=stop to end stream
-						if strings.Contains(chunk, `"finish_reason":"stop"`) ||
-						   strings.Contains(chunk, `"finish_reason": "stop"`) {
-							log.Printf("[DEBUG] Detected finish_reason=stop, ending stream")
-							// stream <- []byte("data: " + chunk + "\n\n")
-							break
-						}
+                // Format as proper SSE event
+                formattedChunk := "data: " + chunk
 
-						// Forward chunk as-is in SSE format
-						stream <- []byte(chunk + "\n\n")
+                // Check for finish_reason=stop to end stream
+                if strings.Contains(chunk, `"finish_reason":"stop"`) ||
+                   strings.Contains(chunk, `"finish_reason": "stop"`) {
+                    // log.Printf("[DEBUG] Detected finish_reason=stop, ending stream")
+                    stream <- []byte(formattedChunk + "\n\n")
+                    return // Exit the goroutine completely
+                }
+
+                // Forward as properly formatted SSE event
+                stream <- []byte(formattedChunk + "\n\n")
 					case *sagemakerruntime.InternalStreamFailure:
 						stream <- []byte(`data: {"error": "` + e.Error() + `"}` + "\n\n")
 						return
@@ -501,40 +510,46 @@ func requestHandler(c *gin.Context) {
 				// Send final done message
 				stream <- []byte("data: [DONE]\n\n")
 			}()
-
-		// Stream responses to client
-		c.Stream(func(w io.Writer) bool {
-			if msg, ok := <-stream; ok {
-				_, err := w.Write(msg)
-				if err != nil {
-					return false
+			// Stream responses to client
+			c.Stream(func(w io.Writer) bool {
+				if msg, ok := <-stream; ok {
+					_, err := w.Write(msg)
+					if err != nil {
+						return false
+					}
+					return true
 				}
-				return true
+				return false
+			})
+
+		} else {
+			// Non-streaming request
+			output, err := sagemakerClient.InvokeEndpoint(&sagemakerruntime.InvokeEndpointInput{
+				EndpointName: aws.String(endpointAddress),
+				ContentType:  aws.String("application/json"),
+				Body:         modifiedBytes,
+			})
+
+			if err != nil {
+				log.Printf("[ERROR] SageMaker invocation failed: %v", err)
+				c.JSON(500, gin.H{"error": err.Error()})
+				return
 			}
-			return false
-		})
-	} else {
-		// Non-streaming request
-		output, err := sagemakerClient.InvokeEndpoint(&sagemakerruntime.InvokeEndpointInput{
-			EndpointName: aws.String(endpointName),
-			ContentType:  aws.String("application/json"),
-			Body:         modifiedBytes,
-		})
 
-		if err != nil {
-			log.Printf("[ERROR] SageMaker invocation failed: %v", err)
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
+			if len(output.Body) == 0 {
+				log.Printf("[ERROR] Empty response from SageMaker endpoint")
+				c.JSON(500, gin.H{"error": "empty response from SageMaker endpoint"})
+				return
+			}
+
+			// log.Printf("[DEBUG] SageMaker response: %s", string(output.Body))
+			// Forward raw SageMaker response
+			c.Data(200, "application/json", output.Body)
 		}
-
-		if len(output.Body) == 0 {
-			log.Printf("[ERROR] Empty response from SageMaker endpoint")
-			c.JSON(500, gin.H{"error": "empty response from SageMaker endpoint"})
-			return
-		}
-
-		log.Printf("[DEBUG] SageMaker response: %s", string(output.Body))
-		// Forward raw SageMaker response
-		c.Data(200, "application/json", output.Body)
+	} else if endpointType == "ecs" {
+		// Handle ECS endpoint
+		baseURL := endpointAddress
+		// log.Printf("[DEBUG] Proxying request to ECS endpoint %s", baseURL)
+		httpProxyHandler(c, baseURL, modifiedBytes)
 	}
 }
