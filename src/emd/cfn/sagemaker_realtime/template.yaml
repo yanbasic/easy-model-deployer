@@ -26,6 +26,10 @@ Parameters:
   Region:
     Type: String
     Description: The region to be used for the SageMaker Endpoint
+  MinCapacity:
+    Type: Number
+    Description: The minimum capacity of the endpoint
+    Default: 1
   MaxCapacity:
     Type: Number
     Description: The maximum capacity of the endpoint
@@ -117,7 +121,7 @@ Resources:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
       MaxCapacity: !Ref MaxCapacity
-      MinCapacity: 1
+      MinCapacity: !Ref MinCapacity
       RoleARN: !GetAtt ExecutionRole.Arn
       ResourceId: !Sub "endpoint/${SageMakerEndpoint.EndpointName}/variant/AllTraffic"
       ScalableDimension: "sagemaker:variant:DesiredInstanceCount"

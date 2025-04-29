@@ -3,6 +3,23 @@
 This document provides examples of best practices for deploying models using EMD for various use cases.
 
 ## Famous Models
+### Qwen 3 Series
+```
+emd deploy --model-id Qwen3-30B-A3B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+
+emd deploy --model-id Qwen3-32B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+
+emd deploy --model-id Qwen3-8B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+```
+
+
+### GLM Z1/0414 Series
+```
+emd deploy --model-id GLM-Z1-32B-0414 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+
+emd deploy --model-id GLM-4-32B-0414 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+```
+
 
 ### Mistral Small Series
 ```
