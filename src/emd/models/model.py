@@ -1,5 +1,6 @@
 import os
 import re
+import json
 import importlib
 from pydantic import BaseModel,Field,ConfigDict,SerializeAsAny
 from typing import List,ClassVar,Union,TypeVar, Generic,Any,Dict
@@ -198,6 +199,83 @@ class Model(ModelBase,Generic[T]):
         Model.model_map[model.model_id] = model
         return model
 
+    @classmethod
+    def register_from_json_str(cls, json_str) -> T:
+        def get_all_engines():
+            from . import engines
+            # get all engine names
+            engine_list = [(i, getattr(engines,i)) for i in dir(engines) if isinstance(getattr(engines,i),Engine)]
+            engine_dict = {}
+            for engine_name, engine in engine_list:
+                if engine_name in engine_dict:
+                    raise ValueError(f"engine_type:{engine.engine_type} is duplicated")
+                engine_dict[engine_name] = engine
+            return engine_dict
+        def get_all_instances():
+            from . import instances
+            # get all instance names
+            instance_list = [(i, getattr(instances,i)) for i in dir(instances) if isinstance(getattr(instances,i),Instance)]
+            instance_dict = {}
+            for instance_name, instance in instance_list:
+                if instance_name in instance_dict:
+                    raise ValueError(f"instance_type:{instance.instance_type} is duplicated")
+                instance_dict[instance_name] = instance
+            return instance_dict
+        def get_all_services():
+            from . import services
+            # get all service names
+            service_list = [(i, getattr(services,i)) for i in dir(services) if isinstance(getattr(services,i),Service)]
+            service_dict = {}
+            for service_name, service in service_list:
+                if service_name in service_dict:
+                    raise ValueError(f"service_type:{service.service_type} is duplicated")
+                service_dict[service_name] = service
+            return service_dict
+        def get_all_frameworks():
+            from . import frameworks
+            # get all framework names
+            framework_list = [(i, getattr(frameworks,i)) for i in dir(frameworks) if isinstance(getattr(frameworks,i),Framework)]
+            framework_dict = {}
+            for framework_name, framework in framework_list:
+                if framework_name in framework_dict:
+                    raise ValueError(f"framework_type:{framework.framework_type} is duplicated")
+                framework_dict[framework_name] = framework
+            return framework_dict
+        def format_custom_model_dict(custom_model_dict:dict):
+            new_custom_model_dict = custom_model_dict.copy()
+            engine_dict = get_all_engines()
+            for engine in custom_model_dict.get("supported_engines",[]):
+                if engine not in engine_dict:
+                    raise ValueError(f"engine_type:{engine} is not supported")
+            new_custom_model_dict["supported_engines"] = [engine_dict[i] for i in custom_model_dict.get("supported_engines",[])]
+            instance_dict = get_all_instances()
+            for instance in custom_model_dict.get("supported_instances",[]):
+                if instance not in instance_dict:
+                    raise ValueError(f"instance_type:{instance} is not supported")
+            new_custom_model_dict["supported_instances"] = [instance_dict[i] for i in custom_model_dict.get("supported_instances",[])]
+            service_dict = get_all_services()
+            for service in custom_model_dict.get("supported_services",[]):
+                if service not in service_dict:
+                    raise ValueError(f"service_type:{service} is not supported")
+            new_custom_model_dict["supported_services"] = [service_dict[i] for i in custom_model_dict.get("supported_services",[])]
+            framework_dict = get_all_frameworks()
+            for framework in custom_model_dict.get("supported_frameworks",[]):
+                if framework not in framework_dict:
+                    raise ValueError(f"framework_type:{framework} is not supported")
+            new_custom_model_dict["supported_frameworks"] = [framework_dict[i] for i in custom_model_dict.get("supported_frameworks",[])]
+            print(new_custom_model_dict)
+            return new_custom_model_dict
+        model_dict = json.loads(json_str)
+        model_dict = format_custom_model_dict(model_dict)
+        model = cls(**model_dict)
+        Model.model_map[model.model_id] = model
+        return model
+
+    @classmethod
+    def register_from_json_file(cls, json_file_path) -> T:
+        with open(json_file_path, "r") as f:
+            model_dict_str = f.read()
+        return cls.register_from_json_str(model_dict_str)
 
     @classmethod
     def get_model(cls ,model_id:str,update:dict = None) -> T:
