@@ -7,6 +7,13 @@ QWEN2D5_SERIES = ModelSeries(
     reference_link="https://github.com/QwenLM/Qwen2.5"
 )
 
+QWEN3_SERIES = ModelSeries(
+    model_series_name = ModelSeriesType.QWEN3,
+    description="the latest addition to the Qwen family of large language models. These models represent our most advanced and intelligent systems to date, improving from our experience in building QwQ and Qwen2.5. We are making the weights of Qwen3 available to the public, including both dense and Mixture-of-Expert (MoE) models.",
+    reference_link="https://github.com/QwenLM/Qwen3"
+)
+
+
 GLM4_SERIES = ModelSeries(
     model_series_name = ModelSeriesType.GLM4,
     description="The GLM-4 series includes the latest generation of pre-trained models launched by Zhipu AI.",
@@ -60,6 +67,13 @@ Key Enhancements:
 
 - Multilingual Support: to serve global users, besides English and Chinese, Qwen2-VL now supports the understanding of texts in different languages inside images, including most European languages, Japanese, Korean, Arabic, Vietnamese, etc.""",
     reference_link="https://github.com/QwenLM/Qwen2-VL"
+)
+
+
+AGENT_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.AGENT,
+    description="""LLM or VLM models for Agentic tasks, e.g. computer-use,brower-use""",
+    reference_link=""
 )
 
 INTERNVL25_SERIES = ModelSeries(

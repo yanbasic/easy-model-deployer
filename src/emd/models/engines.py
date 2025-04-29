@@ -127,6 +127,25 @@ vllm_qwen2vl7b_engine064 = VllmEngine(**{
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
             "default_cli_args": " --chat-template emd/models/chat_templates/qwen2vl_add_prefill_chat_template.jinja --max_model_len 16000 --disable-log-stats --limit-mm-per-prompt image=2,video=1 --max_num_seq 1 --gpu_memory_utilization 0.9"
 })
+
+
+vllm_ui_tars_1_5_engin084 = VllmEngine(**{
+             **vllm_engine064.model_dump(),
+             "engine_dockerfile_config": {"VERSION":"v0.8.4"},
+            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --max_model_len 16000 --disable-log-stats --limit-mm-per-prompt image=1,video=0 --max_num_seq 2 --gpu_memory_utilization 0.9 --enable-prefix-caching"
+})
+
+
+
+vllm_qwen3_engin084 = VllmEngine(**{
+             **vllm_engine064.model_dump(),
+             "engine_dockerfile_config": {"VERSION":"v0.8.4"},
+            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --max_model_len 16000 --disable-log-stats  --enable-reasoning --reasoning-parser deepseek_r1 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
+})
+
+
 vllm_qwen2vl72b_engine064 = VllmEngine(**{
              **vllm_engine064.model_dump(),
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
@@ -139,6 +158,14 @@ vllm_qwen25vl72b_engine073 = VllmEngine(**{
             "dockerfile_name":"Dockerfile_qwen25_vl",
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
             "default_cli_args": " --max_model_len 25000 --disable-log-stats --limit-mm-per-prompt image=20,video=1 --max_num_seq 1 --gpu_memory_utilization 0.9"
+})
+
+vllm_qwen25vl72b_engine084 = VllmEngine(**{
+            **vllm_engine064.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"v0.8.4"},
+            "dockerfile_name":"Dockerfile_qwen25_vl",
+            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --max_model_len 32000 --disable-log-stats --limit-mm-per-prompt image=1,video=1 --max_num_seq 1 --gpu_memory_utilization 0.9"
 })
 
 vllm_qwq_engine073 = VllmEngine(**{

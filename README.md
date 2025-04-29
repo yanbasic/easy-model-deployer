@@ -15,7 +15,8 @@
 </p>
 
 ## 🔥 Latest News
-
+- 2025-04-29: Deploy Qwen 3 series models with [one command line](https://github.com/aws-samples/easy-model-deployer/blob/main/docs/en/best_deployment_practices.md##famous-models###Qwen-3-Series).
+- 2025-04-21: Deploy GLM Z1/0414 series models with [one command line](https://github.com/aws-samples/easy-model-deployer/blob/main/docs/en/best_deployment_practices.md##famous-models###GLM-Z1/0414-Series).
 - 2025-03-17: Deploy Gemma 3 series models with [one command line](https://github.com/aws-samples/easy-model-deployer/blob/main/docs/en/best_deployment_practices.md##famous-models###gemma-3-series).
 - 2025-03-06: Deploy QwQ-32B with [one command line](docs/en/best_deployment_practices.md##famous-models###qwen-series###qwq-32b).
 

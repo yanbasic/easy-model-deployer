@@ -16,6 +16,7 @@ sagemaker_service = Service(
         "EngineType":"engine_type",
         "Region":"region",
         "MaxCapacity": ValueWithDefault(name="max_capacity",default=1),
+        "MinCapacity": ValueWithDefault(name="min_capacity",default=1),
         "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10),
         "SageMakerEndpointName": ValueWithDefault(name="sagemaker_endpoint_name",default="Auto-generate")
     },
@@ -36,7 +37,8 @@ sagemaker_old_service = Service(
         "EngineType":"engine_type",
         "Region":"region",
         "MaxCapacity": ValueWithDefault(name="max_capacity",default=1),
-        "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10)
+        "MinCapacity": ValueWithDefault(name="min_capacity",default=1),
+        "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10),
     },
     name = "Amazon SageMaker AI Real-time inference",
     service_type=ServiceType.SAGEMAKER_OLDER,
@@ -55,7 +57,10 @@ sagemaker_async_service = Service(
         "FrameWorkType":"framework_type",
         "ServiceType":"service_type",
         "EngineType":"engine_type",
-        "Region":"region"
+        "Region":"region",
+        "MaxCapacity": ValueWithDefault(name="max_capacity",default=1),
+        "MinCapacity": ValueWithDefault(name="min_capacity",default=1),
+        "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10),
     },
     name = "Amazon SageMaker AI Asynchronous inference with OpenAI Compatible API",
     service_type=ServiceType.SAGEMAKER_ASYNC,
