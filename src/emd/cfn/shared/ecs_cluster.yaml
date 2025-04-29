@@ -10,7 +10,7 @@ Parameters:
   APIRouterImageURI:
     Type: String
     Description: The URI of OpenAI compatbile API router image. If provided, the router will be deployed.
-    Default: ""
+    Default: "public.ecr.aws/aws-gcr-solutions/dmaa/api-router:latest"
   UseSpot:
     Type: String
     Description: Use Fargate Spot capacity?
@@ -28,9 +28,11 @@ Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
+      ServiceConnectDefaults:
+        Namespace: emd-service-connect-namespace
       ClusterSettings:
         - Name: containerInsights
-          Value: enabled
+          Value: disabled
   PublicLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -138,6 +140,8 @@ Resources:
                 Action:
                   - ecs:PutClusterCapacityProviders
                   - ecs:DescribeClusters
+                  - ecs:UpdateService
+                  - ecs:DescribeServices
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
@@ -160,40 +164,70 @@ Resources:
               ecs_client = boto3.client('ecs')
               cluster_name = os.environ['ECS_CLUSTER_NAME']
               capacity_provider_name = event['ResourceProperties']['CapacityProvider']
+
+              def try_update_with_retry():
+                  # Simple retry mechanism - try twice with a delay
+                  try:
+                      return _do_update()
+                  except Exception as e:
+                      if 'UpdateInProgressException' in str(e):
+                          print("Cluster busy, waiting 30 seconds before retry...")
+                          import time
+                          time.sleep(30)
+                          return _do_update()  # Try once more
+                      else:
+                          raise  # Re-raise if it's not the specific error we're handling
+
+              def _do_update():
+                  cluster_info = ecs_client.describe_clusters(clusters=[cluster_name])['clusters'][0]
+                  current_capacity_providers = cluster_info.get('capacityProviders', [])
+
+                  if capacity_provider_name not in current_capacity_providers:
+                      current_capacity_providers.append(capacity_provider_name)
+
+                  return ecs_client.put_cluster_capacity_providers(
+                      cluster=cluster_name,
+                      capacityProviders=current_capacity_providers,
+                      defaultCapacityProviderStrategy=[
+                          {
+                              'capacityProvider': capacity_provider_name,
+                              'weight': 1,
+                              'base': 0
+                          }
+                      ]
+                  )
+
               try:
                   if event['RequestType'] in ['Create', 'Update']:
-                      cluster_info = ecs_client.describe_clusters(clusters=[cluster_name])['clusters'][0]
-                      current_capacity_providers = cluster_info.get('capacityProviders', [])
-
-                      if capacity_provider_name not in current_capacity_providers:
-                          current_capacity_providers.append(capacity_provider_name)
-
-                      ecs_client.put_cluster_capacity_providers(
-                          cluster=cluster_name,
-                          capacityProviders=current_capacity_providers,
-                          defaultCapacityProviderStrategy=[
-                              {
-                                  'capacityProvider': capacity_provider_name,
-                                  'weight': 1,
-                                  'base': 0
-                              }
-                          ]
-                      )
+                      try_update_with_retry()
                   elif event['RequestType'] == 'Delete':
-                    # Retrieve current capacity providers
-                    cluster_info = ecs_client.describe_clusters(clusters=[cluster_name])['clusters'][0]
-                    current_capacity_providers = cluster_info.get('capacityProviders', [])
+                      def _do_delete():
+                          # Retrieve current capacity providers
+                          cluster_info = ecs_client.describe_clusters(clusters=[cluster_name])['clusters'][0]
+                          current_capacity_providers = cluster_info.get('capacityProviders', [])
 
-                    # Remove only the specific capacity provider
-                    updated_capacity_providers = [
-                        cp for cp in current_capacity_providers if cp != capacity_provider_name
-                    ]
+                          # Remove only the specific capacity provider
+                          updated_capacity_providers = [
+                              cp for cp in current_capacity_providers if cp != capacity_provider_name
+                          ]
 
-                    ecs_client.put_cluster_capacity_providers(
-                        cluster=cluster_name,
-                        capacityProviders=updated_capacity_providers,
-                        defaultCapacityProviderStrategy=[]
-                    )
+                          return ecs_client.put_cluster_capacity_providers(
+                              cluster=cluster_name,
+                              capacityProviders=updated_capacity_providers,
+                              defaultCapacityProviderStrategy=[]
+                          )
+
+                      # Simple retry for delete operation too
+                      try:
+                          _do_delete()
+                      except Exception as e:
+                          if 'UpdateInProgressException' in str(e):
+                              print("Cluster busy during delete, waiting 30 seconds before retry...")
+                              import time
+                              time.sleep(30)
+                              _do_delete()  # Try once more
+                          else:
+                              raise
                   cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
               except Exception as e:
                   cfnresponse.send(event, context, cfnresponse.FAILED, {'Error': str(e)})
@@ -218,6 +252,57 @@ Resources:
 
               # Send response back to CloudFormation
               cfnresponse.send(event, context, response_status, response_data)
+
+          def convert_dns_name(event, context):
+              """
+              Converts a DNS name to comply with AWS Service Connect naming rules.
+              DNS names can only contain lowercase letters and numbers.
+              """
+              import re
+
+              # Get the input DNS name from the event
+              dns_name = event['ResourceProperties'].get('ModelName', '')
+
+              # Step 1: Convert to lowercase
+              dns_name = dns_name.lower()
+
+              # Step 2: Replace any character that is not a lowercase letter or number with a hyphen
+              dns_name = re.sub(r'[^a-z0-9]', '-', dns_name)
+
+              response_data = {'DnsName': dns_name}
+              cfnresponse.send(event, context, cfnresponse.SUCCESS, response_data)
+
+          def force_api_router_deployment(event, context):
+              """
+              Forces a new deployment for the APIRouterService.
+              This will restart the service with the latest task definition.
+              """
+              ecs_client = boto3.client('ecs')
+              cluster_name = os.environ['ECS_CLUSTER_NAME']
+              service_name = "EMD-API-Router"
+
+              try:
+                  # Check if the service exists
+                  response = ecs_client.describe_services(
+                      cluster=cluster_name,
+                      services=[service_name]
+                  )
+
+                  if not response['services'] or response['services'][0]['status'] != 'ACTIVE':
+                      response_data = {'Message': f"Service {service_name} not found or not active in cluster {cluster_name}"}
+                  else:
+                    # Force a new deployment
+                    ecs_client.update_service(
+                        cluster=cluster_name,
+                        service=service_name,
+                        forceNewDeployment=True,
+                    )
+                    response_data = {'Message': f"Forced new deployment for {service_name}"}
+
+                  cfnresponse.send(event, context, cfnresponse.SUCCESS, response_data)
+              except Exception as e:
+                  print(f"Error forcing deployment: {str(e)}")
+                  cfnresponse.send(event, context, cfnresponse.FAILED, {'Error': str(e)})
 
           def handler(event, context):
               print(event)
@@ -342,7 +427,7 @@ Resources:
     Type: AWS::ECS::Service
     Condition: DeployAPIRouterCondition
     Properties:
-      ServiceName: api-router-service
+      ServiceName: EMD-API-Router
       Cluster: !Ref ECSCluster
       DeploymentConfiguration:
         DeploymentCircuitBreaker:
@@ -371,6 +456,9 @@ Resources:
             Weight: 1
           - CapacityProvider: FARGATE
             Weight: 1
+      ServiceConnectConfiguration:
+        Enabled: true
+        Namespace: emd-service-connect-namespace
 
   APIRouterSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -472,3 +560,6 @@ Outputs:
   APIRouterTargetGroupArn:
     Description: The ARN of the OpenAI compatbile API outer Target Group
     Value: !If [DeployAPIRouterCondition, !Ref APIRouterTargetGroup, ""]
+  APIRouterSecurityGroup:
+    Description: The security group for the OpenAI compatbile API router
+    Value: !GetAtt APIRouterSecurityGroup.GroupId
