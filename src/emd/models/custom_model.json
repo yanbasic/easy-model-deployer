@@ -1,0 +1,21 @@
+{
+    "model_id": "Qwen3-8B",
+    "supported_engines": [
+        "vllm_engine064"
+    ],
+    "supported_instances": [
+        "g5d12xlarge_instance",
+        "local_instance"
+    ],
+    "supported_services": [
+        "sagemaker_service",
+        "local_service"
+    ],
+    "supported_frameworks": [
+        "fastapi_framework"
+    ],
+    "allow_china_region": true,
+    "huggingface_model_id": "Qwen/Qwen3-8B",
+    "model_type": "llm",
+    "require_huggingface_token": false
+}
