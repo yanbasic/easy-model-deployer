@@ -140,15 +140,9 @@ vllm_ui_tars_1_5_engin084 = VllmEngine(**{
 
 vllm_qwen3_engin084 = VllmEngine(**{
              **vllm_engine064.model_dump(),
-<<<<<<< HEAD
              "engine_dockerfile_config": {"VERSION":"v0.8.5"},
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
             "default_cli_args": " --max_model_len 16000 --max_num_seq 30 --disable-log-stats  --enable-reasoning --reasoning-parser deepseek_r1 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
-=======
-             "engine_dockerfile_config": {"VERSION":"v0.8.4"},
-            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-            "default_cli_args": " --max_model_len 16000 --disable-log-stats  --enable-reasoning --reasoning-parser deepseek_r1 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
->>>>>>> 36a49970280a935d9e4f7cf97180faa8a9477bf7
 })
 
 
