@@ -773,3 +773,52 @@ Model.register(
         model_series=QWEN3_SERIES
     )
 )
+
+
+Model.register(
+    dict(
+        model_id = "Qwen3-235B-A22B",
+        supported_engines=[vllm_qwen3_engin084],
+        supported_instances=[
+            local_instance
+        ],
+        supported_services=[
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        huggingface_model_id="Qwen/Qwen3-235B-A22B",
+        modelscope_model_id="Qwen/Qwen3-235B-A22B",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of Qwen LLMs, offers base and tuned models from 0.5B to 72B\n parameters, featuring enhanced knowledge, improved coding and math skills, better instruction\n following, long-text generation, structured data handling, 128K token context support, and\n multilingual capabilities for 29+ languages.",
+        model_type=ModelType.LLM,
+        model_series=QWEN3_SERIES
+    )
+)
+
+Model.register(
+    dict(
+        model_id = "Qwen3-235B-A22B-FP8",
+        supported_engines=[vllm_qwen3_engin084],
+        supported_instances=[
+            local_instance
+        ],
+        supported_services=[
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        huggingface_model_id="Qwen/Qwen3-235B-A22B-FP8",
+        modelscope_model_id="Qwen/Qwen3-235B-A22B-FP8",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of Qwen LLMs, offers base and tuned models from 0.5B to 72B\n parameters, featuring enhanced knowledge, improved coding and math skills, better instruction\n following, long-text generation, structured data handling, 128K token context support, and\n multilingual capabilities for 29+ languages.",
+        model_type=ModelType.LLM,
+        model_series=QWEN3_SERIES
+    )
+)
