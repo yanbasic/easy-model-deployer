@@ -399,6 +399,7 @@ def deploy(
             else:
                 gpu_num = get_gpu_num()
                 support_gpu_num = model.supported_instances[0].gpu_num
+                support_gpu_num = support_gpu_num or gpu_num
                 default_gpus_str = ",".join([str(i) for i in range(min(gpu_num,support_gpu_num))])
                 gpus_to_deploy = questionary.text(
                         "input the local gpu ids to deploy the model (e.g. 0,1,2):",
