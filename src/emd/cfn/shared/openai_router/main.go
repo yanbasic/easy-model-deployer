@@ -19,14 +19,18 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudformation"
 	"github.com/aws/aws-sdk-go/service/sagemakerruntime"
+	"github.com/aws/aws-sdk-go/service/secretsmanager"
 	"github.com/gin-gonic/gin"
 )
 
 var (
 	sagemakerClient   *sagemakerruntime.SageMakerRuntime
 	cfnClient        *cloudformation.CloudFormation
+	secretsClient    *secretsmanager.SecretsManager
 	modelEndpointMap = make(map[string]string)
+	modelApiKeyMap   = make(map[string]string) // Map to store model-name/api-key pairs
 	modelMapMutex    sync.RWMutex
+	apiKeyMapMutex   sync.RWMutex
 	httpTransport    = &http.Transport{
 		MaxIdleConns:        100,
 		IdleConnTimeout:     90 * time.Second,
@@ -59,11 +63,20 @@ func main() {
 	}
 	sagemakerClient = sagemakerruntime.New(sess)
 	cfnClient = cloudformation.New(sess)
+	secretsClient = secretsmanager.New(sess)
+
+	// Load API keys from AWS Secrets Manager
+	if err := loadApiKeysFromSecrets(); err != nil {
+		log.Printf("Warning: Failed to load API keys from secrets: %v", err)
+	}
 
 	// Discover initial model endpoints
 	if err := discoverModelEndpoints(); err != nil {
 		log.Fatalf("Failed to discover model endpoints: %v", err)
 	}
+
+	// Start background refresh of maps every hour
+	go startPeriodicRefresh(1 * time.Hour)
 
 	// Create router with ALB support
 	router := gin.Default()
@@ -82,7 +95,6 @@ func main() {
 
 	// API routes that can use either payload model or path parameters
 	modelFieldApi := router.Group("/v1")
-	modelFieldApi.Use(authMiddleware())
 	{
 		modelFieldApi.GET("/models", modelsHandler)
 		modelFieldApi.POST("/chat/completions", requestHandler)
@@ -162,33 +174,41 @@ func modelsHandler(c *gin.Context) {
 	})
 }
 
-// authMiddleware checks for valid API key if Authorization header is present
-func authMiddleware() gin.HandlerFunc {
-	apiKey := getEnv("API_KEY", "")
-	return func(c *gin.Context) {
-		// Skip validation if no API key configured
-		if apiKey == "" {
-			c.Next()
-			return
-		}
 
-		authHeader := c.GetHeader("Authorization")
-		if authHeader == "" {
-			c.JSON(401, gin.H{"error": "Authorization header required"})
-			c.Abort()
-			return
-		}
+// loadApiKeysFromSecrets loads API keys from AWS Secrets Manager
+func loadApiKeysFromSecrets() error {
+	apiKeyMapMutex.Lock()
+	defer apiKeyMapMutex.Unlock()
 
-		// Validate Bearer token
-		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" || parts[1] != apiKey {
-			c.JSON(401, gin.H{"error": "Invalid API key"})
-			c.Abort()
-			return
-		}
-
-		c.Next()
+	// Clear existing map
+	for k := range modelApiKeyMap {
+		delete(modelApiKeyMap, k)
 	}
+
+	// Get the secret value
+	secretName := "EMD-APIKey-Secrets"
+	input := &secretsmanager.GetSecretValueInput{
+		SecretId: aws.String(secretName),
+	}
+
+	result, err := secretsClient.GetSecretValue(input)
+	if err != nil {
+		return fmt.Errorf("failed to get secret value: %v", err)
+	}
+
+	// Parse the secret value as JSON
+	var secretData map[string]string
+	if err := json.Unmarshal([]byte(*result.SecretString), &secretData); err != nil {
+		return fmt.Errorf("failed to parse secret value: %v", err)
+	}
+
+	// Store model-name/api-key pairs in the map
+	for modelName, apiKey := range secretData {
+		modelApiKeyMap[modelName] = apiKey
+	}
+
+	log.Printf("Loaded %d API keys from AWS Secrets Manager", len(modelApiKeyMap))
+	return nil
 }
 
 func discoverModelEndpoints() error {
@@ -372,6 +392,33 @@ func getEndpointForModel(modelKey string) (string, error) {
 	return endpoint, nil
 }
 
+// startPeriodicRefresh runs a background goroutine that refreshes the model maps at the specified interval
+func startPeriodicRefresh(interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			log.Println("Refreshing model maps...")
+
+			// Refresh API keys
+			if err := loadApiKeysFromSecrets(); err != nil {
+				log.Printf("Warning: Failed to refresh API keys: %v", err)
+			} else {
+				log.Printf("Successfully refreshed API keys, loaded %d keys", len(modelApiKeyMap))
+			}
+
+			// Refresh endpoints
+			if err := discoverModelEndpoints(); err != nil {
+				log.Printf("Warning: Failed to refresh model endpoints: %v", err)
+			} else {
+				log.Printf("Successfully refreshed model endpoints, loaded %d endpoints", len(modelEndpointMap))
+			}
+		}
+	}
+}
+
 func requestHandler(c *gin.Context) {
 	// Read raw body once and reuse it
 	inputBytes, err := c.GetRawData()
@@ -396,6 +443,28 @@ func requestHandler(c *gin.Context) {
 	} else {
 		c.JSON(400, gin.H{"error": "Model field in payload is required"})
 		return
+	}
+
+	// Authentication check
+	// Check if the model requires authentication
+	apiKeyMapMutex.RLock()
+	apiKey, requiresAuth := modelApiKeyMap[modelKey]
+	apiKeyMapMutex.RUnlock()
+
+	if requiresAuth {
+		// Model requires authentication, validate the token
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.JSON(401, gin.H{"error": "Authorization header required for this model"})
+			return
+		}
+
+		// Validate Bearer token against model-specific API key
+		parts := strings.Split(authHeader, " ")
+		if len(parts) != 2 || parts[0] != "Bearer" || parts[1] != apiKey {
+			c.JSON(401, gin.H{"error": "Invalid API key for this model"})
+			return
+		}
 	}
 
 	// Get endpoint for model
