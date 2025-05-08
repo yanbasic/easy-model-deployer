@@ -29,6 +29,21 @@ Parameters:
   Region:
     Type: String
     Description: The region to be used for the SageMaker Endpoint
+  LambdaDeploymentHelperArn:
+    Type: String
+    Description: The ARN of the Lambda function for capacity provider association
+  APIKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: API key to be used for invoking the model
+
+Conditions:
+  HasAPIKey: !Not [!Equals [!Ref APIKey, ""]]
+  IsChinaRegion: !Or
+    - !Equals [!Ref "AWS::Region", "cn-north-1"]
+    - !Equals [!Ref "AWS::Region", "cn-northwest-1"]
+
 Resources:
   ExecutionRole:
     Type: AWS::IAM::Role
@@ -92,10 +107,25 @@ Resources:
       EndpointName: !Sub '${AWS::StackName}-endpoint'
       EndpointConfigName: !GetAtt SageMakerEndpointConfig.EndpointConfigName
 
+  SetApiKey:
+    Type: Custom::SetApiKey
+    Condition: HasAPIKey
+    Properties:
+      ServiceToken: !Ref LambdaDeploymentHelperArn
+      ModelName: !Join ['', [!Ref ModelId, '/', !Ref ModelTag]]
+      APIKey: !Ref APIKey
+
 Outputs:
   Model:
-    Description: Model ID used to generate the response
+    Description: The unique model ID that determines which model will process your request in the OpenAI-compatible API.
     Value: !Join ['', [!Ref ModelId, '/', !Ref ModelTag]]
   SageMakerEndpointName:
     Description: The name of the SageMaker Endpoint
     Value: !GetAtt SageMakerEndpoint.EndpointName
+  ModelAPIKey:
+    Condition: HasAPIKey
+    Description: "API key for accessing model is securely stored in AWS Secrets Manager and can be managed through the provided link."
+    Value: !If
+      - IsChinaRegion
+      - !Sub "https://console.amazonaws.cn/secretsmanager/secret?name=EMD-APIKey-Secrets&region=${AWS::Region}"
+      - !Sub "https://console.aws.amazon.com/secretsmanager/secret?name=EMD-APIKey-Secrets&region=${AWS::Region}"

@@ -86,6 +86,18 @@ Parameters:
   Region:
     Type: String
     Description: Not used currently
+  APIKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: API key to be used for invoking the model
+
+Conditions:
+  HasAPIKey: !Not [!Equals [!Ref APIKey, ""]]
+  IsChinaRegion: !Or
+    - !Equals [!Ref "AWS::Region", "cn-north-1"]
+    - !Equals [!Ref "AWS::Region", "cn-northwest-1"]
+
 Resources:
   ECSAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -174,6 +186,13 @@ Resources:
     Properties:
       ServiceToken: !Ref LambdaDeploymentHelperArn
       ModelName: !Join ['', [!Ref ModelId, '/', !Ref ModelTag]]
+  SetApiKey:
+    Type: Custom::SetApiKey
+    Condition: HasAPIKey
+    Properties:
+      ServiceToken: !Ref LambdaDeploymentHelperArn
+      ModelName: !Join ['', [!Ref ModelId, '/', !Ref ModelTag]]
+      APIKey: !Ref APIKey
 
   ContainerHostSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -325,6 +344,9 @@ Resources:
             ClientAliases:
               - Port: !Ref ContainerPort
                 DnsName: !GetAtt ConvertDnsName.DnsName
+            Timeout:
+              IdleTimeoutSeconds: 3600
+              PerRequestTimeoutSeconds: 3600
   ServiceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -366,25 +388,6 @@ Resources:
         GroupId: !Ref ServiceSecurityGroup
         IpProtocol: -1
         SourceSecurityGroupId: !Ref PublicLoadBalancerSecurityGroup
-  ListenerRulePath:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    Properties:
-      ListenerArn: !Ref PublicLoadBalancerListenerArn
-      Priority: !GetAtt GetPriorityNumber.Priority
-      Conditions:
-        - Field: path-pattern
-          PathPatternConfig:
-            Values:
-              - !Join
-                - ''
-                - - '/'
-                  - !Ref ModelId
-                  - '/'
-                  - !Ref ModelTag
-                  - '/*'
-      Actions:
-        - Type: forward
-          TargetGroupArn: !Ref ServiceTargetGroup
 
   ForceApiRouterDeployment:
     Type: Custom::ForceApiRouterDeployment
@@ -394,7 +397,7 @@ Resources:
 
 Outputs:
   Model:
-    Description: Model ID used to generate the response.
+    Description: The unique model ID that determines which model will process your request in the OpenAI-compatible API.
     Value: !Join ['', [!Ref ModelId, '/', !Ref ModelTag]]
   BaseURL:
     Description: Please use this URL for the OpenAI-compatible model API, like /v1/chat/completions. To use HTTPS, create an SSL certificate in AWS Certificate Manager and attach it to the load balancer.
@@ -402,3 +405,10 @@ Outputs:
   ECSServiceConnect:
     Description: Service Connect allows for service-to-service communications with automatic discovery using short names and standard ports.
     Value: !Join ['', ['http://', !GetAtt ConvertDnsName.DnsName, ':', !Ref ContainerPort]]
+  ModelAPIKey:
+    Condition: HasAPIKey
+    Description: "API key for accessing model is securely stored in AWS Secrets Manager and can be managed through the provided link."
+    Value: !If
+      - IsChinaRegion
+      - !Sub "https://console.amazonaws.cn/secretsmanager/secret?name=EMD-APIKey-Secrets&region=${AWS::Region}"
+      - !Sub "https://console.aws.amazon.com/secretsmanager/secret?name=EMD-APIKey-Secrets&region=${AWS::Region}"
