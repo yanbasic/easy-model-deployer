@@ -194,7 +194,11 @@ def run(
 
     # docker build image
     # get current aws account_id
-    push_image_account_id = execute_model.get_image_push_account_id()
+    if instance_type == InstanceType.LOCAL:
+        push_image_account_id = "local"
+    else:
+        push_image_account_id = execute_model.get_image_push_account_id()
+
     build_image_account_id = (
         execute_model.executable_config.current_engine.base_image_account_id
     )
@@ -325,7 +329,7 @@ def run(
         logger.info(f"pushing image: {push_image_script}")
         assert os.system(push_image_script) == 0
 
-    image_uri = ecr_repo_uri
+    # image_uri = ecr_repo_uri
     logger.info(f"Image URI: {ecr_repo_uri}")
 
     parameters = {"ecr_repo_uri": ecr_repo_uri}

@@ -375,13 +375,13 @@ class Model(ModelBase,Generic[T]):
         except Exception as e:
             raise ValueError(f"stack_name:{stack_name} is not a valid model stack name")
 
-    def get_image_build_account_id(self):
-        current_account_id = boto3.client("sts").get_caller_identity()["Account"]
-        build_image_account_id = (
-            self.executable_config.current_engine.base_image_account_id or \
-            current_account_id
-        )
-        return build_image_account_id
+    # def get_image_build_account_id(self):
+    #     current_account_id = boto3.client("sts").get_caller_identity()["Account"]
+    #     build_image_account_id = (
+    #         self.executable_config.current_engine.base_image_account_id or \
+    #         current_account_id
+    #     )
+    #     return build_image_account_id
 
     def get_image_push_account_id(self):
         current_account_id = boto3.client("sts").get_caller_identity()["Account"]
