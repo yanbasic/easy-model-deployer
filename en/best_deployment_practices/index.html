@@ -1,1099 +1,669 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/best_deployment_practices/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Best Deployment Practices - Easy Model Deployer</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="../css/print-site.css" rel="stylesheet" />
+        <link href="../css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="../custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Best Deployment Practices";
+        var mkdocs_page_input_path = "best_deployment_practices.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/best_deployment_practices/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
 
-<!doctype html>
-<html lang="en" class="no-js">
-  <head>
-    
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      
-      
-      
-        <link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/best_deployment_practices/">
-      
-      
-        <link rel="prev" href="../installation/">
-      
-      
-        <link rel="next" href="../emd_client/">
-      
-      
-      <link rel="icon" href="https://s3.cn-north-1.amazonaws.com.cn/aws-assets-prod/libra-css/images/site/fav/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.5">
-    
-    
-      
-        <title>Best-Deployment-Practices - Easy Model Deployer</title>
-      
-    
-    
-      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
-      
-      
+<body class="wy-body-for-nav" role="document">
 
-
-    
-    
-      
-    
-    
-      
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
-      
-    
-    
-      <link rel="stylesheet" href="../css/print-site-enum-headings1.css">
-    
-      <link rel="stylesheet" href="../css/print-site-enum-headings2.css">
-    
-      <link rel="stylesheet" href="../css/print-site-enum-headings3.css">
-    
-      <link rel="stylesheet" href="../css/print-site-enum-headings4.css">
-    
-      <link rel="stylesheet" href="../css/print-site-enum-headings5.css">
-    
-      <link rel="stylesheet" href="../css/print-site-enum-headings6.css">
-    
-      <link rel="stylesheet" href="../css/print-site.css">
-    
-      <link rel="stylesheet" href="../css/print-site-material.css">
-    
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
-    
-      
-
-    
-    
-    
-  </head>
-  
-  
-    <body dir="ltr">
-  
-    
-    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
-    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
-    <div data-md-component="skip">
-      
-        
-        <a href="#best-deployment-practices" class="md-skip">
-          Skip to content
-        </a>
-      
-    </div>
-    <div data-md-component="announce">
-      
-    </div>
-    
-      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
-        
-      </div>
-    
-    
-      
-
-<header class="md-header" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Easy Model Deployer" class="md-header__button md-logo" aria-label="Easy Model Deployer" data-md-component="logo">
-      
-  <img src="https://s3.cn-north-1.amazonaws.com.cn/aws-assets-prod/libra-css/images/site/fav/favicon.ico" alt="logo">
-
-    </a>
-    <label class="md-header__button md-icon" for="__drawer">
-      
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
-    </label>
-    <div class="md-header__title" data-md-component="header-title">
-      <div class="md-header__ellipsis">
-        <div class="md-header__topic">
-          <span class="md-ellipsis">
-            Easy Model Deployer
-          </span>
-        </div>
-        <div class="md-header__topic" data-md-component="header-topic">
-          <span class="md-ellipsis">
-            
-              Best-Deployment-Practices
-            
-          </span>
-        </div>
-      </div>
-    </div>
-    
-    
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
-    
-    
-      <div class="md-header__option">
-  <div class="md-select">
-    
-    <button class="md-header__button md-icon" aria-label="Select language">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
-    </button>
-    <div class="md-select__inner">
-      <ul class="md-select__list">
-        
-          <li class="md-select__item">
-            <a href="/easy-model-deployer/en/" hreflang="en" class="md-select__link">
-              English
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
 </div>
-    
-    
-      <label class="md-header__button md-icon" for="__search">
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Quick Start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../supported_models/">Supported Models</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Best Deployment Practices</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#example-model-deployments">Example Model Deployments</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#qwen-3-series">Qwen 3 Series</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#glm-z10414-series">GLM Z1/0414 Series</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#mistral-small-series">Mistral Small Series</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#gemma-3-series">Gemma 3 Series</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#qwen-series">Qwen Series</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#qwen25-vl-32b-instruct">Qwen2.5-VL-32B-Instruct</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#qwq-32b">QwQ-32B</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploying-to-specific-gpu-types">Deploying to Specific GPU Types</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#example-deploying-qwen25-7b-on-g52xlarge">Example: Deploying Qwen2.5-7B on g5.2xlarge</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#achieving-longer-context-windows">Achieving Longer Context Windows</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#example-deploying-model-with-16k-context-window">Example: Deploying model with 16k context window</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-deploying-model-on-g4dn-instance">Example: Deploying model on G4dn instance</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#extra-parameters-usage">Extra Parameters Usage</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#parameter-structure">Parameter Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#model-parameters">Model Parameters</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#model-source-configuration">Model Source Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#service-parameters">Service Parameters</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#api-security">API Security</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#sagemaker-specific-parameters">SageMaker-specific Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ecs-specific-parameters">ECS-specific Parameters</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#engine-parameters">Engine Parameters</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#common-engine-parameters">Common Engine Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#vllm-specific-parameters">vLLM-specific Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#tgi-specific-parameters">TGI-specific Parameters</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#framework-parameters">Framework Parameters</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#fastapi-parameters">FastAPI Parameters</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-configurations">Example Configurations</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example-high-throughput-configuration">Example: High-throughput Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#example-long-context-configuration">Example: Long Context Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#example-secure-api-with-custom-endpoint-name">Example: Secure API with Custom Endpoint Name</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#model-source-configuration_1">Model Source Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#environmental-variables">Environmental variables</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#common-troubleshooting">Common Troubleshooting</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#memory-related-issues">Memory-Related Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deployment-timeout-issues">Deployment Timeout Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#api-connection-issues">API Connection Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#performance-optimization">Performance Optimization</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../commands/">CLI Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local_deployment/">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../sdk_integration/">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../swift_chat_integration/">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dify_integration/">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../langflow_integration/">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../flowise_integration/">Flowise Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ollama_integration/">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../nextchat_integration/">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Easy Model Deployer</a>
         
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
       </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-    
-    
-      <div class="md-header__source">
-        <a href="https://github.com/aws-samples/easy-model-deployer/" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
-  </div>
-  <div class="md-source__repository">
-    aws-samples/easy-model-deployer
-  </div>
-</a>
-      </div>
-    
-  </nav>
-  
-</header>
-    
-    <div class="md-container" data-md-component="container">
-      
-      
-        
-          
-            
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-grid">
-    <ul class="md-tabs__list">
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../architecture/" class="md-tabs__link">
-        
-  
-    
-  
-  Architecture
-
-      </a>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Best Deployment Practices</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/best_deployment_practices.md">Edit on aws-samples/easy-model-deployer</a>
     </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../installation/" class="md-tabs__link">
-        
-  
-    
-  
-  Installation
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-    
-  
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
-        
-  
-    
-  
-  Best-Deployment-Practices
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../emd_client/" class="md-tabs__link">
-        
-  
-    
-  
-  EMD-Client
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../langchain_interface/" class="md-tabs__link">
-        
-  
-    
-  
-  Langchain-Interface
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../openai_compatiable/" class="md-tabs__link">
-        
-  
-    
-  
-  OpenAI-Compatiable
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../supported_models/" class="md-tabs__link">
-        
-  
-    
-  
-  Supported Model
-
-      </a>
-    </li>
-  
-
-      
-    </ul>
-  </div>
-</nav>
-          
-        
-      
-      <main class="md-main" data-md-component="main">
-        <div class="md-main__inner md-grid">
-          
-            
-              
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-
-  
-
-
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
-  <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Easy Model Deployer" class="md-nav__button md-logo" aria-label="Easy Model Deployer" data-md-component="logo">
-      
-  <img src="https://s3.cn-north-1.amazonaws.com.cn/aws-assets-prod/libra-css/images/site/fav/favicon.ico" alt="logo">
-
-    </a>
-    Easy Model Deployer
-  </label>
-  
-    <div class="md-nav__source">
-      <a href="https://github.com/aws-samples/easy-model-deployer/" title="Go to repository" class="md-source" data-md-component="source">
-  <div class="md-source__icon md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
-  </div>
-  <div class="md-source__repository">
-    aws-samples/easy-model-deployer
-  </div>
-</a>
-    </div>
-  
-  <ul class="md-nav__list" data-md-scrollfix>
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../architecture/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Architecture
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Installation
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Best-Deployment-Practices
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Best-Deployment-Practices
-    
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#famous-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      Famous Models
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Famous Models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#qwen-3-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Qwen 3 Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#glm-z10414-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      GLM Z1/0414 Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mistral-small-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mistral Small Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gemma-3-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gemma 3 Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qwen-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Qwen Series
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Qwen Series">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#qwen25-vl-32b-instruct" class="md-nav__link">
-    <span class="md-ellipsis">
-      Qwen2.5-VL-32B-Instruct
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qwq-32b" class="md-nav__link">
-    <span class="md-ellipsis">
-      QwQ-32B
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploying-to-specific-gpu-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deploying to Specific GPU Types
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Deploying to Specific GPU Types">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-deploying-qwen25-7b-on-g52xlarge" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Deploying Qwen2.5-7B on g5.2xlarge
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#achieving-longer-context-windows" class="md-nav__link">
-    <span class="md-ellipsis">
-      Achieving Longer Context Windows
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Achieving Longer Context Windows">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-deploying-model-with-16k-context-window" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Deploying model with 16k context window
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-deploying-model-on-g4dn-instance" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Deploying model on G4dn instance
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-customize-model-download-methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Customize model download methods
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#environmental-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environmental variables
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Common Troubleshooting
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../emd_client/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    EMD-Client
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../langchain_interface/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Langchain-Interface
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../openai_compatiable/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    OpenAI-Compatiable
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../supported_models/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Supported Model
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-            
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#famous-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      Famous Models
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Famous Models">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#qwen-3-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Qwen 3 Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#glm-z10414-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      GLM Z1/0414 Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#mistral-small-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mistral Small Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gemma-3-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gemma 3 Series
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qwen-series" class="md-nav__link">
-    <span class="md-ellipsis">
-      Qwen Series
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Qwen Series">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#qwen25-vl-32b-instruct" class="md-nav__link">
-    <span class="md-ellipsis">
-      Qwen2.5-VL-32B-Instruct
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#qwq-32b" class="md-nav__link">
-    <span class="md-ellipsis">
-      QwQ-32B
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploying-to-specific-gpu-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deploying to Specific GPU Types
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Deploying to Specific GPU Types">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-deploying-qwen25-7b-on-g52xlarge" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Deploying Qwen2.5-7B on g5.2xlarge
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#achieving-longer-context-windows" class="md-nav__link">
-    <span class="md-ellipsis">
-      Achieving Longer Context Windows
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Achieving Longer Context Windows">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-deploying-model-with-16k-context-window" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Deploying model with 16k context window
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-deploying-model-on-g4dn-instance" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Deploying model on G4dn instance
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-customize-model-download-methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: Customize model download methods
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#environmental-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environmental variables
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Common Troubleshooting
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
-          
-          
-            <div class="md-content" data-md-component="content">
-              <article class="md-content__inner md-typeset">
-                
-                  
-
-
-  
-  
-
-
-<h1 id="best-deployment-practices">Best Deployment Practices</h1>
+                <h1 id="best-deployment-practices">Best Deployment Practices</h1>
 <p>This document provides examples of best practices for deploying models using EMD for various use cases.</p>
-<h2 id="famous-models">Famous Models</h2>
+<h2 id="example-model-deployments">Example Model Deployments</h2>
 <h3 id="qwen-3-series">Qwen 3 Series</h3>
-<div class="highlight"><pre><span></span><code>emd deploy --model-id Qwen3-30B-A3B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
-
-emd deploy --model-id Qwen3-32B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
-
-emd deploy --model-id Qwen3-8B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
-</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1">emd deploy --model-id Qwen3-30B-A3B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</span><span id="__span-0-2">
+</span><span id="__span-0-3">emd deploy --model-id Qwen3-32B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</span><span id="__span-0-4">
+</span><span id="__span-0-5">emd deploy --model-id Qwen3-8B --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</span></code></pre></div>
 <h3 id="glm-z10414-series">GLM Z1/0414 Series</h3>
-<div class="highlight"><pre><span></span><code>emd deploy --model-id GLM-Z1-32B-0414 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
-
-emd deploy --model-id GLM-4-32B-0414 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
-</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1">emd deploy --model-id GLM-Z1-32B-0414 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</span><span id="__span-1-2">
+</span><span id="__span-1-3">emd deploy --model-id GLM-4-32B-0414 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</span></code></pre></div>
 <h3 id="mistral-small-series">Mistral Small Series</h3>
-<div class="highlight"><pre><span></span><code>emd deploy --model-id Mistral-Small-3.1-24B-Instruct-2503 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
-</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1">emd deploy --model-id Mistral-Small-3.1-24B-Instruct-2503 --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</span></code></pre></div>
 <h3 id="gemma-3-series">Gemma 3 Series</h3>
-<div class="highlight"><pre><span></span><code>emd deploy --model-id gemma-3-27b-it --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
-</code></pre></div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1">emd deploy --model-id gemma-3-27b-it --instance-type g5.12xlarge --engine-type vllm --service-type sagemaker_realtime
+</span></code></pre></div>
 <h3 id="qwen-series">Qwen Series</h3>
 <h4 id="qwen25-vl-32b-instruct">Qwen2.5-VL-32B-Instruct</h4>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-VL-32B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
-</code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-VL-32B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
+</span></code></pre></div>
 <h4 id="qwq-32b">QwQ-32B</h4>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>QwQ-32B<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
-</code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>QwQ-32B<span class="w"> </span>--instance-type<span class="w"> </span>g5.12xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
+</span></code></pre></div>
 <h2 id="deploying-to-specific-gpu-types">Deploying to Specific GPU Types</h2>
 <p>Choosing the right GPU type is critical for optimal performance and cost-efficiency. Use the <code>--instance-type</code> parameter to specify the GPU instance.</p>
 <h3 id="example-deploying-qwen25-7b-on-g52xlarge">Example: Deploying Qwen2.5-7B on g5.2xlarge</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
-</code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
+</span></code></pre></div>
 <h2 id="achieving-longer-context-windows">Achieving Longer Context Windows</h2>
 <p>To enable longer context windows, use the <code>--extra-params</code> option with engine-specific parameters.</p>
 <h3 id="example-deploying-model-with-16k-context-window">Example: Deploying model with 16k context window</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.4xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">  &quot;engine_params&quot;: {</span>
-<span class="s1">    &quot;vllm_cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
-<span class="s1">  }</span>
-<span class="s1">}&#39;</span>
-</code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.4xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-7-2"><span class="s1">  &quot;engine_params&quot;: {</span>
+</span><span id="__span-7-3"><span class="s1">    &quot;vllm_cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
+</span><span id="__span-7-4"><span class="s1">  }</span>
+</span><span id="__span-7-5"><span class="s1">}&#39;</span>
+</span></code></pre></div>
 <h3 id="example-deploying-model-on-g4dn-instance">Example: Deploying model on G4dn instance</h3>
-<div class="highlight"><pre><span></span><code>emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-14B-Instruct-AWQ<span class="w"> </span>--instance-type<span class="w"> </span>g4dn.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">  &quot;engine_params&quot;: {</span>
-<span class="s1">    &quot;environment_variables&quot;: &quot;export VLLM_ATTENTION_BACKEND=XFORMERS &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;,</span>
-<span class="s1">    &quot;default_cli_args&quot;: &quot; --chat-template emd/models/chat_templates/qwen_2d5_add_prefill_chat_template.jinja --max_model_len 12000 --max_num_seqs 10  --gpu_memory_utilization 0.95 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes&quot;</span>
-<span class="s1">  }</span>
-<span class="s1">}&#39;</span>
-</code></pre></div>
-<h3 id="example-customize-model-download-methods">Example: Customize model download methods</h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-14B-Instruct-AWQ<span class="w"> </span>--instance-type<span class="w"> </span>g4dn.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-8-2"><span class="s1">  &quot;engine_params&quot;: {</span>
+</span><span id="__span-8-3"><span class="s1">    &quot;environment_variables&quot;: &quot;export VLLM_ATTENTION_BACKEND=XFORMERS &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;,</span>
+</span><span id="__span-8-4"><span class="s1">    &quot;default_cli_args&quot;: &quot; --chat-template emd/models/chat_templates/qwen_2d5_add_prefill_chat_template.jinja --max_model_len 12000 --max_num_seqs 10  --gpu_memory_utilization 0.95 --disable-log-stats --enable-auto-tool-choice --tool-call-parser hermes&quot;</span>
+</span><span id="__span-8-5"><span class="s1">  }</span>
+</span><span id="__span-8-6"><span class="s1">}&#39;</span>
+</span></code></pre></div>
+<h2 id="extra-parameters-usage">Extra Parameters Usage</h2>
+<p>The <code>--extra-params</code> option allows you to customize various aspects of your deployment. This section provides a detailed reference for the available parameters organized by category.</p>
+<h3 id="parameter-structure">Parameter Structure</h3>
+<p>The extra parameters are structured as a JSON object with the following top-level categories:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-9-1"><span class="p">{</span>
+</span><span id="__span-9-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+</span><span id="__span-9-3"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+</span><span id="__span-9-4"><span class="w">  </span><span class="nt">&quot;instance_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+</span><span id="__span-9-5"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+</span><span id="__span-9-6"><span class="w">  </span><span class="nt">&quot;framework_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-9-7"><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="model-parameters">Model Parameters</h3>
+<p>Model parameters control how the model is loaded and prepared.</p>
+<h4 id="model-source-configuration">Model Source Configuration</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><span class="p">{</span>
+</span><span id="__span-10-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-3"><span class="w">    </span><span class="nt">&quot;model_files_s3_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3://your-bucket/model-path&quot;</span><span class="p">,</span>
+</span><span id="__span-10-4"><span class="w">    </span><span class="nt">&quot;model_files_local_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/local/model&quot;</span><span class="p">,</span>
+</span><span id="__span-10-5"><span class="w">    </span><span class="nt">&quot;model_files_download_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;huggingface|modelscope|auto&quot;</span><span class="p">,</span>
+</span><span id="__span-10-6"><span class="w">    </span><span class="nt">&quot;huggingface_model_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;organization/model-name&quot;</span><span class="p">,</span>
+</span><span id="__span-10-7"><span class="w">    </span><span class="nt">&quot;modelscope_model_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;organization/model-name&quot;</span><span class="p">,</span>
+</span><span id="__span-10-8"><span class="w">    </span><span class="nt">&quot;need_prepare_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-10-9"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-10-10"><span class="p">}</span>
+</span></code></pre></div>
 <ul>
-<li>You can load models from different locations by addingappropriate values in the extra-params parameter</li>
-<li>Load model from S3
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:{</span>
-<span class="w">    </span><span class="nt">&quot;model_files_s3_path&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;S3_PATH&gt;&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></li>
-<li>Load model from local path (only applicable for local deployment)
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="nt">&quot;model_files_local_path&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;LOCAL_PATH&gt;&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></li>
-<li>Skip downloading and uploading model files in codebuild, which will significantly reducedeployment time
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;need_prepare_model&quot;</span><span class="p">:</span><span class="kc">false</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></li>
-<li>Specify the download source for model files
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:{</span>
-<span class="w">    </span><span class="nt">&quot;model_files_download_source&quot;</span><span class="p">:</span><span class="s2">&quot;huggingface|modelscope|auto(default)&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></li>
-<li>Specify the model ID on huggingface or modelscope
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;huggingface_model_id&quot;</span><span class="p">:</span><span class="s2">&quot;model id on huggingface&quot;</span><span class="p">,</span><span class="nt">&quot;modelscope_model_id&quot;</span><span class="p">:</span><span class="s2">&quot;model id on modelscope&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></li>
+<li><code>model_files_s3_path</code>: Load model directly from an S3 path</li>
+<li><code>model_files_local_path</code>: Load model from a local path (only for local deployment)</li>
+<li><code>model_files_download_source</code>: Specify the source for downloading model files</li>
+<li><code>huggingface_model_id</code>: Specify a custom Hugging Face model ID</li>
+<li><code>modelscope_model_id</code>: Specify a custom ModelScope model ID</li>
+<li><code>need_prepare_model</code>: Set to <code>false</code> to skip downloading and uploading model files (reduces deployment time)</li>
 </ul>
+<h3 id="service-parameters">Service Parameters</h3>
+<p>Service parameters configure the deployment service behavior.</p>
+<h4 id="api-security">API Security</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><span class="p">{</span>
+</span><span id="__span-11-2"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-3"><span class="w">    </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-secure-api-key&quot;</span>
+</span><span id="__span-11-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-11-5"><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>api_key</code>: Set a custom API key for securing access to your model endpoint</li>
+</ul>
+<h4 id="sagemaker-specific-parameters">SageMaker-specific Parameters</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-12-1"><span class="p">{</span>
+</span><span id="__span-12-2"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-3"><span class="w">    </span><span class="nt">&quot;max_capacity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-12-4"><span class="w">    </span><span class="nt">&quot;min_capacity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-12-5"><span class="w">    </span><span class="nt">&quot;auto_scaling_target_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+</span><span id="__span-12-6"><span class="w">    </span><span class="nt">&quot;sagemaker_endpoint_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;custom-endpoint-name&quot;</span>
+</span><span id="__span-12-7"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-12-8"><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>max_capacity</code>: Maximum number of instances for auto-scaling</li>
+<li><code>min_capacity</code>: Minimum number of instances for auto-scaling</li>
+<li><code>auto_scaling_target_value</code>: Target value for auto-scaling (in requests per minute)</li>
+<li><code>sagemaker_endpoint_name</code>: Custom name for the SageMaker endpoint</li>
+</ul>
+<h4 id="ecs-specific-parameters">ECS-specific Parameters</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><span class="p">{</span>
+</span><span id="__span-13-2"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-3"><span class="w">    </span><span class="nt">&quot;desired_capacity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-13-4"><span class="w">    </span><span class="nt">&quot;max_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+</span><span id="__span-13-5"><span class="w">    </span><span class="nt">&quot;vpc_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vpc-12345&quot;</span><span class="p">,</span>
+</span><span id="__span-13-6"><span class="w">    </span><span class="nt">&quot;subnet_ids&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;subnet-12345,subnet-67890&quot;</span>
+</span><span id="__span-13-7"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-13-8"><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>desired_capacity</code>: Desired number of ECS tasks</li>
+<li><code>max_size</code>: Maximum number of ECS tasks for auto-scaling</li>
+<li><code>vpc_id</code>: Custom VPC ID for deployment</li>
+<li><code>subnet_ids</code>: Comma-separated list of subnet IDs</li>
+</ul>
+<h3 id="engine-parameters">Engine Parameters</h3>
+<p>Engine parameters control the behavior of the inference engine.</p>
+<h4 id="common-engine-parameters">Common Engine Parameters</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-14-1"><span class="p">{</span>
+</span><span id="__span-14-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-3"><span class="w">    </span><span class="nt">&quot;environment_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;export VAR1=value1 &amp;&amp; export VAR2=value2&quot;</span><span class="p">,</span>
+</span><span id="__span-14-4"><span class="w">    </span><span class="nt">&quot;cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--specific-engine-arg value&quot;</span><span class="p">,</span>
+</span><span id="__span-14-5"><span class="w">    </span><span class="nt">&quot;default_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--common-engine-arg value&quot;</span>
+</span><span id="__span-14-6"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-14-7"><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>environment_variables</code>: Set environment variables for the engine</li>
+<li><code>cli_args</code>: Specific command line arguments for the engine</li>
+<li><code>default_cli_args</code>: Default command line arguments for the engine</li>
+</ul>
+<h4 id="vllm-specific-parameters">vLLM-specific Parameters</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><span class="p">{</span>
+</span><span id="__span-15-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-3"><span class="w">    </span><span class="nt">&quot;vllm_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max_model_len 16000 --max_num_seqs 4 --gpu_memory_utilization 0.9&quot;</span><span class="p">,</span>
+</span><span id="__span-15-4"><span class="w">    </span><span class="nt">&quot;environment_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;export VLLM_ATTENTION_BACKEND=FLASHINFER &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;</span>
+</span><span id="__span-15-5"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-15-6"><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>vllm_cli_args</code>: Command line arguments specific to vLLM</li>
+<li>Common vLLM parameters:</li>
+<li><code>--max_model_len</code>: Maximum context length</li>
+<li><code>--max_num_seqs</code>: Maximum number of sequences</li>
+<li><code>--gpu_memory_utilization</code>: GPU memory utilization (0.0-1.0)</li>
+<li><code>--disable-log-stats</code>: Disable logging of statistics</li>
+<li><code>--enable-auto-tool-choice</code>: Enable automatic tool choice</li>
+<li><code>--tool-call-parser</code>: Specify tool call parser (e.g., hermes, pythonic)</li>
+<li><code>--enable-reasoning</code>: Enable reasoning capabilities</li>
+<li><code>--reasoning-parser</code>: Specify reasoning parser (e.g., deepseek_r1, granite)</li>
+<li><code>--chat-template</code>: Path to chat template file</li>
+</ul>
+<h4 id="tgi-specific-parameters">TGI-specific Parameters</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-16-1"><span class="p">{</span>
+</span><span id="__span-16-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-16-3"><span class="w">    </span><span class="nt">&quot;default_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max-total-tokens 30000 --max-concurrent-requests 30&quot;</span>
+</span><span id="__span-16-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-16-5"><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li>Common TGI parameters:</li>
+<li><code>--max-total-tokens</code>: Maximum total tokens</li>
+<li><code>--max-concurrent-requests</code>: Maximum concurrent requests</li>
+<li><code>--max-batch-size</code>: Maximum batch size</li>
+<li><code>--max-input-tokens</code>: Maximum input tokens</li>
+</ul>
+<h3 id="framework-parameters">Framework Parameters</h3>
+<p>Framework parameters configure the web framework serving the model.</p>
+<h4 id="fastapi-parameters">FastAPI Parameters</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-17-1"><span class="p">{</span>
+</span><span id="__span-17-2"><span class="w">  </span><span class="nt">&quot;framework_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-17-3"><span class="w">    </span><span class="nt">&quot;limit_concurrency&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+</span><span id="__span-17-4"><span class="w">    </span><span class="nt">&quot;timeout_keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
+</span><span id="__span-17-5"><span class="w">    </span><span class="nt">&quot;uvicorn_log_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;info&quot;</span>
+</span><span id="__span-17-6"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-17-7"><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>limit_concurrency</code>: Maximum number of concurrent connections</li>
+<li><code>timeout_keep_alive</code>: Timeout for keeping connections alive (in seconds)</li>
+<li><code>uvicorn_log_level</code>: Log level for Uvicorn server (debug, info, warning, error, critical)</li>
+</ul>
+<h3 id="example-configurations">Example Configurations</h3>
+<h4 id="example-high-throughput-configuration">Example: High-throughput Configuration</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-18-1"><span class="p">{</span>
+</span><span id="__span-18-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-3"><span class="w">    </span><span class="nt">&quot;default_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max_model_len 8000 --max_num_seqs 20 --gpu_memory_utilization 0.95&quot;</span>
+</span><span id="__span-18-4"><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-18-5"><span class="w">  </span><span class="nt">&quot;framework_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-6"><span class="w">    </span><span class="nt">&quot;limit_concurrency&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+</span><span id="__span-18-7"><span class="w">    </span><span class="nt">&quot;timeout_keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span>
+</span><span id="__span-18-8"><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-18-9"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-10"><span class="w">    </span><span class="nt">&quot;max_capacity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-18-11"><span class="w">    </span><span class="nt">&quot;min_capacity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-18-12"><span class="w">    </span><span class="nt">&quot;auto_scaling_target_value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span>
+</span><span id="__span-18-13"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-18-14"><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="example-long-context-configuration">Example: Long Context Configuration</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-19-1"><span class="p">{</span>
+</span><span id="__span-19-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-19-3"><span class="w">    </span><span class="nt">&quot;default_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max_model_len 32000 --max_num_seqs 2 --gpu_memory_utilization 0.9&quot;</span>
+</span><span id="__span-19-4"><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-19-5"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-19-6"><span class="w">    </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-secure-api-key&quot;</span>
+</span><span id="__span-19-7"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-19-8"><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="example-secure-api-with-custom-endpoint-name">Example: Secure API with Custom Endpoint Name</h4>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-20-1"><span class="p">{</span>
+</span><span id="__span-20-2"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-3"><span class="w">    </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-secure-api-key&quot;</span><span class="p">,</span>
+</span><span id="__span-20-4"><span class="w">    </span><span class="nt">&quot;sagemaker_endpoint_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-custom-llm-endpoint&quot;</span>
+</span><span id="__span-20-5"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-20-6"><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="model-source-configuration_1">Model Source Configuration</h3>
+<p>You can load models from different locations by adding appropriate values in the extra-params parameter:</p>
+<ol>
+<li>Load model from S3
+<div class="language-json highlight"><pre><span></span><code><span id="__span-21-1"><span class="p">{</span>
+</span><span id="__span-21-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:{</span>
+</span><span id="__span-21-3"><span class="w">    </span><span class="nt">&quot;model_files_s3_path&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;S3_PATH&gt;&quot;</span>
+</span><span id="__span-21-4"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-21-5"><span class="p">}</span>
+</span></code></pre></div></li>
+<li>Load model from local path (only applicable for local deployment)
+<div class="language-json highlight"><pre><span></span><code><span id="__span-22-1"><span class="p">{</span>
+</span><span id="__span-22-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="nt">&quot;model_files_local_path&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;LOCAL_PATH&gt;&quot;</span>
+</span><span id="__span-22-3"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-22-4"><span class="p">}</span>
+</span></code></pre></div></li>
+<li>Skip downloading and uploading model files in codebuild, which will significantly reduce deployment time
+<div class="language-json highlight"><pre><span></span><code><span id="__span-23-1"><span class="p">{</span>
+</span><span id="__span-23-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-23-3"><span class="w">    </span><span class="nt">&quot;need_prepare_model&quot;</span><span class="p">:</span><span class="kc">false</span>
+</span><span id="__span-23-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-23-5"><span class="p">}</span>
+</span></code></pre></div></li>
+<li>Specify the download source for model files
+<div class="language-json highlight"><pre><span></span><code><span id="__span-24-1"><span class="p">{</span>
+</span><span id="__span-24-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:{</span>
+</span><span id="__span-24-3"><span class="w">    </span><span class="nt">&quot;model_files_download_source&quot;</span><span class="p">:</span><span class="s2">&quot;huggingface|modelscope|auto(default)&quot;</span>
+</span><span id="__span-24-4"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-24-5"><span class="p">}</span>
+</span></code></pre></div></li>
+<li>Specify the model ID on huggingface or modelscope
+<div class="language-json highlight"><pre><span></span><code><span id="__span-25-1"><span class="p">{</span>
+</span><span id="__span-25-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-25-3"><span class="w">    </span><span class="nt">&quot;huggingface_model_id&quot;</span><span class="p">:</span><span class="s2">&quot;model id on huggingface&quot;</span><span class="p">,</span><span class="nt">&quot;modelscope_model_id&quot;</span><span class="p">:</span><span class="s2">&quot;model id on modelscope&quot;</span>
+</span><span id="__span-25-4"><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-25-5"><span class="p">}</span>
+</span></code></pre></div></li>
+</ol>
 <h2 id="environmental-variables">Environmental variables</h2>
 <ul>
 <li><code>LOCAL_DEPLOY_PORT:</code> Local deployment port, default: <code>8080</code></li>
 </ul>
 <h2 id="common-troubleshooting">Common Troubleshooting</h2>
-<ul>
-<li>If your deployment fails due to out-of-memory issues, try:</li>
-<li>Using a larger instance type</li>
-<li>Reducing max_model_len and max_num_seqs in the engine parameters</li>
-<li>Setting a lower gpu_memory_utilization value (e.g., 0.8 instead of the default)</li>
-</ul>
-
-
-
-
-
-
-
-
-
-
-
-
-                
-              </article>
+<p>This section covers common issues you might encounter during model deployment and their solutions.</p>
+<h3 id="memory-related-issues">Memory-Related Issues</h3>
+<p>If your deployment fails with out-of-memory (OOM) errors:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-26-1">CUDA out of memory. Tried to allocate X.XX GiB
+</span></code></pre></div>
+<p>Try these solutions:</p>
+<ol>
+<li><strong>Use a larger instance type</strong>:</li>
+<li>Upgrade to an instance with more GPU memory (e.g., from g5.2xlarge to g5.4xlarge)</li>
+<li>
+<p>For large models (&gt;30B parameters), consider using multiple GPUs with g5.12xlarge or g5.48xlarge</p>
+</li>
+<li>
+<p><strong>Adjust engine parameters</strong>:
+   <div class="language-json highlight"><pre><span></span><code><span id="__span-27-1"><span class="p">{</span>
+</span><span id="__span-27-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-3"><span class="w">    </span><span class="nt">&quot;default_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max_model_len 8000 --max_num_seqs 4 --gpu_memory_utilization 0.8&quot;</span>
+</span><span id="__span-27-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-27-5"><span class="p">}</span>
+</span></code></pre></div></p>
+</li>
+<li>Reduce <code>max_model_len</code> to decrease context window size</li>
+<li>Lower <code>max_num_seqs</code> to reduce concurrent sequences</li>
+<li>
+<p>Set <code>gpu_memory_utilization</code> to a lower value (e.g., 0.8 instead of the default 0.9)</p>
+</li>
+<li>
+<p><strong>Use quantized models</strong>:</p>
+</li>
+<li>Deploy AWQ or GPTQ quantized versions of models (e.g., Qwen2.5-7B-Instruct-AWQ instead of Qwen2.5-7B-Instruct)</li>
+</ol>
+<h3 id="deployment-timeout-issues">Deployment Timeout Issues</h3>
+<p>If your deployment times out during model preparation:</p>
+<ol>
+<li>
+<p><strong>Skip model preparation</strong>:
+   <div class="language-json highlight"><pre><span></span><code><span id="__span-28-1"><span class="p">{</span>
+</span><span id="__span-28-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-28-3"><span class="w">    </span><span class="nt">&quot;need_prepare_model&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-28-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-28-5"><span class="p">}</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Use pre-downloaded models</strong>:
+   <div class="language-json highlight"><pre><span></span><code><span id="__span-29-1"><span class="p">{</span>
+</span><span id="__span-29-2"><span class="w">  </span><span class="nt">&quot;model_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-29-3"><span class="w">    </span><span class="nt">&quot;model_files_s3_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3://your-bucket/model-path&quot;</span>
+</span><span id="__span-29-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-29-5"><span class="p">}</span>
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="api-connection-issues">API Connection Issues</h3>
+<p>If you can't connect to your deployed model's API:</p>
+<ol>
+<li>
+<p><strong>Check endpoint status</strong>:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1">emd<span class="w"> </span>status
+</span></code></pre></div>
+   Ensure the status is "InService" or "Running"</p>
+</li>
+<li>
+<p><strong>Verify API key</strong>:</p>
+</li>
+<li>Ensure you're using the correct API key in your requests</li>
+<li>
+<p>If you've set a custom API key, make sure to include it in your requests</p>
+</li>
+<li>
+<p><strong>Test with curl</strong>:
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1">curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://your-endpoint.execute-api.region.amazonaws.com/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-31-2"><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-31-3"><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer your-api-key&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-31-4"><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;model&quot;: &quot;your-model-id&quot;, &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;}]}&#39;</span>
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="performance-optimization">Performance Optimization</h3>
+<p>If your model is running slowly:</p>
+<ol>
+<li>
+<p><strong>Increase GPU utilization</strong>:
+   <div class="language-json highlight"><pre><span></span><code><span id="__span-32-1"><span class="p">{</span>
+</span><span id="__span-32-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-32-3"><span class="w">    </span><span class="nt">&quot;default_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--gpu_memory_utilization 0.95&quot;</span>
+</span><span id="__span-32-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-32-5"><span class="p">}</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Adjust batch size and concurrency</strong>:
+   <div class="language-json highlight"><pre><span></span><code><span id="__span-33-1"><span class="p">{</span>
+</span><span id="__span-33-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-33-3"><span class="w">    </span><span class="nt">&quot;default_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max_num_seqs 20&quot;</span>
+</span><span id="__span-33-4"><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-33-5"><span class="w">  </span><span class="nt">&quot;framework_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-33-6"><span class="w">    </span><span class="nt">&quot;limit_concurrency&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span>
+</span><span id="__span-33-7"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-33-8"><span class="p">}</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Enable optimizations</strong> (for vLLM):
+   <div class="language-json highlight"><pre><span></span><code><span id="__span-34-1"><span class="p">{</span>
+</span><span id="__span-34-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-34-3"><span class="w">    </span><span class="nt">&quot;environment_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;export VLLM_ATTENTION_BACKEND=FLASHINFER &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;</span>
+</span><span id="__span-34-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-34-5"><span class="p">}</span>
+</span></code></pre></div></p>
+</li>
+</ol>
+              
             </div>
-          
-          
-<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
-        </div>
-        
-      </main>
-      
-        <footer class="md-footer">
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
-  
-  
-</div>
-      
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../supported_models/" class="btn btn-neutral float-left" title="Supported Models"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../commands/" class="btn btn-neutral float-right" title="CLI Commands">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
   </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-      
-    </div>
-    <div class="md-dialog" data-md-component="dialog">
-      <div class="md-dialog__inner md-typeset"></div>
-    </div>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "develop"}</script>
+      <span><a href="../supported_models/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
-      
-        <script src="../js/print-site.js"></script>
-      
+      <span><a href="../commands/" style="color: #fcfcfc">Next &raquo;</a></span>
     
-  </body>
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
 </html>

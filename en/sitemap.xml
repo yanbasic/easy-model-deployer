@@ -2,34 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/api/</loc>
+         <lastmod>2025-05-09</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/architecture/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <lastmod>2025-05-09</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/best_deployment_practices/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/commands/</loc>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/dify_integration/</loc>
+         <lastmod>2025-05-09</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/emd_client/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/flowise_integration/</loc>
+         <lastmod>2025-05-09</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/installation/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <lastmod>2025-05-09</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/langchain_interface/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <lastmod>2025-05-09</lastmod>
     </url>
     <url>
-         <loc>https://github.com/aws-samples/easy-model-deployer/openai_compatiable/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <loc>https://github.com/aws-samples/easy-model-deployer/langflow_integration/</loc>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/local_deployment/</loc>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/nextchat_integration/</loc>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/ollama_integration/</loc>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/openai_compatible/</loc>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/sdk_integration/</loc>
+         <lastmod>2025-05-09</lastmod>
     </url>
     <url>
          <loc>https://github.com/aws-samples/easy-model-deployer/supported_models/</loc>
-         <lastmod>2025-05-08</lastmod>
+         <lastmod>2025-05-09</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/aws-samples/easy-model-deployer/swift_chat_integration/</loc>
+         <lastmod>2025-05-09</lastmod>
     </url>
 </urlset>
