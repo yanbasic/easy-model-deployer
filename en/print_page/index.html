@@ -2158,174 +2158,123 @@ Same as Chat Completions, but with messages that include image content.</p>
 <li><strong>Target Services</strong>: SageMaker, EC2, or ECS hosts your model</li>
 </ul>
 <p>EMD handles all IAM permissions and security configurations automatically.</p>
-<h2 id="architecture-cost-considerations">Cost Considerations</h2>
-<p>EMD uses pay-as-you-go AWS services with costs varying based on your deployment choices:</p>
-<h3 id="architecture-compute-resources-primary-cost">Compute Resources (Primary Cost)</h3>
+<h2 id="architecture-model-deployment-cost-estimation">Model Deployment Cost Estimation</h2>
+<p>EMD leverages several AWS services to deploy models. Below is an estimated cost breakdown for deploying a single model (assuming a 5GB model file and 10-minute CodeBuild execution).</p>
+<h3 id="architecture-us-east-n-virginia-region-cost-estimation">US East (N. Virginia) Region Cost Estimation</h3>
 <table>
 <thead>
 <tr>
 <th>Service</th>
-<th>Instance Type</th>
-<th>Approx. Cost (US East)</th>
+<th>Usage</th>
+<th>Estimated Cost (USD)</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>EC2 (Default)</td>
-<td>g5.xlarge (1 GPU)</td>
-<td>$1.006/hour</td>
-<td>4 vCPU, 16GB RAM, 1 NVIDIA A10G GPU</td>
+<td><strong>S3 Storage</strong></td>
+<td>5GB model file</td>
+<td>$0.00/month</td>
+<td>$0.023 per GB-month for standard storage. Free tier includes 5GB of S3 standard storage for 12 months</td>
 </tr>
 <tr>
-<td>EC2</td>
-<td>g5.2xlarge (1 GPU)</td>
-<td>$1.212/hour</td>
-<td>8 vCPU, 32GB RAM, 1 NVIDIA A10G GPU</td>
+<td><strong>CodeBuild</strong></td>
+<td>BUILD_GENERAL1_LARGE for 10 minutes</td>
+<td>$0.10</td>
+<td>$0.005 per build-minute</td>
 </tr>
 <tr>
-<td>EC2</td>
-<td>g5.4xlarge (1 GPU)</td>
-<td>$1.624/hour</td>
-<td>16 vCPU, 64GB RAM, 1 NVIDIA A10G GPU</td>
+<td><strong>CodePipeline</strong></td>
+<td>1 pipeline execution</td>
+<td>$0.00</td>
+<td>First pipeline is free, then $1.00 per active pipeline/month</td>
 </tr>
 <tr>
-<td>SageMaker</td>
-<td>ml.g5.xlarge</td>
-<td>~$1.307/hour</td>
-<td>~30% premium over EC2 pricing</td>
+<td><strong>CloudFormation</strong></td>
+<td>Stack creation</td>
+<td>$0.00</td>
+<td>No charge for CloudFormation service</td>
 </tr>
 <tr>
-<td>SageMaker</td>
-<td>ml.g5.2xlarge</td>
-<td>~$1.575/hour</td>
-<td>~30% premium over EC2 pricing</td>
+<td><strong>ECR</strong></td>
+<td>~2GB Docker image</td>
+<td>$0.10/month</td>
+<td>$0.10 per GB-month for private repository storage</td>
+</tr>
+<tr>
+<td><strong>Total Deployment Cost</strong></td>
+<td></td>
+<td><strong>$0.10</strong> + $0.10/month</td>
+<td>One-time deployment cost + monthly storage</td>
 </tr>
 </tbody>
 </table>
+<h4 id="architecture-target-service-costs-post-deployment">Target Service Costs (Post-Deployment)</h4>
 <ul>
-<li>Costs increase with:</li>
-<li>Larger models requiring more memory</li>
-<li>Higher throughput requirements needing more vCPUs</li>
-<li>Longer running deployments (24/7 vs. on-demand)</li>
+<li><strong>SageMaker</strong>: ml.g4dn.xlarge: ~$0.736/hour</li>
+<li><strong>EC2</strong>: g4dn.xlarge: ~$0.526/hour</li>
+<li><strong>ECS</strong>: Fargate or EC2 costs for container hosting</li>
+<li><strong>Secrets Manager</strong>: $0.40/month for API key storage</li>
 </ul>
-<h3 id="architecture-storage-costs">Storage Costs</h3>
+<h3 id="architecture-china-north-beijing-region-cost-estimation">China North (Beijing) Region Cost Estimation</h3>
 <table>
 <thead>
 <tr>
 <th>Service</th>
-<th>Component</th>
-<th>Approx. Cost</th>
+<th>Usage</th>
+<th>Estimated Cost (CNY)</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>ECR</td>
-<td>Container Storage</td>
-<td>$0.10/GB-month</td>
-<td>Model containers can range from 5GB to 50GB+</td>
+<td><strong>S3 Storage</strong></td>
+<td>5GB model file</td>
+<td>¥0.00/month</td>
+<td>¥0.21 per GB-month for standard storage. Free tier includes 5GB of S3 standard storage for 12 months (verify availability in China regions)</td>
 </tr>
 <tr>
-<td>S3</td>
-<td>Model Artifacts</td>
-<td>$0.023/GB-month</td>
-<td>Large models can be several GB each</td>
+<td><strong>CodeBuild</strong></td>
+<td>BUILD_GENERAL1_LARGE for 10 minutes</td>
+<td>¥0.80</td>
+<td>¥0.08 per build-minute</td>
 </tr>
 <tr>
-<td>EBS</td>
-<td>EC2 Instance Storage</td>
-<td>$0.10/GB-month</td>
-<td>Default 150GB gp2 volume for EC2 instances</td>
+<td><strong>CodePipeline</strong></td>
+<td>1 pipeline execution</td>
+<td>¥0.00</td>
+<td>First pipeline is free, then ¥7.00 per active pipeline/month</td>
+</tr>
+<tr>
+<td><strong>CloudFormation</strong></td>
+<td>Stack creation</td>
+<td>¥0.00</td>
+<td>No charge for CloudFormation service</td>
+</tr>
+<tr>
+<td><strong>ECR</strong></td>
+<td>~2GB Docker image</td>
+<td>¥0.84/month</td>
+<td>¥0.42 per GB-month for private repository storage</td>
+</tr>
+<tr>
+<td><strong>Total Deployment Cost</strong></td>
+<td></td>
+<td><strong>¥0.80</strong> + ¥0.84/month</td>
+<td>One-time deployment cost + monthly storage</td>
 </tr>
 </tbody>
 </table>
-<h3 id="architecture-networking-costs">Networking Costs</h3>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Approx. Cost</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Load Balancer</td>
-<td>$0.0225/hour + $0.008/GB</td>
-<td>Required for API access</td>
-</tr>
-<tr>
-<td>Data Transfer Out</td>
-<td>$0.09/GB</td>
-<td>Costs for responses from model API</td>
-</tr>
-<tr>
-<td>VPC Endpoints</td>
-<td>$0.01/hour</td>
-<td>Optional for enhanced security</td>
-</tr>
-</tbody>
-</table>
-<h3 id="architecture-pipeline-execution-costs">Pipeline Execution Costs</h3>
-<table>
-<thead>
-<tr>
-<th>Service</th>
-<th>Component</th>
-<th>Approx. Cost</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CodeBuild</td>
-<td>BUILD_GENERAL1_LARGE</td>
-<td>$0.10/minute</td>
-<td>Used during model building phase</td>
-</tr>
-<tr>
-<td>CodePipeline</td>
-<td>Pipeline Execution</td>
-<td>$1.00/pipeline/month</td>
-<td>Plus $0.01 per pipeline execution</td>
-</tr>
-</tbody>
-</table>
-<h3 id="architecture-cost-optimization-strategies">Cost Optimization Strategies</h3>
-<ol>
-<li><strong>Right-size your instances</strong>:</li>
-<li>Match instance type to your model's memory and compute requirements</li>
-<li>
-<p>Consider CPU-only instances for smaller models</p>
-</li>
-<li>
-<p><strong>Use auto-scaling</strong>:</p>
-</li>
-<li>Set appropriate min/max capacity values</li>
-<li>
-<p>Configure scale-in periods during low usage times</p>
-</li>
-<li>
-<p><strong>Implement lifecycle policies</strong>:</p>
-</li>
-<li>Clean up unused ECR images</li>
-<li>
-<p>Remove old model artifacts from S3</p>
-</li>
-<li>
-<p><strong>Consider Spot instances</strong>:</p>
-</li>
-<li>Use EC2 Spot instances for non-critical workloads</li>
-<li>
-<p>Can reduce costs by up to 70% compared to On-Demand pricing</p>
-</li>
-<li>
-<p><strong>Monitor and analyze costs</strong>:</p>
-</li>
-<li>Use AWS Cost Explorer to identify cost drivers</li>
-<li>Set up AWS Budgets to alert on unexpected spending</li>
-</ol>
+<h4 id="architecture-target-service-costs-post-deployment_1">Target Service Costs (Post-Deployment)</h4>
+<ul>
+<li><strong>SageMaker</strong>: ml.g4dn.xlarge: ~¥6.18/hour</li>
+<li><strong>EC2</strong>: g4dn.xlarge: ~¥4.42/hour</li>
+<li><strong>ECS</strong>: Fargate or EC2 costs for container hosting</li>
+<li><strong>Secrets Manager</strong>: ¥3.36/month for API key storage</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: All prices are estimates as of 2024. Actual costs may vary based on your specific AWS region, usage patterns, and any applicable discounts. We recommend using AWS Cost Explorer to monitor and forecast your actual costs.</p>
+</blockquote>
 <h2 id="architecture-security-considerations">Security Considerations</h2>
 <h3 id="architecture-api-key-authentication">API Key Authentication</h3>
 <p>EMD supports API key authentication for securing access to your deployed models:</p>
