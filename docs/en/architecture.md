@@ -20,69 +20,47 @@ EMD deploys models to AWS using a simple three-step process:
 
 EMD handles all IAM permissions and security configurations automatically.
 
-## Cost Considerations
+## Model Deployment Cost Estimation
 
-EMD uses pay-as-you-go AWS services with costs varying based on your deployment choices:
+EMD leverages several AWS services to deploy models. Below is an estimated cost breakdown for deploying a single model (assuming a 5GB model file and 10-minute CodeBuild execution).
 
-### Compute Resources (Primary Cost)
+### US East (N. Virginia) Region Cost Estimation
 
-| Service | Instance Type | Approx. Cost (US East) | Notes |
-|---------|---------------|------------------------|-------|
-| EC2 (Default) | g5.xlarge (1 GPU) | $1.006/hour | 4 vCPU, 16GB RAM, 1 NVIDIA A10G GPU |
-| EC2 | g5.2xlarge (1 GPU) | $1.212/hour | 8 vCPU, 32GB RAM, 1 NVIDIA A10G GPU |
-| EC2 | g5.4xlarge (1 GPU) | $1.624/hour | 16 vCPU, 64GB RAM, 1 NVIDIA A10G GPU |
-| SageMaker | ml.g5.xlarge | ~$1.307/hour | ~30% premium over EC2 pricing |
-| SageMaker | ml.g5.2xlarge | ~$1.575/hour | ~30% premium over EC2 pricing |
+| Service | Usage | Estimated Cost (USD) | Notes |
+|---------|-------|----------------------|-------|
+| **S3 Storage** | 5GB model file | $0.00/month | $0.023 per GB-month for standard storage. Free tier includes 5GB of S3 standard storage for 12 months |
+| **CodeBuild** | BUILD_GENERAL1_LARGE for 10 minutes | $0.10 | $0.005 per build-minute |
+| **CodePipeline** | 1 pipeline execution | $0.00 | First pipeline is free, then $1.00 per active pipeline/month |
+| **CloudFormation** | Stack creation | $0.00 | No charge for CloudFormation service |
+| **ECR** | ~2GB Docker image | $0.10/month | $0.10 per GB-month for private repository storage |
+| **Total Deployment Cost** | | **$0.10** + $0.10/month | One-time deployment cost + monthly storage |
 
-* Costs increase with:
-  * Larger models requiring more memory
-  * Higher throughput requirements needing more vCPUs
-  * Longer running deployments (24/7 vs. on-demand)
+#### Target Service Costs (Post-Deployment)
 
-### Storage Costs
+- **SageMaker**: ml.g4dn.xlarge: ~$0.736/hour
+- **EC2**: g4dn.xlarge: ~$0.526/hour
+- **ECS**: Fargate or EC2 costs for container hosting
+- **Secrets Manager**: $0.40/month for API key storage
 
-| Service | Component | Approx. Cost | Notes |
-|---------|-----------|--------------|-------|
-| ECR | Container Storage | $0.10/GB-month | Model containers can range from 5GB to 50GB+ |
-| S3 | Model Artifacts | $0.023/GB-month | Large models can be several GB each |
-| EBS | EC2 Instance Storage | $0.10/GB-month | Default 150GB gp2 volume for EC2 instances |
+### China North (Beijing) Region Cost Estimation
 
-### Networking Costs
+| Service | Usage | Estimated Cost (CNY) | Notes |
+|---------|-------|----------------------|-------|
+| **S3 Storage** | 5GB model file | ¥0.00/month | ¥0.21 per GB-month for standard storage. Free tier includes 5GB of S3 standard storage for 12 months (verify availability in China regions) |
+| **CodeBuild** | BUILD_GENERAL1_LARGE for 10 minutes | ¥0.80 | ¥0.08 per build-minute |
+| **CodePipeline** | 1 pipeline execution | ¥0.00 | First pipeline is free, then ¥7.00 per active pipeline/month |
+| **CloudFormation** | Stack creation | ¥0.00 | No charge for CloudFormation service |
+| **ECR** | ~2GB Docker image | ¥0.84/month | ¥0.42 per GB-month for private repository storage |
+| **Total Deployment Cost** | | **¥0.80** + ¥0.84/month | One-time deployment cost + monthly storage |
 
-| Component | Approx. Cost | Notes |
-|-----------|--------------|-------|
-| Load Balancer | $0.0225/hour + $0.008/GB | Required for API access |
-| Data Transfer Out | $0.09/GB | Costs for responses from model API |
-| VPC Endpoints | $0.01/hour | Optional for enhanced security |
+#### Target Service Costs (Post-Deployment)
 
-### Pipeline Execution Costs
+- **SageMaker**: ml.g4dn.xlarge: ~¥6.18/hour
+- **EC2**: g4dn.xlarge: ~¥4.42/hour
+- **ECS**: Fargate or EC2 costs for container hosting
+- **Secrets Manager**: ¥3.36/month for API key storage
 
-| Service | Component | Approx. Cost | Notes |
-|---------|-----------|--------------|-------|
-| CodeBuild | BUILD_GENERAL1_LARGE | $0.10/minute | Used during model building phase |
-| CodePipeline | Pipeline Execution | $1.00/pipeline/month | Plus $0.01 per pipeline execution |
-
-### Cost Optimization Strategies
-
-1. **Right-size your instances**:
-   * Match instance type to your model's memory and compute requirements
-   * Consider CPU-only instances for smaller models
-
-2. **Use auto-scaling**:
-   * Set appropriate min/max capacity values
-   * Configure scale-in periods during low usage times
-
-3. **Implement lifecycle policies**:
-   * Clean up unused ECR images
-   * Remove old model artifacts from S3
-
-4. **Consider Spot instances**:
-   * Use EC2 Spot instances for non-critical workloads
-   * Can reduce costs by up to 70% compared to On-Demand pricing
-
-5. **Monitor and analyze costs**:
-   * Use AWS Cost Explorer to identify cost drivers
-   * Set up AWS Budgets to alert on unexpected spending
+> **Note**: All prices are estimates as of 2024. Actual costs may vary based on your specific AWS region, usage patterns, and any applicable discounts. We recommend using AWS Cost Explorer to monitor and forecast your actual costs.
 
 ## Security Considerations
 
