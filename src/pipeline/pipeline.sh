@@ -24,7 +24,7 @@ gpu_num=1
 instance_type=g5.12xlarge
 
 # python deploy/prepare_model.py --region $region --model_id $model_id --model_s3_bucket $model_s3_bucket || { echo "Failed to prepare model"; exit 1; }
-# python deploy/build_and_push_image.py --region $region --model_id $model_id --backend_type $backend_type --gpu_num $gpu_num --instance_type $instance_type --model_s3_bucket $model_s3_bucket --vllm_cli_args "--max_model_len 4096" || { echo "Failed to build and push image"; exit 1; }
+# python deploy/build_and_push_image.py --region $region --model_id $model_id --backend_type $backend_type --gpu_num $gpu_num --instance_type $instance_type --model_s3_bucket $model_s3_bucket --cli_args "--max_model_len 4096" || { echo "Failed to build and push image"; exit 1; }
 # python deploy/deploy.py --region $region --instance_type $instance_type --model_id $model_id --backend_type $backend_type --service $service --gpu_num $gpu_num || { echo "Failed to deploy"; exit 1; }
 
 python pipeline.py \
@@ -39,6 +39,6 @@ python pipeline.py \
     --role_name SageMakerExecutionRoleTest6 \
     --skip_image_build \
     --skip_deploy \
-    --vllm_cli_args "--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
+    --cli_args "--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
 
 echo "Pipeline executed successfully"

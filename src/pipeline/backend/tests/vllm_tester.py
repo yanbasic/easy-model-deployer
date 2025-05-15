@@ -19,7 +19,7 @@ class TestVLLMBackend(unittest.TestCase):
         service_type = "sagemaker"
         framework_type = "fastapi"
         model_s3_bucket = "emd-us-east-1-bucket-75c6f785084f4fd998da560a0a6190fc"
-        vllm_cli_args = "--max_model_len 4096"
+        cli_args = "--max_model_len 4096"
         # model_id = "Qwen2.5-0.5B-Instruct"
         model_id = "bge-m3"
         model = Model.get_model(model_id)
@@ -30,7 +30,7 @@ class TestVLLMBackend(unittest.TestCase):
             current_service=model.find_current_service(service_type),
             current_framework=model.find_current_framework(framework_type),
             model_s3_bucket=model_s3_bucket,
-            vllm_cli_args=vllm_cli_args,
+            cli_args=cli_args,
 
         )
         self.execute_model = model.convert_to_execute_model(executable_config)

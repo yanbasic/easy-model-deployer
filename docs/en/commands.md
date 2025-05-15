@@ -87,7 +87,7 @@ emd deploy --allow-local-deploy
 
 Deploy with custom parameters:
 ```bash
-emd deploy --model-id Qwen2.5-7B-Instruct --extra-params '{"engine_params": {"vllm_cli_args": "--max_model_len 16000 --max_num_seqs 4"}}'
+emd deploy --model-id Qwen2.5-7B-Instruct --extra-params '{"engine_params": {"cli_args": "--max_model_len 16000 --max_num_seqs 4"}}'
 ```
 
 ### status

@@ -7,7 +7,7 @@ deploy(
     service_type="sagemaker",
     region="us-west-2",
     extra_params={
-        "vllm_cli_args":"--max_num_seqs 4 --max_model_len 16000 --disable-log-stats"
+        "cli_args":"--max_num_seqs 4 --max_model_len 16000 --disable-log-stats"
     },
     force_env_stack_update=True
 )

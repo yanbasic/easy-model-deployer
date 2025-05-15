@@ -65,7 +65,7 @@ To enable longer context windows, use the `--extra-params` option with engine-sp
 ```bash
 emd deploy --model-id Qwen2.5-7B-Instruct --instance-type g5.4xlarge --engine-type vllm --service-type sagemaker_realtime --extra-params '{
   "engine_params": {
-    "vllm_cli_args": "--max_model_len 16000 --max_num_seqs 4"
+    "cli_args": "--max_model_len 16000 --max_num_seqs 4"
   }
 }'
 ```
@@ -202,13 +202,13 @@ Engine parameters control the behavior of the inference engine.
 ```json
 {
   "engine_params": {
-    "vllm_cli_args": "--max_model_len 16000 --max_num_seqs 4 --gpu_memory_utilization 0.9",
+    "cli_args": "--max_model_len 16000 --max_num_seqs 4 --gpu_memory_utilization 0.9",
     "environment_variables": "export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True"
   }
 }
 ```
 
-- `vllm_cli_args`: Command line arguments specific to vLLM
+- `cli_args`: Command line arguments specific to vLLM
 - Common vLLM parameters:
   - `--max_model_len`: Maximum context length
   - `--max_num_seqs`: Maximum number of sequences
