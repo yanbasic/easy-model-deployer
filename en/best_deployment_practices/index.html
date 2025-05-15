@@ -266,7 +266,7 @@
 <h3 id="example-deploying-model-with-16k-context-window">Example: Deploying model with 16k context window</h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.4xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
 </span><span id="__span-7-2"><span class="s1">  &quot;engine_params&quot;: {</span>
-</span><span id="__span-7-3"><span class="s1">    &quot;vllm_cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
+</span><span id="__span-7-3"><span class="s1">    &quot;cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
 </span><span id="__span-7-4"><span class="s1">  }</span>
 </span><span id="__span-7-5"><span class="s1">}&#39;</span>
 </span></code></pre></div>
@@ -375,13 +375,13 @@
 <h4 id="vllm-specific-parameters">vLLM-specific Parameters</h4>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><span class="p">{</span>
 </span><span id="__span-15-2"><span class="w">  </span><span class="nt">&quot;engine_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-15-3"><span class="w">    </span><span class="nt">&quot;vllm_cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max_model_len 16000 --max_num_seqs 4 --gpu_memory_utilization 0.9&quot;</span><span class="p">,</span>
+</span><span id="__span-15-3"><span class="w">    </span><span class="nt">&quot;cli_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;--max_model_len 16000 --max_num_seqs 4 --gpu_memory_utilization 0.9&quot;</span><span class="p">,</span>
 </span><span id="__span-15-4"><span class="w">    </span><span class="nt">&quot;environment_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;export VLLM_ATTENTION_BACKEND=FLASHINFER &amp;&amp; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True&quot;</span>
 </span><span id="__span-15-5"><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-15-6"><span class="p">}</span>
 </span></code></pre></div>
 <ul>
-<li><code>vllm_cli_args</code>: Command line arguments specific to vLLM</li>
+<li><code>cli_args</code>: Command line arguments specific to vLLM</li>
 <li>Common vLLM parameters:</li>
 <li><code>--max_model_len</code>: Maximum context length</li>
 <li><code>--max_num_seqs</code>: Maximum number of sequences</li>
