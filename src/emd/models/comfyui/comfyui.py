@@ -1,7 +1,7 @@
 from .. import Model
 from ..utils.constants import ModelType
 from ..engines import comfyui_engine
-from ..services import sagemaker_service, sagemaker_async_service
+from ..services import sagemaker_service, sagemaker_async_service, ecs_service, local_service
 from ..frameworks import fastapi_framework
 from ..instances import (
     g5d2xlarge_instance,
@@ -25,7 +25,9 @@ Model.register(
             g6e2xlarge_instance
         ],
         supported_services=[
-            sagemaker_async_service
+            sagemaker_async_service,
+            ecs_service,
+            local_service,
         ],
         supported_frameworks=[
             fastapi_framework

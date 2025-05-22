@@ -1,0 +1,701 @@
+{
+  "1": {
+    "inputs": {
+      "image": "bus2.jpeg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Bus Image"
+    }
+  },
+  "21": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "width": [
+        "23",
+        5
+      ],
+      "height": 512,
+      "crop": "disabled",
+      "image": [
+        "170",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "Upscale Image"
+    }
+  },
+  "22": {
+    "inputs": {
+      "image": [
+        "21",
+        0
+      ]
+    },
+    "class_type": "easy imageSize",
+    "_meta": {
+      "title": "ImageSize"
+    }
+  },
+  "23": {
+    "inputs": {
+      "direction": "left-right",
+      "pixels": 512,
+      "method": "auto",
+      "image_1": [
+        "170",
+        0
+      ],
+      "image_2": [
+        "41",
+        1
+      ],
+      "mask_2": [
+        "41",
+        2
+      ]
+    },
+    "class_type": "easy makeImageForICLora",
+    "_meta": {
+      "title": "Make Image For ICLora"
+    }
+  },
+  "41": {
+    "inputs": {
+      "context_expand_pixels": 20,
+      "context_expand_factor": 1,
+      "fill_mask_holes": true,
+      "blur_mask_pixels": 16,
+      "invert_mask": false,
+      "blend_pixels": 16,
+      "rescale_algorithm": "bicubic",
+      "mode": "ranged size",
+      "force_width": 1024,
+      "force_height": 1024,
+      "rescale_factor": 1,
+      "min_width": 768,
+      "min_height": 512,
+      "max_width": 768,
+      "max_height": 512,
+      "padding": 32,
+      "image": [
+        "48",
+        0
+      ],
+      "mask": [
+        "48",
+        1
+      ]
+    },
+    "class_type": "InpaintCrop",
+    "_meta": {
+      "title": "✂️ Inpaint Crop"
+    }
+  },
+  "42": {
+    "inputs": {
+      "measurement": "Pixels",
+      "left": [
+        "22",
+        0
+      ],
+      "right": 0,
+      "top": 0,
+      "bottom": 0,
+      "image": [
+        "144",
+        0
+      ]
+    },
+    "class_type": "easy imageInsetCrop",
+    "_meta": {
+      "title": "ImageInsetCrop"
+    }
+  },
+  "43": {
+    "inputs": {
+      "rescale_algorithm": "bislerp",
+      "stitch": [
+        "41",
+        0
+      ],
+      "inpainted_image": [
+        "42",
+        0
+      ]
+    },
+    "class_type": "InpaintStitch",
+    "_meta": {
+      "title": "✂️ Inpaint Stitch"
+    }
+  },
+  "44": {
+    "inputs": {
+      "image": "car3.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Product Image"
+    }
+  },
+  "45": {
+    "inputs": {
+      "aspect_ratio": "original",
+      "proportional_width": 1,
+      "proportional_height": 1,
+      "fit": "letterbox",
+      "method": "lanczos",
+      "round_to_multiple": "8",
+      "scale_to_side": "shortest",
+      "scale_to_length": 768,
+      "background_color": "#000000",
+      "image": [
+        "1",
+        0
+      ],
+      "mask": [
+        "197",
+        0
+      ]
+    },
+    "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+    "_meta": {
+      "title": "LayerUtility: ImageScaleByAspectRatio V2"
+    }
+  },
+  "48": {
+    "inputs": {
+      "rescale_algorithm": "bicubic",
+      "mode": "ensure minimum size",
+      "min_width": 768,
+      "min_height": 512,
+      "rescale_factor": 1,
+      "image": [
+        "45",
+        0
+      ],
+      "mask": [
+        "45",
+        1
+      ]
+    },
+    "class_type": "InpaintResize",
+    "_meta": {
+      "title": "✂️ Resize Image Before Inpainting"
+    }
+  },
+  "50": {
+    "inputs": {
+      "masks": [
+        "197",
+        0
+      ]
+    },
+    "class_type": "Mask Fill Holes",
+    "_meta": {
+      "title": "Mask Fill Holes"
+    }
+  },
+  "51": {
+    "inputs": {
+      "expand": 50,
+      "incremental_expandrate": 0,
+      "tapered_corners": true,
+      "flip_input": false,
+      "blur_radius": 50,
+      "lerp_alpha": 1,
+      "decay_factor": 1,
+      "fill_holes": false,
+      "mask": [
+        "50",
+        0
+      ]
+    },
+    "class_type": "GrowMaskWithBlur",
+    "_meta": {
+      "title": "Grow Mask With Blur"
+    }
+  },
+  "52": {
+    "inputs": {
+      "mask_opacity": 1,
+      "mask_color": "255, 255, 255",
+      "pass_through": false,
+      "image": [
+        "45",
+        0
+      ],
+      "mask": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "ImageAndMaskPreview",
+    "_meta": {
+      "title": "ImageAndMaskPreview"
+    }
+  },
+  "53": {
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "destination": [
+        "45",
+        0
+      ],
+      "source": [
+        "43",
+        0
+      ],
+      "mask": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "ImageCompositeMasked",
+    "_meta": {
+      "title": "ImageCompositeMasked"
+    }
+  },
+  "142": {
+    "inputs": {
+      "text_input": "",
+      "task": "more_detailed_caption",
+      "fill_mask": true,
+      "keep_model_loaded": false,
+      "max_new_tokens": 1024,
+      "num_beams": 3,
+      "do_sample": true,
+      "output_mask_select": "",
+      "seed": 689026195461815,
+      "image": [
+        "170",
+        0
+      ],
+      "florence2_model": [
+        "202",
+        0
+      ]
+    },
+    "class_type": "Florence2Run",
+    "_meta": {
+      "title": "Florence2Run"
+    }
+  },
+  "143": {
+    "inputs": {
+      "seed": 261932763462326
+    },
+    "class_type": "Seed (rgthree)",
+    "_meta": {
+      "title": "Seed (rgthree)"
+    }
+  },
+  "144": {
+    "inputs": {
+      "samples": [
+        "160",
+        0
+      ],
+      "vae": [
+        "149",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "145": {
+    "inputs": {
+      "strength": 1,
+      "strength_type": "multiply",
+      "conditioning": [
+        "154",
+        0
+      ],
+      "style_model": [
+        "152",
+        0
+      ],
+      "clip_vision_output": [
+        "147",
+        0
+      ]
+    },
+    "class_type": "StyleModelApply",
+    "_meta": {
+      "title": "Apply Style Model"
+    }
+  },
+  "146": {
+    "inputs": {
+      "noise_mask": false,
+      "positive": [
+        "145",
+        0
+      ],
+      "negative": [
+        "155",
+        0
+      ],
+      "vae": [
+        "149",
+        0
+      ],
+      "pixels": [
+        "23",
+        0
+      ],
+      "mask": [
+        "23",
+        1
+      ]
+    },
+    "class_type": "InpaintModelConditioning",
+    "_meta": {
+      "title": "InpaintModelConditioning"
+    }
+  },
+  "147": {
+    "inputs": {
+      "crop": "center",
+      "clip_vision": [
+        "151",
+        0
+      ],
+      "image": [
+        "170",
+        0
+      ]
+    },
+    "class_type": "CLIPVisionEncode",
+    "_meta": {
+      "title": "CLIP Vision Encode"
+    }
+  },
+  "148": {
+    "inputs": {
+      "unet_name": "flux1-fill-dev.safetensors",
+      "weight_dtype": "fp8_e4m3fn"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "149": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "150": {
+    "inputs": {
+      "clip_name1": "clip_l.safetensors",
+      "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+      "type": "flux",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "151": {
+    "inputs": {
+      "clip_name": "sigclip_vision_patch14_384.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "152": {
+    "inputs": {
+      "style_model_name": "flux1-redux-dev.safetensors"
+    },
+    "class_type": "StyleModelLoader",
+    "_meta": {
+      "title": "Load Style Model"
+    }
+  },
+  "153": {
+    "inputs": {
+      "text": [
+        "161",
+        0
+      ],
+      "clip": [
+        "150",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "154": {
+    "inputs": {
+      "guidance": 50,
+      "conditioning": [
+        "153",
+        0
+      ]
+    },
+    "class_type": "FluxGuidance",
+    "_meta": {
+      "title": "FluxGuidance"
+    }
+  },
+  "155": {
+    "inputs": {
+      "conditioning": [
+        "153",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "156": {
+    "inputs": {
+      "lora_name": "flux-turbo-alpha.safetensors",
+      "strength_model": 1,
+      "model": [
+        "157",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "157": {
+    "inputs": {
+      "lora_name": "comfyui_subject_lora16.safetensors",
+      "strength_model": 1,
+      "model": [
+        "148",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "160": {
+    "inputs": {
+      "seed": [
+        "143",
+        0
+      ],
+      "steps": 8,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "156",
+        0
+      ],
+      "positive": [
+        "146",
+        0
+      ],
+      "negative": [
+        "146",
+        1
+      ],
+      "latent_image": [
+        "146",
+        2
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "161": {
+    "inputs": {
+      "action": "append",
+      "tidy_tags": "yes",
+      "text_a": "",
+      "text_b": [
+        "142",
+        2
+      ],
+      "text_c": "",
+      "result": "A photo-realistic rendering of a futuristic sports car from a front camera angle, showcasing a sleek and modern design. the car is positioned in the center of the frame, with a plain white background that highlights the car's sleek and minimalist design. it has a low-slung, two-door coupe body style with a sleek, aerodynamic design, featuring a large front grille, angular headlights, and a sloping roofline. The car has a glossy white finish with a black stripe running along the center, adding a touch of sophistication to its sleek and stylish appearance. the front of the car has large, black alloy wheels with blue brake calipers, giving it a sporty and futuristic look."
+    },
+    "class_type": "StringFunction|pysssss",
+    "_meta": {
+      "title": "String Function 🐍"
+    }
+  },
+  "163": {
+    "inputs": {
+      "images": [
+        "144",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "165": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "166": {
+    "inputs": {
+      "mask": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "MaskPreview+",
+    "_meta": {
+      "title": "🔧 Mask Preview"
+    }
+  },
+  "168": {
+    "inputs": {
+      "aspect_ratio": "original",
+      "proportional_width": 1,
+      "proportional_height": 1,
+      "fit": "letterbox",
+      "method": "lanczos",
+      "round_to_multiple": "8",
+      "scale_to_side": "shortest",
+      "scale_to_length": 768,
+      "background_color": "#000000",
+      "image": [
+        "44",
+        0
+      ],
+      "mask": [
+        "44",
+        1
+      ]
+    },
+    "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+    "_meta": {
+      "title": "LayerUtility: ImageScaleByAspectRatio V2"
+    }
+  },
+  "170": {
+    "inputs": {
+      "fill_mode": "white",
+      "fill_alpha_decision": "right",
+      "expand_left": false,
+      "expand_right": false,
+      "expand_top": false,
+      "expand_bottom": false,
+      "num_blocks_left": 0,
+      "num_blocks_right": 0,
+      "num_blocks_top": 0,
+      "num_blocks_bottom": 0,
+      "image": [
+        "200",
+        0
+      ]
+    },
+    "class_type": "TTP_Expand_And_Mask",
+    "_meta": {
+      "title": "TTP_Expand_And_Mask"
+    }
+  },
+  "172": {
+    "inputs": {
+      "images": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "179": {
+    "inputs": {
+      "images": [
+        "43",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "197": {
+    "inputs": {
+      "image": "bus_mask.png",
+      "channel": "red",
+      "upload": "image"
+    },
+    "class_type": "LoadImageMask",
+    "_meta": {
+      "title": "Load Image (as Mask)"
+    }
+  },
+  "200": {
+    "inputs": {
+      "detail_method": "VITMatte",
+      "detail_erode": 4,
+      "detail_dilate": 2,
+      "black_point": 0.01,
+      "white_point": 0.9400000000000001,
+      "process_detail": true,
+      "device": "cuda",
+      "max_megapixels": 2,
+      "image": [
+        "168",
+        0
+      ]
+    },
+    "class_type": "LayerMask: BiRefNetUltra",
+    "_meta": {
+      "title": "LayerMask: BiRefNetUltra(Advance)"
+    }
+  },
+  "202": {
+    "inputs": {
+      "model": "MiaoshouAI/Florence-2-large-PromptGen-v2.0",
+      "precision": "fp16",
+      "attention": "sdpa"
+    },
+    "class_type": "DownloadAndLoadFlorence2Model",
+    "_meta": {
+      "title": "DownloadAndLoadFlorence2Model"
+    }
+  }
+}
