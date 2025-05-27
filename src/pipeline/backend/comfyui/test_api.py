@@ -120,16 +120,27 @@ def queue_prompt(prompt, client_id, server_address):
     return json.loads(request.urlopen(req).read())
     #request.urlopen(req)
 
+def invoke(prompt, client_id, server_address):
+    p = {"workflow": prompt, "client_id": client_id}
+    data = json.dumps(p).encode('utf-8')
+    headers = {'Content-Type': 'application/json'}
+    req =  request.Request("http://{}/invocations".format(server_address), data=data, headers=headers)
+    return json.loads(request.urlopen(req).read())
+
 if __name__ == "__main__":
     workflow_path = sys.argv[1]
     f = open(workflow_path)
     prompt = json.load(f)
-    base_url = sys.argv[2]
+    websocket_base_url = sys.argv[2]
+    http_base_url = sys.argv[3]
 
-    ws, client_id = open_websocket_connection(base_url)
-    prompt_id = queue_prompt(prompt, client_id, base_url)['prompt_id']
+    ws, client_id = open_websocket_connection(websocket_base_url)
+    response = invoke(prompt, client_id, http_base_url)
+    prompt_id = response['prompt_id']
+    output_path = response['output_path']
     print(prompt_id)
-    track_progress(prompt, ws, prompt_id)
+    print(output_path)
+    # track_progress(prompt, ws, prompt_id)
     #images = get_images(prompt_id, server_address)
 
     #output_path = './output'

@@ -88,7 +88,7 @@ def run(
             f" -e model_id={model_id}  -e model_tag={model_tag}"
             f" -e MODEL_DIR={model_dir_in_image}"
             f" -e AWS_ACCESS_KEY_ID={aws_access_key_id} -e AWS_SECRET_ACCESS_KEY={aws_secret_access_key}"
-            f" -dit {accelerator_cli_args} -v {model_dir_abs}:{model_dir_in_image} -p {local_deploy_port}:8080 {img_uri}" # daemon run with attached logging
+            f" -dit {accelerator_cli_args} -v {model_dir_abs}:{model_dir_in_image} -p {local_deploy_port}:8080 -p 8188:8188 {img_uri}" # daemon run with attached logging
             f" && docker logs -f {container_name}"
         )
         logger.info(f"Running {running_cmd}")
