@@ -78,3 +78,23 @@ pip install torchaudio
 pip install transformers -U
 pip install accelerate
 pip install omegaconf
+
+
+mkdir models/clip
+wget -P models/clip https://huggingface.co/calcuis/hunyuan-gguf/resolve/main/clip_l.safetensors
+wget -P models/clip https://huggingface.co/calcuis/sd3.5-large-gguf/resolve/main/t5xxl_fp8_e4m3fn.safetensors
+mkdir models/clip_vision
+wget -P models/clip_vision https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors
+mkdir models/diffusion_models
+wget -P models/diffusion_models https://huggingface.co/second-state/FLUX.1-Fill-dev-GGUF/resolve/main/flux1-fill-dev.safetensors
+mkdir models/loras
+wget -P models/loras https://huggingface.co/ali-vilab/ACE_Plus/resolve/main/subject/comfyui_subject_lora16.safetensors
+wget -P models/loras https://d32oiauqot40oo.cloudfront.net/models/loras/flux-turbo-alpha.safetensors
+mkdir models/style_models
+wget -P models/style_models https://huggingface.co/Runware/FLUX.1-Redux-dev/resolve/main/flux1-redux-dev.safetensors
+mkdir models/vae
+wget -P models/vae https://d32oiauqot40oo.cloudfront.net/models/vae/ae.safetensors
+mkdir models/BiRefNet 
+wget -P models/BiRefNet https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-ep480.pth
+wget -P models/BiRefNet https://huggingface.co/ViperYX/BiRefNet/resolve/main/swin_large_patch4_window12_384_22kto1k.pth                                                  
+mkdir models/LLM

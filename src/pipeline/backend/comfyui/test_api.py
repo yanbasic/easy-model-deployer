@@ -1,11 +1,13 @@
 import json
-from urllib import request, parse
 import random
-import websocket
 import uuid
 import os
-from PIL import Image
 import io
+import sys
+
+from urllib import request, parse
+from PIL import Image
+import websocket
 
 #This is the ComfyUI api prompt format.
 
@@ -54,16 +56,14 @@ def show_gif(fname):
         b64 = base64.b64encode(fd.read()).decode('ascii')
     return display.HTML(f'<img src="data:image/gif;base64,{b64}" />')
 
-def open_websocket_connection():
-  server_address='127.0.0.1:8188'
-  #server_address='0.0.0.0:8189'
+def open_websocket_connection(base_url):
   client_id=str(uuid.uuid4())
   ws = websocket.WebSocket()
-  ws.connect("ws://{}/ws?clientId={}".format(server_address, client_id))
-  return ws, server_address, client_id
+  ws.connect(f"ws://{base_url}/ws?clientId={client_id}")
+  return ws, client_id
 
-def get_history(prompt_id, server_address):
-  with request.urlopen("http://{}/history/{}".format(server_address, prompt_id)) as response:
+def get_history(prompt_id, base_url):
+  with request.urlopen(f"http://{base_url}/history/{prompt_id}") as response:
       data = json.loads(response.read())
       return data
 
@@ -120,16 +120,17 @@ def queue_prompt(prompt, client_id, server_address):
     return json.loads(request.urlopen(req).read())
     #request.urlopen(req)
 
-f = open('./workflow_txt2img_ltx_video_api.json')
-prompt = json.load(f)
+if __name__ == "__main__":
+    workflow_path = sys.argv[1]
+    f = open(workflow_path)
+    prompt = json.load(f)
+    base_url = sys.argv[2]
 
+    ws, client_id = open_websocket_connection(base_url)
+    prompt_id = queue_prompt(prompt, client_id, base_url)['prompt_id']
+    print(prompt_id)
+    track_progress(prompt, ws, prompt_id)
+    #images = get_images(prompt_id, server_address)
 
-
-ws, server_address, client_id = open_websocket_connection()
-prompt_id = queue_prompt(prompt, client_id, server_address)['prompt_id']
-print(prompt_id)
-track_progress(prompt, ws, prompt_id)
-#images = get_images(prompt_id, server_address)
-
-#output_path = './output'
-#save_image(images, output_path, save_previews=False)
+    #output_path = './output'
+    #save_image(images, output_path, save_previews=False)

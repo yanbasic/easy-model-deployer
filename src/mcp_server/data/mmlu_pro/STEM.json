@@ -1,0 +1,28 @@
+[
+  {
+    "id": "math_1",
+    "question": "If f(x) = 3x\u00b2 + 2x - 5, what is f(2)?",
+    "choices": [
+      "7",
+      "9",
+      "15",
+      "17"
+    ],
+    "answer": "C",
+    "subcategory": "mathematics",
+    "difficulty": "easy"
+  },
+  {
+    "id": "physics_1",
+    "question": "Which of the following is NOT one of Newton's laws of motion?",
+    "choices": [
+      "An object in motion stays in motion unless acted upon by an external force",
+      "Force equals mass times acceleration",
+      "Energy can neither be created nor destroyed, only transformed",
+      "For every action, there is an equal and opposite reaction"
+    ],
+    "answer": "C",
+    "subcategory": "physics",
+    "difficulty": "medium"
+  }
+]

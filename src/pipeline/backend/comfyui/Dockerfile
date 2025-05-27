@@ -48,6 +48,8 @@ RUN cd /home/ubuntu || exit 1 && \
 # COPY src /home/ubuntu/src
 # COPY src/deploy/on_sagemaker/serve /usr/bin/serve
 # RUN chmod +x /usr/bin/serve
+COPY backend/comfyui/bus_mask.png backend/comfyui/bus2.jpeg backend/comfyui/test_car.png /home/ubuntu/ComfyUI/input/
+
 RUN apt-get update
 RUN apt-get install -y python3-pip
 RUN pip install uvicorn
@@ -58,4 +60,5 @@ RUN pip install aiohttp
 RUN pip install websocket
 RUN pip install websocket-client
 # Set the serve script as the entrypoint
+EXPOSE 8188
 ENTRYPOINT ["/usr/bin/serve"]

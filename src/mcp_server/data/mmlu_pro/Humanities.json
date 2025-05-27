@@ -1,0 +1,28 @@
+[
+  {
+    "id": "history_1",
+    "question": "Which empire was ruled by Genghis Khan?",
+    "choices": [
+      "Roman Empire",
+      "Mongol Empire",
+      "Ottoman Empire",
+      "Byzantine Empire"
+    ],
+    "answer": "B",
+    "subcategory": "history",
+    "difficulty": "easy"
+  },
+  {
+    "id": "literature_1",
+    "question": "Who wrote 'Pride and Prejudice'?",
+    "choices": [
+      "Jane Austen",
+      "Charlotte Bront\u00eb",
+      "Emily Dickinson",
+      "Virginia Woolf"
+    ],
+    "answer": "A",
+    "subcategory": "literature",
+    "difficulty": "easy"
+  }
+]

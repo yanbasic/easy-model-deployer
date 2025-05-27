@@ -29,6 +29,6 @@ from . import services
 from . import model_series
 from . import frameworks
 
-Model.register_from_json_file(
-    "src/emd/models/custom_model.json"
-)
+# Model.register_from_json_file(
+#     "src/emd/models/custom_model.json"
+# )

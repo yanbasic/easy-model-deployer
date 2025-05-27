@@ -32,8 +32,9 @@ Model.register(
         supported_frameworks=[
             fastapi_framework
         ],
-        huggingface_url_list={"https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltx-video-2b-v0.9.1.safetensors": "models/checkpoints",
-                              "https://huggingface.co/mcmonkey/google_t5-v1_1-xxl_encoderonly/resolve/main/t5xxl_fp8_e4m3fn.safetensors": "models/clip"},
+        # huggingface_url_list={"https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltx-video-2b-v0.9.1.safetensors": "models/checkpoints",
+        #                       "https://huggingface.co/mcmonkey/google_t5-v1_1-xxl_encoderonly/resolve/main/t5xxl_fp8_e4m3fn.safetensors": "models/clip"},
+        huggingface_url_list = {},
         huggingface_model_list=None,
         require_huggingface_token=False,
         application_scenario="txt to image and image to video",

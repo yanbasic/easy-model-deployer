@@ -18,7 +18,7 @@ class SageMakerClient:
         # request["model"] = self.model
         if self.stream:
             request["stream"] = True
-            response = self.client.invoke_endpoint_with_response_stream(
+            response = self.client.invoke_endpoint_async(
                 EndpointName=self.endpoint_name,
                 Body=json.dumps(request),
                 ContentType="application/json",
@@ -28,7 +28,7 @@ class SageMakerClient:
                 print(line, end="")
                 sys.stdout.flush()
         else:
-            response = self.client.invoke_endpoint(
+            response = self.client.invoke_endpoint_async(
                 EndpointName=self.endpoint_name,
                 Body=json.dumps(request),
                 ContentType="application/json",

@@ -134,7 +134,7 @@
   },
   "44": {
     "inputs": {
-      "image": "car3.jpg",
+      "image": "test_car.png",
       "upload": "image"
     },
     "class_type": "LoadImage",

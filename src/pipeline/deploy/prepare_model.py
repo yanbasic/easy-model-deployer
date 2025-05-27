@@ -163,5 +163,5 @@ def run(model:Model):#, model_s3_bucket, backend_type, service_type, region,args
     else:
         logger.info(f"Model {model.model_id} already prepared, skip prepare model step. need_prepare_model:{need_prepare_model}, model_files_s3_path: {model_files_s3_path}")
 
-    if service_type != ServiceType.LOCAL and need_prepare_model:
+    if service_type != ServiceType.LOCAL and need_prepare_model and engine_type != EngineType.COMFYUI:
         upload_model_to_s3(model, model_s3_bucket)
