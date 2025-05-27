@@ -117,6 +117,11 @@ TXGEMMA_SERIES = ModelSeries(
     reference_link="https://huggingface.co/collections/google/txgemma-release-67dd92e931c857d15e4d1e87"
 )
 
+MEDGEMMA_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.MEDGEMMA,
+    description="MedGemma is a collection of Gemma 3 variants that are trained for performance on medical text and image comprehension.",
+    reference_link="https://huggingface.co/collections/google/medgemma-release-680aade845f90bec6a3f60c4"
+)
 
 MISTRAL_SERIES = ModelSeries(
     model_series_name=ModelSeriesType.MISTRAL,

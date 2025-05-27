@@ -90,6 +90,18 @@ vllm_texgemma082 = VllmEngine(**{
 )
 
 
+vllm_medgemma082 = VllmEngine(**{
+            "engine_type":EngineType.VLLM,
+            "engine_dockerfile_config": {"VERSION":"v0.8.2"},
+            "engine_cls":"vllm.vllm_backend.VLLMBackend",
+            "base_image_host":"public.ecr.aws",
+            "use_public_ecr":True,
+            "docker_login_region":"us-east-1",
+            "default_cli_args": " --max_num_seq 10 --disable-log-stats"
+}
+)
+
+
 vllm_mistral_small_engine082 = VllmEngine(
     **{
     **vllm_engine064.model_dump(),
