@@ -100,6 +100,330 @@ class ComfyUIBackend(BackendBase):
             print(f"Error during background removal: {str(e)}")
             return {"status": "error", "message": str(e)}
 
+    def _text2img(self, prompt, negative_prompt, width, height, num_imgs, seed=1):
+        # Generate image using only a text prompt.
+        body = json.dumps(
+                        {
+                        "taskType": "TEXT_IMAGE",
+                        "textToImageParams": {
+                            "text": prompt, # A description of the final desired image
+                            "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                        },
+                        "imageGenerationConfig": {
+                        "numberOfImages": num_imgs,  # Number of images to generate, up to 5
+                        "width": width,
+                        "height": height,
+                        "cfgScale": 6.5,  # How closely the prompt will be followed
+                        "seed": seed,  # Any number from 0 through 858,993,459
+                        "quality": "premium",  # Quality of either "standard" or "premium"
+                        },
+                        }
+        )
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _image_variation(self, reference_image_base64, prompt, negative_prompt, width, height, num_imgs, similarity_strength=0.5, seed=1):
+    
+        print("Generating image with a reference image...")
+
+        # Generate image with referece (Image variation feature)
+        body=json.dumps(
+            {
+                "taskType": "IMAGE_VARIATION",
+                "imageVariationParams": {
+                    "text": prompt,
+                    "negativeText": negative_prompt,  # What to avoid generating inside the image
+                    "images": [
+                        reference_image_base64
+                    ],  # May provide up to 5 reference images here
+                    "similarityStrength": similarity_strength,  # How strongly the input images influence the output. From 0.2 through 1.
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                    "cfgScale": 6.5,  # How closely the prompt will be followed
+                    "seed": seed,  # Any number from 0 through 858,993,459
+                    "width": width,
+                    "height": height,
+                    "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+                },
+            }
+        )
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _image_color_conditioning(self, colors, prompt, negative_prompt, width, height, num_imgs, seed=1):
+        print("Generating image with a reference image...")
+
+        # Generate image with referece (Image color conditioning feature)
+        body = json.dumps(
+            {
+                "taskType": "COLOR_GUIDED_GENERATION",
+                "colorGuidedGenerationParams": {
+                    "text": prompt,
+                    "negativeText": negative_prompt,  # What to avoid generating inside the image
+                    "colors": colors,
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": num_imgs,  # Number of images to generate, up to 5
+                    "cfgScale": 6.5,  # How closely the prompt will be followed
+                    "width": width,
+                    "height": height,
+                    "seed": seed,
+                    "quality": "standard",  # Quality of either "standard" or "premium"
+                },
+            }
+        )
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _outpaint_with_maskPrompt(self, reference_image_base64, prompt, negative_prompt, mask_prompt, num_imgs, seed=1):
+        # Generate image condition on reference image
+        body = json.dumps(
+            {
+            "taskType": "OUTPAINTING",
+            "outPaintingParams": {
+                "text": prompt,  # A description of the final desired image
+                "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                "image": reference_image_base64,  # The image to edit
+                "maskPrompt": mask_prompt,  # One of "maskImage" or "maskPrompt" is required
+                "outPaintingMode": "PRECISE",  # Either "DEFAULT" or "PRECISE"
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                "cfgScale": 6.5,  # How closely the prompt will be followed
+                "seed": seed,  # Any number from 0 through 858,993,459
+                "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+            },
+        }
+        )
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+    
+    def _outpaint_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, seed=1):
+        # Generate image condition on reference image
+        body = json.dumps(
+            {
+            "taskType": "OUTPAINTING",
+            "outPaintingParams": {
+                "text": prompt,  # A description of the final desired image
+                "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                "image": reference_image_base64,  # The image to edit
+                "maskImage": mask_image_base64,  # One of "maskImage" or "maskPrompt" is required
+                "outPaintingMode": "DEFAULT",  # Either "DEFAULT" or "PRECISE"
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                "cfgScale": 6.5,  # How closely the prompt will be followed
+                "seed": seed,  # Any number from 0 through 858,993,459
+                "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+            },
+        }
+        )
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _replace_object_with_maskPrompt(self, reference_image_base64, prompt, negative_prompt, mask_prompt, num_imgs, seed=1):
+        """
+        Remove an object from the image using the specified prompt.
+        """
+        body = json.dumps(
+            {
+                "taskType": "INPAINTING",
+                "inPaintingParams": {
+                    "text": prompt,  # What to generate in the masked area
+                    "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                    "image": reference_image_base64,  # The image to edit
+                    "maskPrompt": mask_prompt,  # A description of the area(s) of the image to change
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                    "cfgScale": 6.5,  # How closely the prompt will be followed
+                    "seed": seed,  # Any number from 0 through 858,993,459
+                    "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+                },
+            }
+        )
+
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _replace_object_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, seed=1):
+        """
+        Remove an object from the image using the specified mask image.
+        """
+        body = json.dumps(
+            {
+                "taskType": "INPAINTING",
+                "inPaintingParams": {
+                    "text": prompt,  # What to generate in the masked area
+                    "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                    "image": reference_image_base64,  # The image to edit
+                    "maskImage": mask_image_base64,  # The mask image to use
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                    "cfgScale": 6.5,  # How closely the prompt will be followed
+                    "seed": seed,  # Any number from 0 through 858,993,459
+                    "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+                },
+            }
+        )
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _remove_object_with_maskPrompt(self, reference_image_base64, negative_prompt, mask_prompt, num_imgs, seed=1):
+        """
+        Remove an object from the image using the specified prompt.
+        """
+        body = json.dumps(
+            {
+                "taskType": "INPAINTING",
+                "inPaintingParams": {
+                    "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                    "image": reference_image_base64,  # The image to edit
+                    "maskPrompt": mask_prompt,  # A description of the area(s) of the image to change
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                    "cfgScale": 6.5,  # How closely the prompt will be followed
+                    "seed": seed,  # Any number from 0 through 858,993,459
+                    "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+                },
+            }
+        )
+
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _remove_object_with_maskImage(self, reference_image_base64, negative_prompt, mask_image_base64, num_imgs, seed=1):
+        """
+        Remove an object from the image using the specified mask image.
+        """
+        body = json.dumps(
+            {
+                "taskType": "INPAINTING",
+                "inPaintingParams": {
+                    "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                    "image": reference_image_base64,  # The image to edit
+                    "maskImage": mask_image_base64,  # The mask image to use
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                    "cfgScale": 6.5,  # How closely the prompt will be followed
+                    "seed": seed,  # Any number from 0 through 858,993,459
+                    "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+                },
+            }
+        )
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
     def _generate_video_by_ltxvideo(self, prompt):
         workflow = copy.deepcopy(self.workflow)
         # Replace the prompt in the workflow
@@ -176,6 +500,104 @@ class ComfyUIBackend(BackendBase):
             elif request["taskType"] == "VIDEO_GENERATION":
                 self._generate_video_by_ltxvideo(request["videoGenerationParams"]["prompt"])
                 return {"status": "success", "message": "Video generation started"}
+            elif request["taskType"] == "TEXT_TO_IMAGE":
+                print("!!!!!!!!!! Generating image with text prompt...")
+                response = self._text2img(
+                    request["textToImageParams"]["text"],
+                    request["textToImageParams"].get("negativeText", ""),
+                    request["imageGenerationConfig"]["width"],
+                    request["imageGenerationConfig"]["height"],
+                    request["imageGenerationConfig"]["numberOfImages"],
+                    request["imageGenerationConfig"].get("seed", 1),
+                )
+                return response
+            elif request["taskType"] == "IMAGE_VARIATION":
+                response = self._image_variation(
+                    request["imageVariationParams"]["images"][0],
+                    request["imageVariationParams"]["text"],
+                    request["imageVariationParams"].get("negativeText", ""),
+                    request["imageGenerationConfig"]["width"],
+                    request["imageGenerationConfig"]["height"],
+                    request["imageGenerationConfig"]["numberOfImages"],
+                    request["imageVariationParams"].get("similarityStrength", 0.5),
+                    request["imageGenerationConfig"].get("seed", 1),
+                )
+                return self._get_response(response)
+            elif request["taskType"] == "COLOR_GUIDED_GENERATION":
+                response = self._image_color_conditioning(
+                    request["colorGuidedGenerationParams"]["colors"],
+                    request["colorGuidedGenerationParams"]["text"],
+                    request["colorGuidedGenerationParams"].get("negativeText", ""),
+                    request["imageGenerationConfig"]["width"],
+                    request["imageGenerationConfig"]["height"],
+                    request["imageGenerationConfig"]["numberOfImages"],
+                    request["imageGenerationConfig"].get("seed", 1),
+                )
+                return self._get_response(response)
+            elif request["taskType"] == "OUTPAINTING":
+                if "maskPrompt" in request["outPaintingParams"]:
+                    response = self._outpaint_with_maskPrompt(
+                        request["outPaintingParams"]["image"],
+                        request["outPaintingParams"]["text"],
+                        request["outPaintingParams"].get("negativeText", ""),
+                        request["outPaintingParams"]["maskPrompt"],
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"].get("seed", 1),
+                    )
+                elif "maskImage" in request["outPaintingParams"]:
+                    response = self._outpaint_with_maskImage(
+                        request["outPaintingParams"]["image"],
+                        request["outPaintingParams"]["text"],
+                        request["outPaintingParams"].get("negativeText", ""),
+                        request["outPaintingParams"]["maskImage"],
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"].get("seed", 1),
+                    )
+                else:
+                    raise ValueError("Either maskPrompt or maskImage must be provided")
+                return self._get_response(response)
+            elif request["taskType"] == "REPLACE_OBJECT":
+                if "maskPrompt" in request["inPaintingParams"]:
+                    response = self._replace_object_with_maskPrompt(
+                        request["inPaintingParams"]["image"],
+                        request["inPaintingParams"]["text"],
+                        request["inPaintingParams"].get("negativeText", ""),
+                        request["inPaintingParams"]["maskPrompt"],
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"].get("seed", 1),
+                    )
+                elif "maskImage" in request["inPaintingParams"]:
+                    response = self._replace_object_with_maskImage(
+                        request["inPaintingParams"]["image"],
+                        request["inPaintingParams"]["text"],
+                        request["inPaintingParams"].get("negativeText", ""),
+                        request["inPaintingParams"]["maskImage"],
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"].get("seed", 1),
+                    )
+                else:
+                    raise ValueError("Either maskPrompt or maskImage must be provided")
+                return self._get_response(response)
+            elif request["taskType"] == "REMOVE_OBJECT":
+                if "maskPrompt" in request["inPaintingParams"]:
+                    response = self._remove_object_with_maskPrompt(
+                        request["inPaintingParams"]["image"],
+                        request["inPaintingParams"].get("negativeText", ""),
+                        request["inPaintingParams"]["maskPrompt"],
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"].get("seed", 1),
+                    )
+                elif "maskImage" in request["inPaintingParams"]:
+                    response = self._remove_object_with_maskImage(
+                        request["inPaintingParams"]["image"],
+                        request["inPaintingParams"].get("negativeText", ""),
+                        request["inPaintingParams"]["maskImage"],
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"].get("seed", 1),
+                    )
+                else:
+                    raise ValueError("Either maskPrompt or maskImage must be provided")
+                return self._get_response(response)
             else:
                 raise ValueError("Invalid taskType")
         else:

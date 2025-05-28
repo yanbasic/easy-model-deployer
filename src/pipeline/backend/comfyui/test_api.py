@@ -127,17 +127,123 @@ def invoke(request_body, server_address):
     return json.loads(request.urlopen(req).read())
 
 if __name__ == "__main__":
-    workflow_path = sys.argv[1]
-    f = open(workflow_path)
-    prompt = json.load(f)
-    http_base_url = sys.argv[2]
+    #workflow_path = sys.argv[1]
+    #f = open(workflow_path)
+    #prompt = json.load(f)
+    http_base_url = sys.argv[1]
 
     encoded_image = base64.b64encode(open("src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
+    
+    #### remove background
     remove_background_request = {
         "taskType": "BACKGROUND_REMOVAL",
         "backgroundRemovalParams": {"image": encoded_image}
     }
-    response = invoke(remove_background_request, http_base_url)
+    #### text to image
+    text_to_image_request = {
+        "taskType": "TEXT_TO_IMAGE",
+        "textToImageParams": {
+                "text": "car on the beach",  # Text prompt to guide the generation
+                "negativeText": "blur",
+            },  # What to avoid generating inside the image
+            "imageGenerationConfig": {
+            "numberOfImages": 2,  # Number of images to generate, up to 5
+            "width": 1024,
+            "height": 1024,
+            "cfgScale": 6.5,  # How closely the prompt will be followed
+            "seed": 1111111,  # Any number from 0 through 858,993,459
+            }
+    }
+    #### image varation
+    image_variation_request = {
+        "taskType": "IMAGE_VARIATION",
+        "imageVariationParams": 
+        {
+                    "text": "a red car running on the road",
+                    "negativeText": "blur",  # What to avoid generating inside the image
+                    "images": [
+                        encoded_image
+                    ],  # May provide up to 5 reference images here
+                    "similarityStrength": 0.6,  # How strongly the input images influence the output. From 0.2 through 1.
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": 2,  # Number of images to generate, up to 5.
+                    "seed": 11111,  # Any number from 0 through 858,993,459
+                    "width": 1024,
+                    "height": 1024,
+                }
+    }
+    #### color_guided_image_generation
+    colors = ["#FFFFFF", "#FF9900", "#F2F2F2", "#232F3E"]
+    color_guided_image_generation_request = {
+        "taskType": "COLOR_GUIDED_GENERATION",
+        "colorGuidedGenerationParams": 
+        {
+                "text": "a red car running on the road",
+                "negativeText": "blur",  # What to avoid generating inside the image
+                "colors": colors,
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": 2,  # Number of images to generate, up to 5
+                "width": 1024,
+                "height": 1024,
+            }
+    }
+    #### outpaint
+    outpaint_request = {
+        "taskType": "OUTPAINTING",
+        "outPaintingParams":
+        {
+                "text": "beach and sea rocky shore",  # Text prompt to guide the generation
+                "negativeText": "blur",  # What to avoid generating inside the image
+                "image": encoded_image,  # May provide up to 5 reference images here
+                "maskPrompt": "car",
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": 2,  # Number of images to generate, up to 5.
+                "seed": 11111,  # Any number from 0 through 858,993,459
+            }
+    }
+    #### inpaint
+    replace_object_request = {
+        "taskType": "REPLACE_OBJECT",
+        "inPaintingParams":
+        {
+                "text": "jeep",
+                "negativeText": "blur",  # What to avoid generating inside the image
+                "image": encoded_image,  # May provide up to 5 reference images here
+                "maskPrompt": "car",
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": 2,  # Number of images to generate, up to 5.
+                "seed": 11111,  # Any number from 0 through 858,993,459
+            }
+    }
+    #### remove object
+    remove_object_request = {
+        "taskType": "REMOVE_OBJECT",
+        "inPaintingParams":
+        {
+                "text": "jeep",
+                "negativeText": "blur",  # What to avoid generating inside the image
+                "image": encoded_image,  # May provide up to 5 reference images here
+                "maskPrompt": "car",
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": 2,  # Number of images to generate, up to 5.
+                "seed": 11111,  # Any number from 0 through 858,993,459
+            }
+    }  
+
+
+    #response = invoke(remove_background_request, http_base_url)
+    #response = invoke(text_to_image_request, http_base_url)
+    #response = invoke(image_variation_request, http_base_url)
+    #response = invoke(color_guided_image_generation_request, http_base_url)
+    #response = invoke(replace_object_request, http_base_url)
+    #response = invoke(remove_object_request, http_base_url)
+    response = invoke(outpaint_request, http_base_url)
+    print(response.keys())
     base64_images = response.get("images")
     print("Response images:", len(base64_images))
     response_images = [
@@ -145,4 +251,6 @@ if __name__ == "__main__":
         for base64_image in base64_images
     ]
     # save the response_images to a file
-    response_images[0].save("src/pipeline/backend/comfyui/test_car_output.png")
+    for i, img in enumerate(response_images):
+        task_type = outpaint_request.get("taskType")
+        img.save(f"src/pipeline/backend/comfyui/test_car_text_to_{task_type}_{i}.png")
