@@ -63,6 +63,7 @@ class ComfyUIBackend(BackendBase):
         # model_dir = f"emd_models/{self.model_id}"
         # logger.info(f"Downloading model from s3")
         # sync_s3_files_or_folders_to_local(self.model_s3_bucket, model_dir, ROOT_PATH)
+
         os.system("bash backend/comfyui/start.sh > comfyui.log 2>&1 &")
         while True:
             try:
@@ -103,21 +104,21 @@ class ComfyUIBackend(BackendBase):
     def _text2img(self, prompt, negative_prompt, width, height, num_imgs, seed=1):
         # Generate image using only a text prompt.
         body = json.dumps(
-                        {
-                        "taskType": "TEXT_IMAGE",
-                        "textToImageParams": {
-                            "text": prompt, # A description of the final desired image
-                            "negativeText": negative_prompt,  # What to avoid generating inside the mask
-                        },
-                        "imageGenerationConfig": {
-                        "numberOfImages": num_imgs,  # Number of images to generate, up to 5
-                        "width": width,
-                        "height": height,
-                        "cfgScale": 6.5,  # How closely the prompt will be followed
-                        "seed": seed,  # Any number from 0 through 858,993,459
-                        "quality": "premium",  # Quality of either "standard" or "premium"
-                        },
-                        }
+            {
+                "taskType": "TEXT_IMAGE",
+                "textToImageParams": {
+                    "text": prompt, # A description of the final desired image
+                    "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                },
+                "imageGenerationConfig": {
+                    "numberOfImages": num_imgs,  # Number of images to generate, up to 5
+                    "width": width,
+                    "height": height,
+                    "cfgScale": 6.5,  # How closely the prompt will be followed
+                    "seed": seed,  # Any number from 0 through 858,993,459
+                    "quality": "premium",  # Quality of either "standard" or "premium"
+                },
+            }
         )
         print("Generating image...")
         try:
@@ -433,7 +434,7 @@ class ComfyUIBackend(BackendBase):
         comfyui_req = {"prompt": workflow, "client_id": self.client_id}
         self._invoke_comfyui(comfyui_req)
 
-    def _invoke_comfyui(self, comfyui_req):
+    def _ainvoke_comfyui(self, comfyui_req):
         data = json.dumps(comfyui_req).encode("utf-8")
         print(data)
         response = requests.post(self.api_base, data=data)
@@ -491,6 +492,12 @@ class ComfyUIBackend(BackendBase):
         except Exception as e:
             print(f"Error during processing: {str(e)}")
             raise
+
+    def _invoke_comfyui(self, comfyui_req):
+        data = json.dumps(comfyui_req).encode("utf-8")
+        response = requests.post(self.api_base, data=data)
+        response_data = response.json()
+        return response_data
 
     def invoke(self, request):
         if "taskType" in request:
@@ -598,6 +605,8 @@ class ComfyUIBackend(BackendBase):
                 else:
                     raise ValueError("Either maskPrompt or maskImage must be provided")
                 return self._get_response(response)
+            elif request["taskType"] == "WORKFLOW":
+                return self._invoke_comfyui(request["workflow"])
             else:
                 raise ValueError("Invalid taskType")
         else:
