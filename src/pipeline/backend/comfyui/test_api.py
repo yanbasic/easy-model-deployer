@@ -4,6 +4,7 @@ import uuid
 import os
 import io
 import sys
+import base64
 
 from urllib import request, parse
 from PIL import Image
@@ -50,7 +51,6 @@ def track_progress(prompt, ws, prompt_id):
   return
 
 def show_gif(fname):
-    import base64
     from IPython import display
     with open(fname, 'rb') as fd:
         b64 = base64.b64encode(fd.read()).decode('ascii')
@@ -120,9 +120,8 @@ def queue_prompt(prompt, client_id, server_address):
     return json.loads(request.urlopen(req).read())
     #request.urlopen(req)
 
-def invoke(prompt, client_id, server_address):
-    p = {"workflow": prompt, "client_id": client_id}
-    data = json.dumps(p).encode('utf-8')
+def invoke(request_body, server_address):
+    data = json.dumps(request_body).encode('utf-8')
     headers = {'Content-Type': 'application/json'}
     req =  request.Request("http://{}/invocations".format(server_address), data=data, headers=headers)
     return json.loads(request.urlopen(req).read())
@@ -131,17 +130,19 @@ if __name__ == "__main__":
     workflow_path = sys.argv[1]
     f = open(workflow_path)
     prompt = json.load(f)
-    websocket_base_url = sys.argv[2]
-    http_base_url = sys.argv[3]
+    http_base_url = sys.argv[2]
 
-    ws, client_id = open_websocket_connection(websocket_base_url)
-    response = invoke(prompt, client_id, http_base_url)
-    prompt_id = response['prompt_id']
-    output_path = response['output_path']
-    print(prompt_id)
-    print(output_path)
-    # track_progress(prompt, ws, prompt_id)
-    #images = get_images(prompt_id, server_address)
-
-    #output_path = './output'
-    #save_image(images, output_path, save_previews=False)
+    encoded_image = base64.b64encode(open("src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
+    remove_background_request = {
+        "taskType": "BACKGROUND_REMOVAL",
+        "backgroundRemovalParams": {"image": encoded_image}
+    }
+    response = invoke(remove_background_request, http_base_url)
+    base64_images = response.get("images")
+    print("Response images:", len(base64_images))
+    response_images = [
+        Image.open(io.BytesIO(base64.b64decode(base64_image)))
+        for base64_image in base64_images
+    ]
+    # save the response_images to a file
+    response_images[0].save("src/pipeline/backend/comfyui/test_car_output.png")

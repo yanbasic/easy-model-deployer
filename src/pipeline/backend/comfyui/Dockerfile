@@ -59,6 +59,8 @@ RUN pip install boto3
 RUN pip install aiohttp
 RUN pip install websocket
 RUN pip install websocket-client
+RUN pip install pillow
+RUN pip install botocore
 # Set the serve script as the entrypoint
 EXPOSE 8188
 ENTRYPOINT ["/usr/bin/serve"]

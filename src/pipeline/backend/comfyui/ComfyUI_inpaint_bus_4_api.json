@@ -272,7 +272,7 @@
       "num_beams": 3,
       "do_sample": true,
       "output_mask_select": "",
-      "seed": 68902195461815,
+      "seed": 6890261954615,
       "image": [
         "170",
         0

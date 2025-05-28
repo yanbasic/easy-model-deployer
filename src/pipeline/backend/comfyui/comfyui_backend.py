@@ -3,6 +3,8 @@ import copy
 import time
 import json
 import uuid
+import io
+import base64
 
 from typing import Optional
 from pydantic import ValidationError
@@ -13,6 +15,8 @@ import boto3
 import logging
 from aiohttp import web
 import websocket
+from botocore.client import Config
+from PIL import Image
 
 from utils.common import sync_s3_files_or_folders_to_local, sync_local_outputs_to_s3
 
@@ -46,11 +50,19 @@ class ComfyUIBackend(BackendBase):
         self.ws = websocket.WebSocket(environ, socket, rfile)
         with open("backend/comfyui/ltxvideo-txt2video-api.json") as f:
             self.workflow = json.load(f)
+        self.bedrock_runtime_client_image = boto3.client(
+            "bedrock-runtime",
+            region_name="us-east-1",
+            config=Config(
+            read_timeout=5 * 60
+            ),
+        )
+        self.image_generation_model_id = "amazon.nova-canvas-v1:0"
 
     def start(self):
-        model_dir = f"emd_models/{self.model_id}"
-        logger.info(f"Downloading model from s3")
-        sync_s3_files_or_folders_to_local(self.model_s3_bucket, model_dir, ROOT_PATH)
+        # model_dir = f"emd_models/{self.model_id}"
+        # logger.info(f"Downloading model from s3")
+        # sync_s3_files_or_folders_to_local(self.model_s3_bucket, model_dir, ROOT_PATH)
         os.system("bash backend/comfyui/start.sh > comfyui.log 2>&1 &")
         while True:
             try:
@@ -67,17 +79,37 @@ class ComfyUIBackend(BackendBase):
                 continue
         return
 
-    def invoke(self, request):
-        if "prompt" in request:
-            prompt = request["prompt"]
-            workflow = copy.deepcopy(self.workflow)
-            # Replace the prompt in the workflow
-            # workflow["120"]["inputs"]["text"] = prompt
-            # Add the prompt to video generation
-            workflow["87"]["inputs"]["text"] += prompt
-            comfyui_req = {"prompt": workflow, "client_id": self.client_id}
-        else:
-            comfyui_req = {"prompt": request["workflow"], "client_id": self.client_id}
+    def _remove_background(self, reference_image_base64):
+        body = json.dumps(
+            {
+                "taskType": "BACKGROUND_REMOVAL",
+                "backgroundRemovalParams": {"image": reference_image_base64},
+            }
+        )
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _generate_video_by_ltxvideo(self, prompt):
+        workflow = copy.deepcopy(self.workflow)
+        # Replace the prompt in the workflow
+        # workflow["120"]["inputs"]["text"] = prompt
+        # Add the prompt to video generation
+        workflow["87"]["inputs"]["text"] += prompt
+        comfyui_req = {"prompt": workflow, "client_id": self.client_id}
+        self._invoke_comfyui(comfyui_req)
+
+    def _invoke_comfyui(self, comfyui_req):
         data = json.dumps(comfyui_req).encode("utf-8")
         print(data)
         response = requests.post(self.api_base, data=data)
@@ -135,6 +167,19 @@ class ComfyUIBackend(BackendBase):
         except Exception as e:
             print(f"Error during processing: {str(e)}")
             raise
+
+    def invoke(self, request):
+        if "taskType" in request:
+            if request["taskType"] == "BACKGROUND_REMOVAL":
+                response = self._remove_background(request["backgroundRemovalParams"]["image"])
+                return response
+            elif request["taskType"] == "VIDEO_GENERATION":
+                self._generate_video_by_ltxvideo(request["videoGenerationParams"]["prompt"])
+                return {"status": "success", "message": "Video generation started"}
+            else:
+                raise ValueError("Invalid taskType")
+        else:
+            raise ValueError("Invalid request")
 
     def _transform_request(self, request):
         raise NotImplementedError
