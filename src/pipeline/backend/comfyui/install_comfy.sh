@@ -30,7 +30,11 @@ git clone https://github.com/kijai/ComfyUI-Florence2 custom_nodes/ComfyUI-Floren
 git clone https://github.com/cubiq/ComfyUI_essentials custom_nodes/ComfyUI_essentials 
 git clone https://github.com/TTPlanetPig/Comfyui_Object_Migration custom_nodes/Comfyui_Object_Migration
 git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch custom_nodes/ComfyUI-Inpaint-CropAndStitch 
-
+git clone https://github.com/jtscmw01/ComfyUI-DiffBIR.git custom_nodes/ComfyUI-DiffBIR
+git clone https://github.com/hayd-zju/ICEdit-ComfyUI-official.git custom_nodes/ICEdit-ComfyUI-official
+git clone https://github.com/city96/ComfyUI-GGUF.git custom_nodes/ComfyUI-GGUF
+git clone https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git custom_nodes/ComfyUI-Impact-Subpack
+git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack.git custom_nodes/ComfyUI-Impact-Pack
 
 
 git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git custom_nodes/ComfyUI-VideoHelperSuite
@@ -68,6 +72,10 @@ pip install -r custom_nodes/ComfyUI_essentials/requirements.txt
 pip install -r custom_nodes/ComfyUI-VideoHelperSuite/requirements.txt
 pip install av>=10.0.0
 pip install ltx-video@git+https://github.com/Lightricks/LTX-Video@ltx-video-0.9.1
+pip install -r custom_nodes/ComfyUI-DiffBIR/requirements.txt
+pip install -r custom_nodes/ComfyUI-GGUF/requirements.txt
+pip install -r custom_nodes/ComfyUI-Impact-Subpack/requirements.txt
+pip install -r custom_nodes/ComfyUI-Impact-Pack/requirements.txt
 
 pip install https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip
 pip install https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip
@@ -79,6 +87,9 @@ pip install transformers -U
 pip install accelerate
 pip install omegaconf
 
+mkdir models/ultralytics
+mkdir models/ultralytics/bbox
+wget -P models/ultralytics/bbox https://huggingface.co/Bingsu/adetailer/resolve/main/hand_yolov9c.pt
 
 mkdir models/clip
 wget -P models/clip https://huggingface.co/calcuis/hunyuan-gguf/resolve/main/clip_l.safetensors
@@ -98,3 +109,6 @@ mkdir models/BiRefNet
 wget -P models/BiRefNet https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-ep480.pth
 wget -P models/BiRefNet https://huggingface.co/ViperYX/BiRefNet/resolve/main/swin_large_patch4_window12_384_22kto1k.pth                                                  
 mkdir models/LLM
+wget -P models/loras https://huggingface.co/RiverZ/normal-lora/resolve/main/pytorch_lora_weights.safetensors
+wget -P models/unet https://huggingface.co/loremipsum3658/FluxRealistic/resolve/main/fluxRealisticSamayV2.WLdo.gguf
+wget -P models/loras https://huggingface.co/Zose22/public/resolve/main/flux-hand-v2.safetensors

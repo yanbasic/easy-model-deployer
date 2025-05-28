@@ -127,10 +127,11 @@ def invoke(request_body, server_address):
     return json.loads(request.urlopen(req).read())
 
 if __name__ == "__main__":
-    #workflow_path = sys.argv[1]
-    #f = open(workflow_path)
-    #prompt = json.load(f)
-    http_base_url = sys.argv[1]
+    workflow_path = sys.argv[1]
+    f = open(workflow_path)
+    prompt = json.load(f)
+    http_base_url = sys.argv[2]
+    response = invoke(outpaint_request, http_base_url)
 
     encoded_image = base64.b64encode(open("src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
     
