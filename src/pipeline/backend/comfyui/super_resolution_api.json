@@ -1,0 +1,125 @@
+{
+  "1": {
+    "inputs": {
+      "image": "girl_test.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "2": {
+    "inputs": {
+      "model": "microsoft/Florence-2-base",
+      "precision": "fp16",
+      "attention": "flash_attention_2"
+    },
+    "class_type": "DownloadAndLoadFlorence2Model",
+    "_meta": {
+      "title": "DownloadAndLoadFlorence2Model"
+    }
+  },
+  "3": {
+    "inputs": {
+      "text_input": "",
+      "task": "more_detailed_caption",
+      "fill_mask": true,
+      "keep_model_loaded": false,
+      "max_new_tokens": 1024,
+      "num_beams": 3,
+      "do_sample": true,
+      "output_mask_select": "",
+      "seed": 942492144213586,
+      "image": [
+        "1",
+        0
+      ],
+      "florence2_model": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "Florence2Run",
+    "_meta": {
+      "title": "Florence2Run"
+    }
+  },
+  "4": {
+    "inputs": {
+      "device": "cuda",
+      "infer_type": "float32"
+    },
+    "class_type": "Simple_load",
+    "_meta": {
+      "title": "DiffBIR simple load"
+    }
+  },
+  "5": {
+    "inputs": {
+      "upscale_ratio": 3,
+      "steps": 20,
+      "cfg": 4,
+      "better_start": true,
+      "tiled": true,
+      "tile_size": 512,
+      "tile_stride": 480,
+      "pos_prompt": [
+        "3",
+        2
+      ],
+      "neg_prompt": "low quality, blurry, low-resolution, noisy, unsharp, weird textures, bad hands",
+      "seed": 381212955432472,
+      "device": "cuda",
+      "stage1_model": [
+        "4",
+        0
+      ],
+      "cldm": [
+        "4",
+        1
+      ],
+      "diffusion": [
+        "4",
+        2
+      ],
+      "infer_type": [
+        "4",
+        3
+      ],
+      "image": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "DiffBIR_sample",
+    "_meta": {
+      "title": "DiffBIR Sampler"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": "Photograph of a close-up portrait of a young woman with long dark hair. She is wearing a pair of statement earrings with colorful flowers and leaves. Her hair is styled in loose waves and falls over her shoulders. She has a serious expression on her face and is looking directly at the camera. Her hand is resting on her chin, as if she is deep in thought. The background is a solid turquoise color. The overall mood of the image is elegant and sophisticated.",
+      "anything": [
+        "3",
+        2
+      ]
+    },
+    "class_type": "easy showAnything",
+    "_meta": {
+      "title": "Show Any"
+    }
+  },
+  "7": {
+    "inputs": {
+      "filename_prefix": "super_resolution",
+      "images": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

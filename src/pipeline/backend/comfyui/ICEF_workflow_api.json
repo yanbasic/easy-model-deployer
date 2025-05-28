@@ -1,0 +1,248 @@
+{
+  "1": {
+    "inputs": {
+      "editText": "wearing a sun glasses with a red frame and brown lenses",
+      "clip": [
+        "40",
+        0
+      ]
+    },
+    "class_type": "InContextEditInstruction",
+    "_meta": {
+      "title": "InContextEditInstruction~"
+    }
+  },
+  "2": {
+    "inputs": {
+      "image": "girl_test.png"
+    },
+    "class_type": "DiptychCreate",
+    "_meta": {
+      "title": "DiptychCreate~"
+    }
+  },
+  "3": {
+    "inputs": {
+      "In_context": [
+        "44",
+        0
+      ],
+      "negative": [
+        "52",
+        0
+      ],
+      "vae": [
+        "41",
+        0
+      ],
+      "diptych": [
+        "2",
+        0
+      ],
+      "maskDiptych": [
+        "2",
+        1
+      ]
+    },
+    "class_type": "ICEFConditioning",
+    "_meta": {
+      "title": "ICEFConditioning~"
+    }
+  },
+  "8": {
+    "inputs": {
+      "unet_name": "flux1-fill-dev.safetensors",
+      "weight_dtype": "fp8_e4m3fn"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Diffusion Model"
+    }
+  },
+  "16": {
+    "inputs": {
+      "samples": [
+        "46",
+        0
+      ],
+      "vae": [
+        "41",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "40": {
+    "inputs": {
+      "clip_name1": "t5xxl_fp8_e4m3fn.safetensors",
+      "clip_name2": "clip_l.safetensors",
+      "type": "flux",
+      "device": "default"
+    },
+    "class_type": "DualCLIPLoader",
+    "_meta": {
+      "title": "DualCLIPLoader"
+    }
+  },
+  "41": {
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "44": {
+    "inputs": {
+      "guidance": 50,
+      "conditioning": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "FluxGuidance",
+    "_meta": {
+      "title": "FluxGuidance"
+    }
+  },
+  "45": {
+    "inputs": {
+      "mask": [
+        "2",
+        1
+      ]
+    },
+    "class_type": "MaskPreview",
+    "_meta": {
+      "title": "MaskPreview"
+    }
+  },
+  "46": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 1089460282115243,
+      "steps": 28,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "start_at_step": 0,
+      "end_at_step": 1000,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "55",
+        0
+      ],
+      "positive": [
+        "3",
+        0
+      ],
+      "negative": [
+        "3",
+        1
+      ],
+      "latent_image": [
+        "3",
+        2
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "52": {
+    "inputs": {
+      "conditioning": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "ConditioningZeroOut",
+    "_meta": {
+      "title": "ConditioningZeroOut"
+    }
+  },
+  "55": {
+    "inputs": {
+      "lora_name": "regular_lora_weights.safetensors",
+      "strength_model": 1.0000000000000002,
+      "model": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "56": {
+    "inputs": {
+      "width": 512,
+      "height": 1024,
+      "x": 512,
+      "y": 0,
+      "image": [
+        "60",
+        0
+      ]
+    },
+    "class_type": "ImageCrop",
+    "_meta": {
+      "title": "Image Crop"
+    }
+  },
+  "59": {
+    "inputs": {
+      "images": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "60": {
+    "inputs": {
+      "anything": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "easy cleanGpuUsed",
+    "_meta": {
+      "title": "Clean VRAM Used"
+    }
+  },
+  "61": {
+    "inputs": {
+      "anything": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "easy cleanGpuUsed",
+    "_meta": {
+      "title": "Clean VRAM Used"
+    }
+  },
+  "70": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "56",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}
