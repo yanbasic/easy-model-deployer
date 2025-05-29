@@ -3,7 +3,7 @@
 echo "---------------------------------------------------------------------------------"
 echo "install comfy..."
 
-export INITIAL_COMFY_COMMIT_ROOT=96d891cb94d90f220e066cebad349887137f07a6
+export INITIAL_COMFY_COMMIT_ROOT=e6609dacdeeafa371fe4e9f303016a605a333a76
 export LTXV_COMMIT_ID=4c5add5f4693e5bf55b58aad99326fab9e9b4a53
 
 rm -rf ComfyUI
@@ -30,7 +30,7 @@ git clone https://github.com/kijai/ComfyUI-Florence2 custom_nodes/ComfyUI-Floren
 git clone https://github.com/cubiq/ComfyUI_essentials custom_nodes/ComfyUI_essentials 
 git clone https://github.com/TTPlanetPig/Comfyui_Object_Migration custom_nodes/Comfyui_Object_Migration
 git clone https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch custom_nodes/ComfyUI-Inpaint-CropAndStitch 
-git clone https://github.com/jtscmw01/ComfyUI-DiffBIR.git custom_nodes/ComfyUI-DiffBIR
+git clone https://github.com/HappyXY/ComfyUI-DiffBIR.git custom_nodes/ComfyUI-DiffBIR
 git clone https://github.com/hayd-zju/ICEdit-ComfyUI-official.git custom_nodes/ICEdit-ComfyUI-official
 git clone https://github.com/city96/ComfyUI-GGUF.git custom_nodes/ComfyUI-GGUF
 git clone https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git custom_nodes/ComfyUI-Impact-Subpack

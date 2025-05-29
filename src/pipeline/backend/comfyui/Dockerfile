@@ -48,7 +48,7 @@ RUN cd /home/ubuntu || exit 1 && \
 # COPY src /home/ubuntu/src
 # COPY src/deploy/on_sagemaker/serve /usr/bin/serve
 # RUN chmod +x /usr/bin/serve
-COPY backend/comfyui/bus_mask.png backend/comfyui/bus2.jpeg backend/comfyui/test_car.png /home/ubuntu/ComfyUI/input/
+COPY backend/comfyui/bus_mask.png backend/comfyui/bus2.jpeg backend/comfyui/test_car.png backend/comfyui/girl_test.png /home/ubuntu/ComfyUI/input/
 
 RUN apt-get update
 RUN apt-get install -y python3-pip

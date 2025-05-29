@@ -12,7 +12,7 @@
     "inputs": {
       "model": "microsoft/Florence-2-base",
       "precision": "fp16",
-      "attention": "flash_attention_2"
+      "attention": "sdpa"
     },
     "class_type": "DownloadAndLoadFlorence2Model",
     "_meta": {

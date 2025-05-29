@@ -130,8 +130,15 @@ if __name__ == "__main__":
     workflow_path = sys.argv[1]
     f = open(workflow_path)
     prompt = json.load(f)
+    prompt_new = {"prompt": prompt, "client_id": str(uuid.uuid4())}
     http_base_url = sys.argv[2]
-    response = invoke(outpaint_request, http_base_url)
+    workflow_request = {
+        "taskType": "WORKFLOW",
+        "workflow": prompt_new
+    }
+    response = invoke(workflow_request, http_base_url)
+
+    exit()
 
     encoded_image = base64.b64encode(open("src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
     

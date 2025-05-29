@@ -124,7 +124,7 @@
   "46": {
     "inputs": {
       "add_noise": "enable",
-      "noise_seed": 1089460282115243,
+      "noise_seed": 1089460282115240,
       "steps": 28,
       "cfg": 1,
       "sampler_name": "euler",
@@ -168,7 +168,7 @@
   },
   "55": {
     "inputs": {
-      "lora_name": "regular_lora_weights.safetensors",
+      "lora_name": "pytorch_lora_weights.safetensors",
       "strength_model": 1.0000000000000002,
       "model": [
         "8",
