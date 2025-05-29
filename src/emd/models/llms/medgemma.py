@@ -48,8 +48,8 @@ Model.register(
             fastapi_framework
         ],
         allow_china_region=True,
-        huggingface_model_id="google/medgemma_27b_text_it",
-        modelscope_model_id="google/medgemma_27b_text_it",
+        huggingface_model_id="google/medgemma-27b-text-it",
+        modelscope_model_id="google/medgemma-27b-text-it",
         model_files_download_source=ModelFilesDownloadSource.MODELSCOPE,
         # require_huggingface_token=True,
         application_scenario="llm for medical text and image comprehension",
@@ -62,7 +62,7 @@ Model.register(
 
 Model.register(
     dict(
-        model_id = "medgemma-4b-text-it",
+        model_id = "medgemma-4b-it",
         supported_engines=[vllm_medgemma082],
         supported_instances=[
             g5d12xlarge_instance,
@@ -81,8 +81,8 @@ Model.register(
             fastapi_framework
         ],
         allow_china_region=True,
-        huggingface_model_id="google/medgemma-4b-text-it",
-        modelscope_model_id="google/medgemma-4b-text-it",
+        huggingface_model_id="google/medgemma-4b-it",
+        modelscope_model_id="google/medgemma-4b-it",
         model_files_download_source=ModelFilesDownloadSource.MODELSCOPE,
         # require_huggingface_token=True,
         application_scenario="llm for medical text and image comprehension",
