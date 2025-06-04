@@ -59,6 +59,9 @@ class ComfyUIBackend(BackendBase):
         )
         self.image_generation_model_id = "amazon.nova-canvas-v1:0"
 
+        self.multimodal_model_id = "us.amazon.nova-premier-v1:0"
+        self.video_model_id = "us.amazon.nova-reel-v1:1"
+
     def start(self):
         # model_dir = f"emd_models/{self.model_id}"
         # logger.info(f"Downloading model from s3")
@@ -145,9 +148,7 @@ class ComfyUIBackend(BackendBase):
                 "imageVariationParams": {
                     "text": prompt,
                     "negativeText": negative_prompt,  # What to avoid generating inside the image
-                    "images": [
-                        reference_image_base64
-                    ],  # May provide up to 5 reference images here
+                    "images": reference_image_base64,  # May provide up to 5 reference images here
                     "similarityStrength": similarity_strength,  # How strongly the input images influence the output. From 0.2 through 1.
                 },
                 "imageGenerationConfig": {
@@ -425,6 +426,188 @@ class ComfyUIBackend(BackendBase):
             print(f"Error during background removal: {str(e)}")
             return {"status": "error", "message": str(e)}
 
+    def _image_analysis(self, reference_image_base64, img_format="png"):
+        # use nova premier model to analyze the product image
+        # nova premier first analyze the product image: 
+        # the main object, the background, the style, and other useful information
+        print(f"Initialized Bedrock client with model: {self.multimodal_model_id}")
+        # Here you would implement the logic to call the Bedrock model
+        print('img_format:', img_format)
+        system_list = [
+            {"text": """You are an expert in product image analysis and prompt generation.
+                        Analyze this product image in detail:
+                        1. Identify the main object/product
+                        2. Describe the background
+                        3. Analyze the visual style and composition
+                        4. Analyze the color tone of the reference image, extract the main colors in the picture, and describe the color list using hexadecimal notation, for example, [#00ff91, #FF9900].
+                        4. Note any other useful information (lighting, angle, etc.)
+
+                        Then generate a comprehensive prompt for creating a similar image with:
+                        - Detailed description of the product
+                        - Style specifications
+                        - Background elements
+                        - Lighting and atmosphere
+                        - Composition guidelines
+
+                        Format your response as a JSON dictionary with these keys:
+                        - product_name: the name of the product
+                        - category: the category of the product
+                        - style: the style of the product
+                        - background: the background of the product
+                        - color_list: the main colors, a list of hexadecimal notation
+                        - prompt: the full prompt for similar image generation (less than 800 tokens)
+                        """
+            }
+        ]
+        inf_params = {
+            "max_new_tokens": 1000,
+            "top_p": 0.99,
+            "top_k": 20,
+            "temperature": 0.7
+            }
+        messages = [
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "image":{
+                                        "format": img_format,
+                                        "source": {"bytes": reference_image_base64},
+                                    }
+                                },
+                            ]
+                        }
+                    ]
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                modelId=self.multimodal_model_id,
+                contentType="application/json",
+                accept="application/json",
+                body=json.dumps({
+                    "inferenceConfig": inf_params,
+                    "messages": messages,
+                    "system": system_list
+                })
+            )
+            response_body = json.loads(response.get('body').read())
+            content = response_body["output"]["message"]["content"][0]["text"]
+            if content:
+                # Check if the response is a JSON string
+                if isinstance(content, str):
+                    # Decode the content
+                    text_content = content #.encode('utf-8').decode('unicode_escape')
+                    # print(f"Decoded text content: {text_content}")
+                    # Try to extract JSON
+                    try:
+                        # Find JSON part
+                        json_start = text_content.find('{')
+                        json_end = text_content.rfind('}') + 1
+                        if json_start >= 0 and json_end > json_start:
+                            json_str = text_content[json_start:json_end]
+                            #print(f"Extracted JSON string: {json_str}")
+                            return json.loads(json_str)
+                        else:
+                            # If no JSON format found, return the text content
+                            return {"raw_response": text_content}
+                    except json.JSONDecodeError:
+                        return {"raw_response": text_content}        
+        except Exception as e:
+            print(f"Image analysis error: {str(e)}")
+            return {"error": str(e)}
+
+    def _best_scene(self, reference_image_base64, img_format, width, height, num_imgs, similarity, seed=0):
+        """
+        Generate a best scene for the product image.
+        
+        Args:
+            product_image (PIL.Image): The product image to be placed on the canvas.
+            width (int): The width of the new canvas.
+            height (int): The height of the new canvas.
+            seed (int): Random seed for reproducibility.
+            
+        Returns:
+            PIL.Image: A new canvas with the product image placed at the target position.
+        """
+        # get the description of the product image and generate prompt 
+        # for generate similar image to the product image
+        analysis_result = self._image_analysis(reference_image_base64, img_format=img_format)
+        print("Analysis Result:")
+        print(json.dumps(analysis_result, indent=2))
+        prompt = analysis_result["prompt"] if analysis_result.get("prompt") else "generate a similar image"    
+        return self._image_variation(reference_image_base64, prompt, "blur", width, height, num_imgs=num_imgs, similarity_strength=similarity, seed=seed)
+
+    def _multi_scene(self, reference_image_base64, img_format, num_imgs, seed=0):
+        analysis_result = self._image_analysis(reference_image_base64, img_format=img_format)
+        print("Analysis Result:")
+        print(json.dumps(analysis_result, indent=2))
+        prompt = analysis_result["prompt"] if analysis_result.get("prompt") else "generate a similar image"
+        mask_prompt = analysis_result["product_name"] if analysis_result.get("product_name") else "product"   
+        return self._outpaint_with_maskPrompt(reference_image_base64, prompt, mask_prompt, num_imgs=num_imgs, seed=seed, outpainting_mode="PRECISE")
+    
+    def _brand_gen(self, reference_image_base64, negative_prompt, img_format, width, height, num_imgs, seed=0):
+        analysis_result = self._image_analysis(reference_image_base64, img_format=img_format)
+        print("Analysis Result:")
+        print(json.dumps(analysis_result, indent=2))
+        prompt = analysis_result["prompt"] if analysis_result.get("prompt") else "generate a similar image"
+        colors = analysis_result["color_list"] if analysis_result.get("color_list") else None
+        if negative_prompt is None:
+            negative_prompt = 'blur'
+        if colors is not None:
+            return self._image_color_conditioning(prompt,negative_prompt,width,height,num_imgs,seed)  
+        else:
+            return self._image_variation(prompt, negative_prompt, width,height, similarity_strength=0.7, seed=seed)
+
+
+    def _text2video_reel(self, prompt, seed, S3_DESTINATION_BUCKET, durationSeconds=6):
+        model_input = {
+            "taskType": "MULTI_SHOT_AUTOMATED",
+            "multiShotAutomatedParams": {"text": prompt},
+            "videoGenerationConfig": {
+                "durationSeconds": durationSeconds,  # Must be a multiple of 6 in range [12, 120]
+                "fps": 24,
+                "dimension": "1280x720",
+                "seed": seed,
+            },
+        }
+
+        invocation = self.bedrock_runtime_client_image.start_async_invoke(
+            modelId=self.video_model_id,
+            modelInput=model_input,
+            outputDataConfig={"s3OutputDataConfig": {"s3Uri": S3_DESTINATION_BUCKET}},
+        )
+
+        return invocation
+
+    def _image2video_reel(self, reference_image_base64_list, prompt_list, format_list, seed, S3_DESTINATION_BUCKET):
+        video_shot_prompts = []
+        # Create a list of video shot prompts
+        for i, (image_base64, prompt, img_format) in enumerate(zip(reference_image_base64_list, prompt_list, format_list)):
+            video_shot_prompts.append(
+                {
+                    "text": prompt,
+                    "image":{
+                        "format": img_format,  # Assuming PNG format for the image
+                        "source": {"bytes": image_base64},
+                    }
+                }
+            )
+        model_input = {
+            "taskType": "MULTI_SHOT_MANUAL",
+            "multiShotManualParams": {"shots": video_shot_prompts},
+            "videoGenerationConfig": {
+                "fps": 24,
+                "dimension": "1280x720",
+                "seed": seed,
+            },
+        }
+        invocation = self.bedrock_runtime_client_image.start_async_invoke(
+                modelId=self.video_model_id,
+                modelInput=model_input,
+                outputDataConfig={"s3OutputDataConfig": {"s3Uri": S3_DESTINATION_BUCKET}},
+            )
+        return invocation
+
+
     def _generate_video_by_ltxvideo(self, prompt):
         workflow = copy.deepcopy(self.workflow)
         # Replace the prompt in the workflow
@@ -609,6 +792,15 @@ class ComfyUIBackend(BackendBase):
                 return self._invoke_comfyui(request["workflow"])
             else:
                 raise ValueError("Invalid taskType")
+        else:
+            raise ValueError("Invalid request")
+
+    def status(self, request):
+        if "invocationArn" in request:
+            invocation_arn = request["invocationArn"]
+            logger.info(f"invocationArn is {invocation_arn}")
+            response = self.bedrock_runtime_client_image.get_async_invoke(invocationArn=invocation_arn)
+            return response
         else:
             raise ValueError("Invalid request")
 
