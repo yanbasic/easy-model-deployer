@@ -212,7 +212,7 @@ class ComfyUIBackend(BackendBase):
             print(f"Error during background removal: {str(e)}")
             return {"status": "error", "message": str(e)}
 
-    def _outpaint_with_maskPrompt(self, reference_image_base64, prompt, negative_prompt, mask_prompt, num_imgs, seed=1):
+    def _outpaint_with_maskPrompt(self, reference_image_base64, prompt, negative_prompt, mask_prompt, num_imgs, seed=1, cfg=6.5):
         # Generate image condition on reference image
         body = json.dumps(
             {
@@ -226,7 +226,7 @@ class ComfyUIBackend(BackendBase):
             },
             "imageGenerationConfig": {
                 "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
-                "cfgScale": 6.5,  # How closely the prompt will be followed
+                "cfgScale": cfg,  # How closely the prompt will be followed
                 "seed": seed,  # Any number from 0 through 858,993,459
                 "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
             },
@@ -247,7 +247,42 @@ class ComfyUIBackend(BackendBase):
             print(f"Error during background removal: {str(e)}")
             return {"status": "error", "message": str(e)}
     
-    def _outpaint_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, seed=1):
+    def _outpaint_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, seed=1, cfg=6.5):
+        # Generate image condition on reference image
+        body = json.dumps(
+            {
+            "taskType": "OUTPAINTING",
+            "outPaintingParams": {
+                "text": prompt,  # A description of the final desired image
+                "negativeText": negative_prompt,  # What to avoid generating inside the mask
+                "image": reference_image_base64,  # The image to edit
+                "maskImage": mask_image_base64,  # One of "maskImage" or "maskPrompt" is required
+                "outPaintingMode": "PRECISE",  # Either "DEFAULT" or "PRECISE"
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
+                "cfgScale": cfg,  # How closely the prompt will be followed
+                "seed": seed,  # Any number from 0 through 858,993,459
+                "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+            },
+        }
+        )
+
+        print("Generating image...")
+        try:
+            response = self.bedrock_runtime_client_image.invoke_model(
+                body=body,
+                modelId=self.image_generation_model_id,
+                accept="application/json",
+                contentType="application/json",
+            )
+            response_body = json.loads(response.get("body").read())
+            return response_body
+        except Exception as e:
+            print(f"Error during background removal: {str(e)}")
+            return {"status": "error", "message": str(e)}
+
+    def _expand_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, seed=1):
         # Generate image condition on reference image
         body = json.dumps(
             {
@@ -281,6 +316,7 @@ class ComfyUIBackend(BackendBase):
         except Exception as e:
             print(f"Error during background removal: {str(e)}")
             return {"status": "error", "message": str(e)}
+
 
     def _replace_object_with_maskPrompt(self, reference_image_base64, prompt, negative_prompt, mask_prompt, num_imgs, seed=1):
         """
@@ -468,16 +504,21 @@ class ComfyUIBackend(BackendBase):
         messages = [
                         {
                             "role": "user",
-                            "content": [
-                                {
-                                    "image":{
-                                        "format": img_format,
-                                        "source": {"bytes": reference_image_base64},
-                                    }
-                                },
-                            ]
+                            "content": []
                         }
                     ]
+        if isinstance(reference_image_base64, list):
+            for referene_image_base64_item in reference_image_base64:
+                image_infor = {
+                                    "image":{
+                                        "format": img_format,
+                                        "source": {"bytes": referene_image_base64_item},
+                                    }
+                                }
+                messages[0]["content"].append(image_infor)
+        else:
+            messages[0]["content"].append(reference_image_base64)
+        
         try:
             response = self.bedrock_runtime_client_image.invoke_model(
                 modelId=self.multimodal_model_id,
@@ -515,7 +556,7 @@ class ComfyUIBackend(BackendBase):
             print(f"Image analysis error: {str(e)}")
             return {"error": str(e)}
 
-    def _best_scene(self, reference_image_base64, img_format, width, height, num_imgs, similarity, seed=0):
+    def _similar_scene(self, reference_image_base64, img_format, width, height, num_imgs, similarity, seed=0):
         """
         Generate a best scene for the product image.
         
@@ -536,15 +577,19 @@ class ComfyUIBackend(BackendBase):
         prompt = analysis_result["prompt"] if analysis_result.get("prompt") else "generate a similar image"    
         return self._image_variation(reference_image_base64, prompt, "blur", width, height, num_imgs=num_imgs, similarity_strength=similarity, seed=seed)
 
-    def _multi_scene(self, reference_image_base64, img_format, num_imgs, seed=0):
+    def _similar_background(self, reference_image_base64, mask_prompt, mask_image_base64, cfg, img_format, num_imgs, seed=0):
         analysis_result = self._image_analysis(reference_image_base64, img_format=img_format)
         print("Analysis Result:")
         print(json.dumps(analysis_result, indent=2))
         prompt = analysis_result["prompt"] if analysis_result.get("prompt") else "generate a similar image"
-        mask_prompt = analysis_result["product_name"] if analysis_result.get("product_name") else "product"   
-        return self._outpaint_with_maskPrompt(reference_image_base64, prompt, mask_prompt, num_imgs=num_imgs, seed=seed, outpainting_mode="PRECISE")
+        if mask_prompt:
+            return self._outpaint_with_maskPrompt(reference_image_base64, prompt, 'blur', mask_prompt, num_imgs, seed=seed, cfg=cfg)
+        elif mask_image_base64:
+            return self._outpaint_with_maskImage(reference_image_base64, prompt, 'blur', mask_image_base64, num_imgs, seed=seed, cfg=cfg)
+        else:
+            raise ValueError("Either maskPrompt or maskImage must be provided") 
     
-    def _brand_gen(self, reference_image_base64, negative_prompt, img_format, width, height, num_imgs, seed=0):
+    def _brand_generation(self, reference_image_base64, negative_prompt, img_format, width, height, num_imgs, seed=0):
         analysis_result = self._image_analysis(reference_image_base64, img_format=img_format)
         print("Analysis Result:")
         print(json.dumps(analysis_result, indent=2))
@@ -703,7 +748,7 @@ class ComfyUIBackend(BackendBase):
                 return response
             elif request["taskType"] == "IMAGE_VARIATION":
                 response = self._image_variation(
-                    request["imageVariationParams"]["images"][0],
+                    request["imageVariationParams"]["images"],
                     request["imageVariationParams"]["text"],
                     request["imageVariationParams"].get("negativeText", ""),
                     request["imageGenerationConfig"]["width"],
@@ -711,6 +756,40 @@ class ComfyUIBackend(BackendBase):
                     request["imageGenerationConfig"]["numberOfImages"],
                     request["imageVariationParams"].get("similarityStrength", 0.5),
                     request["imageGenerationConfig"].get("seed", 1),
+                )
+                return self._get_response(response)
+            elif request["taskType"] == "SIMILAR_SCENE":
+                response = self._similar_scene(
+                    request["similarSceneParams"]["images"],
+                    request["similarSceneParams"]["imageFormat"],
+                    request["imageGenerationConfig"]["width"],
+                    request["imageGenerationConfig"]["height"],
+                    request["imageGenerationConfig"]["numberOfImages"],
+                    request["similarSceneParams"].get("similarityStrength", 0.5),
+                    request["imageGenerationConfig"].get("seed", 1),
+                )
+                return self._get_response(response)
+            elif request["taskType"] == "SIMILAR_background":
+                response = self._similar_background(
+                        request["similarBackgroundParams"]["image"],
+                        request["similarBackgroundParams"]["imageFormat"],
+                        request["similarBackgroundParams"].get("negativeText", ""),
+                        request["similarBackgroundParams"].get("maskPrompt", None),
+                        request["similarBackgroundParams"].get("maskImage", None),
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"]["cfg"],
+                        request["imageGenerationConfig"].get("seed", 1),
+                )
+                return self._get_response(response)
+            elif request["taskType"] == "BRAND_GENERATION":
+                response = self._brand_generation(
+                        request["brandGenerationParams"]["image"],
+                        request["brandGenerationParams"].get("negativeText", "watermark"),
+                        request["brandGenerationParams"]["imageFormat"],
+                        request["imageGenerationConfig"]["width"],
+                        request["imageGenerationConfig"]["height"],
+                        request["imageGenerationConfig"]["numberOfImages"],
+                        request["imageGenerationConfig"].get("seed", 1),                    
                 )
                 return self._get_response(response)
             elif request["taskType"] == "COLOR_GUIDED_GENERATION":
