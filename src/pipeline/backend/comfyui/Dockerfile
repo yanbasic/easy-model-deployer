@@ -37,13 +37,30 @@ RUN chmod +x /start.sh
 RUN cd /home/ubuntu || exit 1 && \
     bash install_comfy.sh
 
+RUN mkdir /home/ubuntu/ComfyUI/models/ultralytics
+RUN mkdir /home/ubuntu/ComfyUI/models/ultralytics/bbox
+RUN wget -P /home/ubuntu/ComfyUI/models/ultralytics/bbox https://huggingface.co/Bingsu/adetailer/resolve/main/hand_yolov9c.pt
 
-# RUN mkdir -p /home/ubuntu/ComfyUI/models/vae/
-# RUN mkdir -p /home/ubuntu/ComfyUI/models/animatediff_models/
+RUN wget -P /home/ubuntu/ComfyUI/models/clip https://huggingface.co/calcuis/hunyuan-gguf/resolve/main/clip_l.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/clip https://huggingface.co/calcuis/sd3.5-large-gguf/resolve/main/t5xxl_fp8_e4m3fn.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/clip_vision https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/diffusion_models https://huggingface.co/second-state/FLUX.1-Fill-dev-GGUF/resolve/main/flux1-fill-dev.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/loras https://huggingface.co/ali-vilab/ACE_Plus/resolve/main/subject/comfyui_subject_lora16.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/loras https://d32oiauqot40oo.cloudfront.net/models/loras/flux-turbo-alpha.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/style_models https://huggingface.co/Runware/FLUX.1-Redux-dev/resolve/main/flux1-redux-dev.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/vae https://d32oiauqot40oo.cloudfront.net/models/vae/ae.safetensors
+RUN mkdir /home/ubuntu/ComfyUI/models/BiRefNet 
+RUN wget -P /home/ubuntu/ComfyUI/models/BiRefNet https://huggingface.co/ViperYX/BiRefNet/resolve/main/BiRefNet-ep480.pth
+RUN wget -P /home/ubuntu/ComfyUI/models/BiRefNet https://huggingface.co/ViperYX/BiRefNet/resolve/main/swin_large_patch4_window12_384_22kto1k.pth                                                  
+RUN wget -P /home/ubuntu/ComfyUI/models/loras https://huggingface.co/RiverZ/normal-lora/resolve/main/pytorch_lora_weights.safetensors
+RUN wget -P /home/ubuntu/ComfyUI/models/unet https://huggingface.co/loremipsum3658/FluxRealistic/resolve/main/fluxRealisticSamayV2.WLdo.gguf
+RUN wget -P /home/ubuntu/ComfyUI/models/loras https://huggingface.co/Zose22/public/resolve/main/flux-hand-v2.safetensors
 
-# RUN wget -qO '/home/ubuntu/ComfyUI/models/vae/vae-ft-mse-840000-ema-pruned.safetensors' 'https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors'
-# RUN wget -qO '/home/ubuntu/ComfyUI/models/animatediff_models/v3_sd15_mm.ckpt' 'https://huggingface.co/guoyww/animatediff/resolve/main/v3_sd15_mm.ckpt'
-# RUN wget -qO '/home/ubuntu/ComfyUI/models/checkpoints/DreamShaper_7_pruned.safetensors' 'https://huggingface.co/Lykon/DreamShaper/resolve/main/DreamShaper_7_pruned.safetensors'
+
+RUN wget -qO '/home/ubuntu/ComfyUI/models/checkpoints/flux1-dev-fp8.safetensors' 'https://huggingface.co/lllyasviel/flux1_dev/resolve/main/flux1-dev-fp8.safetensors'
+RUN wget -qO '/home/ubuntu/ComfyUI/models/loras/flux-realism-lora.safetensors' 'https://huggingface.co/XLabs-AI/flux-RealismLora/resolve/main/lora.safetensors'
+RUN wget -qO '/home/ubuntu/ComfyUI/models/controlnet/flux_inpaint_beta.safetensors' 'https://huggingface.co/MikaelTradera/ae/resolve/b56b3ae98dc3873f4813d8d380812a0ba64a2619/FLUX.1-dev-Controlnet-Inpainting-Beta.safetensors'
+
 
 # COPY src /home/ubuntu/src
 # COPY src/deploy/on_sagemaker/serve /usr/bin/serve

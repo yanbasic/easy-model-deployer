@@ -123,21 +123,36 @@ def queue_prompt(prompt, client_id, server_address):
 def invoke(request_body, server_address):
     data = json.dumps(request_body).encode('utf-8')
     headers = {'Content-Type': 'application/json'}
+    print('######')
     req =  request.Request("http://{}/invocations".format(server_address), data=data, headers=headers)
+    print('######')
     return json.loads(request.urlopen(req).read())
 
 if __name__ == "__main__":
-    workflow_path = sys.argv[1]
-    f = open(workflow_path)
+    with open('./product.png', "rb") as f:
+        input_image_bytes = f.read()
+        input_image_base64 = base64.b64encode(input_image_bytes).decode("utf-8")
+    
+    # workflow_path = '/home/ubuntu/PixelPilot/agent-backend/app/workflow/super_resolution.json'#sys.argv[1]
+    # f = open(workflow_path)
+    # prompt = json.load(f)
+    # prompt['5']['inputs']['upscale_ratio'] = 2
+    # prompt['8']['inputs']['base64_data'] = input_image_base64
+    f = open('/home/ubuntu/PixelPilot/agent-backend/app/workflow/segmentAnything.json')
     prompt = json.load(f)
+    prompt['16']['inputs']['prompt'] = 'sofa'
+    prompt['16']['inputs']['threshold'] = 0.3
+    prompt['47']['inputs']['base64_data'] = input_image_base64
+
     prompt_new = {"prompt": prompt, "client_id": str(uuid.uuid4())}
-    http_base_url = sys.argv[2]
+    http_base_url = 'localhost:8080'
     workflow_request = {
         "taskType": "WORKFLOW",
         "workflow": prompt_new
     }
+    print('!!!!!!!!!')
     response = invoke(workflow_request, http_base_url)
-
+    print(response)
     exit()
 
     encoded_image = base64.b64encode(open("src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
@@ -188,77 +203,6 @@ if __name__ == "__main__":
         "colorGuidedGenerationParams": 
         {
                 "text": "a red car running on the road",
-                "negativeText": "blur",  # What to avoid generating inside the image
-                "colors": colors,
-            },
-            "imageGenerationConfig": {
-                "numberOfImages": 2,  # Number of images to generate, up to 5
-                "width": 1024,
-                "height": 1024,
-            }
+                "negativeText": "blur",  # What to 
+        }
     }
-    #### outpaint
-    outpaint_request = {
-        "taskType": "OUTPAINTING",
-        "outPaintingParams":
-        {
-                "text": "beach and sea rocky shore",  # Text prompt to guide the generation
-                "negativeText": "blur",  # What to avoid generating inside the image
-                "image": encoded_image,  # May provide up to 5 reference images here
-                "maskPrompt": "car",
-            },
-            "imageGenerationConfig": {
-                "numberOfImages": 2,  # Number of images to generate, up to 5.
-                "seed": 11111,  # Any number from 0 through 858,993,459
-            }
-    }
-    #### inpaint
-    replace_object_request = {
-        "taskType": "REPLACE_OBJECT",
-        "inPaintingParams":
-        {
-                "text": "jeep",
-                "negativeText": "blur",  # What to avoid generating inside the image
-                "image": encoded_image,  # May provide up to 5 reference images here
-                "maskPrompt": "car",
-            },
-            "imageGenerationConfig": {
-                "numberOfImages": 2,  # Number of images to generate, up to 5.
-                "seed": 11111,  # Any number from 0 through 858,993,459
-            }
-    }
-    #### remove object
-    remove_object_request = {
-        "taskType": "REMOVE_OBJECT",
-        "inPaintingParams":
-        {
-                "text": "jeep",
-                "negativeText": "blur",  # What to avoid generating inside the image
-                "image": encoded_image,  # May provide up to 5 reference images here
-                "maskPrompt": "car",
-            },
-            "imageGenerationConfig": {
-                "numberOfImages": 2,  # Number of images to generate, up to 5.
-                "seed": 11111,  # Any number from 0 through 858,993,459
-            }
-    }  
-
-
-    #response = invoke(remove_background_request, http_base_url)
-    #response = invoke(text_to_image_request, http_base_url)
-    #response = invoke(image_variation_request, http_base_url)
-    #response = invoke(color_guided_image_generation_request, http_base_url)
-    #response = invoke(replace_object_request, http_base_url)
-    #response = invoke(remove_object_request, http_base_url)
-    response = invoke(outpaint_request, http_base_url)
-    print(response.keys())
-    base64_images = response.get("images")
-    print("Response images:", len(base64_images))
-    response_images = [
-        Image.open(io.BytesIO(base64.b64decode(base64_image)))
-        for base64_image in base64_images
-    ]
-    # save the response_images to a file
-    for i, img in enumerate(response_images):
-        task_type = outpaint_request.get("taskType")
-        img.save(f"src/pipeline/backend/comfyui/test_car_text_to_{task_type}_{i}.png")

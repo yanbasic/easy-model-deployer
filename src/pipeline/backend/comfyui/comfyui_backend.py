@@ -19,6 +19,7 @@ from botocore.client import Config
 from PIL import Image
 
 from utils.common import sync_s3_files_or_folders_to_local, sync_local_outputs_to_s3
+import base64
 
 
 # ROOT_PATH = '/home/ubuntu/ComfyUI'
@@ -61,6 +62,7 @@ class ComfyUIBackend(BackendBase):
 
         self.multimodal_model_id = "us.amazon.nova-premier-v1:0"
         self.video_model_id = "us.amazon.nova-reel-v1:1"
+        self.maxtrynum = 12
 
     def start(self):
         # model_dir = f"emd_models/{self.model_id}"
@@ -661,10 +663,19 @@ class ComfyUIBackend(BackendBase):
         workflow["87"]["inputs"]["text"] += prompt
         comfyui_req = {"prompt": workflow, "client_id": self.client_id}
         self._invoke_comfyui(comfyui_req)
+    
+    def get_history(self, prompt_id):
+        try:
+            response = requests.get(f"{URL_PING}/history/{prompt_id}", timeout=10)
+            response.raise_for_status()  # 检查是否返回 200，否则抛出异常
+            return response.json()  # 自动解析 JSON
+        except requests.exceptions.RequestException as e:
+            print(f"请求失败: {e}")
+            return None
 
     def _ainvoke_comfyui(self, comfyui_req):
         data = json.dumps(comfyui_req).encode("utf-8")
-        print(data)
+        #print(data)
         response = requests.post(self.api_base, data=data)
         response_data = response.json()
         print(response_data)
@@ -692,28 +703,43 @@ class ComfyUIBackend(BackendBase):
             f"s3_out_path is {s3_out_path} and local_out_path is {local_out_path}"
         )
         try:
-            while True:
-                out = self.ws.recv()
-                if isinstance(out, str):
-                    message = json.loads(out)
-                    print("!!!!!!!!", message["type"])
-                    if message["type"] == "executing":
-                        data = message["data"]
-                        print(data["prompt_id"])
-                        if data["node"] is None and data["prompt_id"] == prompt_id:
-                            logger.info(f"Execution is done for prompt_id {prompt_id}")
-                            break  # Execution is done
-                else:
-                    continue  # previews are binary data
-            # logger.info(f"Start to sync outputs to s3 for prompt_id {prompt_id}")
-            sync_local_outputs_to_s3(self.model_s3_bucket, s3_out_path, local_out_path)
-            # sync_local_outputs_to_s3(self.model_s3_bucket, s3_temp_path, local_temp_path)
-            logger.info(f"Sync done to s3 for prompt_id {prompt_id}")
+        # Wait for the execution to complete
+            for attempt in range(self.maxtrynum):
+                logger.info(f"Attempt {attempt + 1} to get the outputs of comfyui")
+                history = self.get_history(prompt_id)
+                print(f"History is: {history}")
+                if prompt_id in history:
+                    if history[prompt_id]["status"]["status_str"] == "success":
+                        logger.info(f"ComfyUI execution completed successfully")
+                        break
+                    else:
+                        raise ValueError(
+                            f"ComfyUI execution failed with status: {history[prompt_id]['status']}"
+                        )
+                if attempt < self.maxtrynum - 1:
+                    time.sleep(10)
+            # convert the file in local output file to base64 
+            files = os.listdir(local_out_path)
+            base64_files = {}
+            if not files:
+                raise ValueError(f"No output files found in {local_out_path}")
+            else:
+                logger.info(f"Output files found: {files}")
+                # convert to base64
+                for file in files:
+                    if file.endswith(".png"):
+                        with open(f"{local_out_path}/{file}", "rb") as image_file:
+                            encoded_string = base64.b64encode(image_file.read())
+                            base64_files[file] = encoded_string.decode("utf-8")
+                            logger.info(f"File {file} converted to base64")
+
+            # remove all the files in local output path
+            os.remove(local_out_path)
+            
             response_body = {
                 "prompt_id": prompt_id,
                 "status": "success",
-                "output_path": f"s3://{self.model_s3_bucket}/comfy/{s3_out_path}",
-                # "temp_path": f's3://{self.model_s3_bucket}/comfy/{s3_temp_path}',
+                "images": base64_files,
             }
             logger.info(f"execute inference response is {response_body}")
             return response_body
@@ -868,7 +894,7 @@ class ComfyUIBackend(BackendBase):
                     raise ValueError("Either maskPrompt or maskImage must be provided")
                 return self._get_response(response)
             elif request["taskType"] == "WORKFLOW":
-                return self._invoke_comfyui(request["workflow"])
+                return self._ainvoke_comfyui(request["workflow"])
             else:
                 raise ValueError("Invalid taskType")
         else:
