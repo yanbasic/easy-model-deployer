@@ -123,9 +123,7 @@ def queue_prompt(prompt, client_id, server_address):
 def invoke(request_body, server_address):
     data = json.dumps(request_body).encode('utf-8')
     headers = {'Content-Type': 'application/json'}
-    print('######')
     req =  request.Request("http://{}/invocations".format(server_address), data=data, headers=headers)
-    print('######')
     return json.loads(request.urlopen(req).read())
 
 if __name__ == "__main__":
@@ -150,9 +148,8 @@ if __name__ == "__main__":
         "taskType": "WORKFLOW",
         "workflow": prompt_new
     }
-    print('!!!!!!!!!')
     response = invoke(workflow_request, http_base_url)
-    print(response)
+    print(response['images'].keys())
     exit()
 
     encoded_image = base64.b64encode(open("src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
@@ -162,47 +159,47 @@ if __name__ == "__main__":
         "taskType": "BACKGROUND_REMOVAL",
         "backgroundRemovalParams": {"image": encoded_image}
     }
-    #### text to image
-    text_to_image_request = {
-        "taskType": "TEXT_TO_IMAGE",
-        "textToImageParams": {
-                "text": "car on the beach",  # Text prompt to guide the generation
-                "negativeText": "blur",
-            },  # What to avoid generating inside the image
-            "imageGenerationConfig": {
-            "numberOfImages": 2,  # Number of images to generate, up to 5
-            "width": 1024,
-            "height": 1024,
-            "cfgScale": 6.5,  # How closely the prompt will be followed
-            "seed": 1111111,  # Any number from 0 through 858,993,459
-            }
-    }
-    #### image varation
-    image_variation_request = {
-        "taskType": "IMAGE_VARIATION",
-        "imageVariationParams": 
-        {
-                    "text": "a red car running on the road",
-                    "negativeText": "blur",  # What to avoid generating inside the image
-                    "images": [
-                        encoded_image
-                    ],  # May provide up to 5 reference images here
-                    "similarityStrength": 0.6,  # How strongly the input images influence the output. From 0.2 through 1.
-                },
-                "imageGenerationConfig": {
-                    "numberOfImages": 2,  # Number of images to generate, up to 5.
-                    "seed": 11111,  # Any number from 0 through 858,993,459
-                    "width": 1024,
-                    "height": 1024,
-                }
-    }
-    #### color_guided_image_generation
-    colors = ["#FFFFFF", "#FF9900", "#F2F2F2", "#232F3E"]
-    color_guided_image_generation_request = {
-        "taskType": "COLOR_GUIDED_GENERATION",
-        "colorGuidedGenerationParams": 
-        {
-                "text": "a red car running on the road",
-                "negativeText": "blur",  # What to 
-        }
-    }
+    # #### text to image
+    # text_to_image_request = {
+    #     "taskType": "TEXT_TO_IMAGE",
+    #     "textToImageParams": {
+    #             "text": "car on the beach",  # Text prompt to guide the generation
+    #             "negativeText": "blur",
+    #         },  # What to avoid generating inside the image
+    #         "imageGenerationConfig": {
+    #         "numberOfImages": 2,  # Number of images to generate, up to 5
+    #         "width": 1024,
+    #         "height": 1024,
+    #         "cfgScale": 6.5,  # How closely the prompt will be followed
+    #         "seed": 1111111,  # Any number from 0 through 858,993,459
+    #         }
+    # }
+    # #### image varation
+    # image_variation_request = {
+    #     "taskType": "IMAGE_VARIATION",
+    #     "imageVariationParams": 
+    #     {
+    #                 "text": "a red car running on the road",
+    #                 "negativeText": "blur",  # What to avoid generating inside the image
+    #                 "images": [
+    #                     encoded_image
+    #                 ],  # May provide up to 5 reference images here
+    #                 "similarityStrength": 0.6,  # How strongly the input images influence the output. From 0.2 through 1.
+    #             },
+    #             "imageGenerationConfig": {
+    #                 "numberOfImages": 2,  # Number of images to generate, up to 5.
+    #                 "seed": 11111,  # Any number from 0 through 858,993,459
+    #                 "width": 1024,
+    #                 "height": 1024,
+    #             }
+    # }
+    # #### color_guided_image_generation
+    # colors = ["#FFFFFF", "#FF9900", "#F2F2F2", "#232F3E"]
+    # color_guided_image_generation_request = {
+    #     "taskType": "COLOR_GUIDED_GENERATION",
+    #     "colorGuidedGenerationParams": 
+    #     {
+    #             "text": "a red car running on the road",
+    #             "negativeText": "blur",  # What to 
+    #     }
+    # }

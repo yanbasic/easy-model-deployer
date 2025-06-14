@@ -62,7 +62,7 @@ class ComfyUIBackend(BackendBase):
 
         self.multimodal_model_id = "us.amazon.nova-premier-v1:0"
         self.video_model_id = "us.amazon.nova-reel-v1:1"
-        self.maxtrynum = 12
+        self.maxtrynum = 100
 
     def start(self):
         # model_dir = f"emd_models/{self.model_id}"
@@ -707,7 +707,6 @@ class ComfyUIBackend(BackendBase):
             for attempt in range(self.maxtrynum):
                 logger.info(f"Attempt {attempt + 1} to get the outputs of comfyui")
                 history = self.get_history(prompt_id)
-                print(f"History is: {history}")
                 if prompt_id in history:
                     if history[prompt_id]["status"]["status_str"] == "success":
                         logger.info(f"ComfyUI execution completed successfully")
@@ -716,26 +715,41 @@ class ComfyUIBackend(BackendBase):
                         raise ValueError(
                             f"ComfyUI execution failed with status: {history[prompt_id]['status']}"
                         )
+                else:
+                    print(f"History is: {history}")
                 if attempt < self.maxtrynum - 1:
-                    time.sleep(10)
-            # convert the file in local output file to base64 
-            files = os.listdir(local_out_path)
+                    time.sleep(5)
+            # convert the file in local output file to base64
             base64_files = {}
-            if not files:
-                raise ValueError(f"No output files found in {local_out_path}")
-            else:
-                logger.info(f"Output files found: {files}")
-                # convert to base64
-                for file in files:
-                    if file.endswith(".png"):
-                        with open(f"{local_out_path}/{file}", "rb") as image_file:
-                            encoded_string = base64.b64encode(image_file.read())
-                            base64_files[file] = encoded_string.decode("utf-8")
-                            logger.info(f"File {file} converted to base64")
-
-            # remove all the files in local output path
-            os.remove(local_out_path)
+            for key in history[prompt_id]["outputs"]:
+                for key_sub in history[prompt_id]["outputs"][key]:
+                    for output_file in history[prompt_id]["outputs"][key][key_sub]:
+                        if output_file['type'] == 'output':
+                            file_name = output_file['filename']
+                            with open(f"{local_out_path}/{file_name}", "rb") as image_file:
+                                encoded_string = base64.b64encode(image_file.read())
+                                base64_files[file_name] = encoded_string.decode("utf-8")
+                                logger.info(f"File {file_name} converted to base64")
+                                if os.path.isfile(f"{local_out_path}/{file_name}"):
+                                    os.remove(f"{local_out_path}/{file_name}")
             
+            files = os.listdir(local_out_path)
+            print(f"Files in local output path: {files}")
+            # base64_files = {}
+            # if not files:
+            #     raise ValueError(f"No output files found in {local_out_path}")
+            # else:
+            #     logger.info(f"Output files found: {files}")
+            #     # convert to base64
+            #     for file in files:
+            #         if file.endswith(".png") or file.endswith(".mp4"):
+            #             with open(f"{local_out_path}/{file}", "rb") as image_file:
+            #                 encoded_string = base64.b64encode(image_file.read())
+            #                 base64_files[file] = encoded_string.decode("utf-8")
+            #                 logger.info(f"File {file} converted to base64")
+            #                 if os.path.isfile(f"{local_out_path}/{file}"):
+            #                     os.remove(f"{local_out_path}/{file}")
+
             response_body = {
                 "prompt_id": prompt_id,
                 "status": "success",
