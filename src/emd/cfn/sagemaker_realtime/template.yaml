@@ -26,6 +26,10 @@ Parameters:
   Region:
     Type: String
     Description: The region to be used for the SageMaker Endpoint
+  MinCapacity:
+    Type: Number
+    Description: The minimum capacity of the endpoint
+    Default: 1
   MaxCapacity:
     Type: Number
     Description: The maximum capacity of the endpoint
@@ -41,9 +45,21 @@ Parameters:
   DNSName:
     Type: String
     Description: The DNS name of the public load balancer. To use HTTPS, create an SSL certificate in AWS Certificate Manager and attach it to the load balancer.
+  LambdaDeploymentHelperArn:
+    Type: String
+    Description: The ARN of the Lambda function for capacity provider association
+  APIKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: API key to be used for invoking the model
 
 Conditions:
   UseDefaultEndpointName: !Equals [!Ref SageMakerEndpointName, "Auto-generate"]
+  HasAPIKey: !Not [!Equals [!Ref APIKey, ""]]
+  IsChinaRegion: !Or
+    - !Equals [!Ref "AWS::Region", "cn-north-1"]
+    - !Equals [!Ref "AWS::Region", "cn-northwest-1"]
 
 Resources:
   ExecutionRole:
@@ -120,7 +136,7 @@ Resources:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
     Properties:
       MaxCapacity: !Ref MaxCapacity
-      MinCapacity: 1
+      MinCapacity: !Ref MinCapacity
       RoleARN: !GetAtt ExecutionRole.Arn
       ResourceId: !Sub "endpoint/${SageMakerEndpoint.EndpointName}/variant/AllTraffic"
       ScalableDimension: "sagemaker:variant:DesiredInstanceCount"
@@ -150,9 +166,17 @@ Resources:
         ScaleInCooldown: 600
         ScaleOutCooldown: 600
 
+  SetApiKey:
+    Type: Custom::SetApiKey
+    Condition: HasAPIKey
+    Properties:
+      ServiceToken: !Ref LambdaDeploymentHelperArn
+      ModelName: !Join ['', [!Ref ModelId, '/', !Ref ModelTag]]
+      APIKey: !Ref APIKey
+
 Outputs:
   Model:
-    Description: Model ID used to generate the response.
+    Description: The unique model ID that determines which model will process your request in the OpenAI-compatible API.
     Value: !Join ['', [!Ref ModelId, '/', !Ref ModelTag]]
   BaseURL:
     Description: Please use this URL for the OpenAI-compatible model API, like /v1/chat/completions. To use HTTPS, create an SSL certificate in AWS Certificate Manager and attach it to the load balancer.
@@ -160,3 +184,10 @@ Outputs:
   SageMakerEndpointName:
     Description: You can use invoke the endpoint by using the SageMaker runtime API.
     Value: !GetAtt SageMakerEndpoint.EndpointName
+  ModelAPIKey:
+    Condition: HasAPIKey
+    Description: "API key for accessing model is securely stored in AWS Secrets Manager and can be managed through the provided link."
+    Value: !If
+      - IsChinaRegion
+      - !Sub "https://console.amazonaws.cn/secretsmanager/secret?name=EMD-APIKey-Secrets&region=${AWS::Region}"
+      - !Sub "https://console.aws.amazon.com/secretsmanager/secret?name=EMD-APIKey-Secrets&region=${AWS::Region}"

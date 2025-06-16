@@ -8,7 +8,7 @@ deploy(
     service_type="sagemaker",
     region="us-west-2",
     # extra_params={
-    #     "vllm_cli_args":"--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
+    #     "cli_args":"--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
     # }
 )
 
@@ -20,7 +20,7 @@ deploy(
 #     service_type="sagemaker",
 #     region="us-west-2",
 #     extra_params={
-#         "vllm_cli_args":"--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
+#         "cli_args":"--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
 #     }
 # )
 # deploy(
@@ -31,6 +31,6 @@ deploy(
 #     service_type="sagemaker",
 #     region="us-west-2",
 #     extra_params={
-#         "vllm_cli_args":"--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
+#         "cli_args":"--max_num_seqs 20 --max_model_len 16000 --disable-log-stats"
 #     }
 # )

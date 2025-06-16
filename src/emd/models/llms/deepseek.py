@@ -7,6 +7,7 @@ from ..engines import (
     llama_cpp_deepseek_r1_distill_engineb9ab0a4,
     tgi_deepseek_r1_llama_70b_engine301,
     ktransformers_engine,
+    vllm_deepseek_r1_engine084
 )
 from ..services import (
     sagemaker_service,
@@ -442,6 +443,31 @@ Model.register(
         huggingface_model_id="unsloth/DeepSeek-R1-GGUF",
         huggingface_model_download_kwargs = dict(allow_patterns = ["*UD-Q2_K_XL*"]),
         modelscope_model_id="unsloth/DeepSeek-R1-GGUF",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="The latest series of DeepSeek LLMs for reasoning",
+        model_type=ModelType.LLM,
+        model_series=DEEPSEEK_REASONING_MODEL
+    )
+)
+
+Model.register(
+    dict(
+        model_id = "DeepSeek-R1",
+        supported_engines=[vllm_deepseek_r1_engine084],
+        supported_instances=[
+            local_instance
+        ],
+        supported_services=[
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        need_prepare_model=False,
+        huggingface_model_id="unsloth/DeepSeek-R1",
+        modelscope_model_id="unsloth/DeepSeek-R1",
         require_huggingface_token=False,
         application_scenario="Agent, tool use, translation, summary",
         description="The latest series of DeepSeek LLMs for reasoning",

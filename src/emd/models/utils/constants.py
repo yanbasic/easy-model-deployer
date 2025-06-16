@@ -215,8 +215,10 @@ class ServiceQuotaCode(ConstantBase):
 class ModelSeriesType(ConstantBase):
     GEMMA3 = "gemma3"
     TXGEMMA = "txgemma"
+    MEDGEMMA = "medgemma"
     MISTRAL = "mistral"
     QWEN2D5 = "qwen2.5"
+    QWEN3 = "qwen3"
     GLM4 = "glm4"
     INTERLM2d5 = "internlm2.5"
     WHISPER = "whisper"
@@ -225,6 +227,7 @@ class ModelSeriesType(ConstantBase):
     BCE = "bce"
     COMFYUI = "comfyui"
     QWEN2VL = "qwen2vl"
+    AGENT = "agent"
     INTERNVL25 = "internvl2.5"
     LLAMA = "llama"
     QWEN_REASONING_MODEL = "qwen reasoning model"

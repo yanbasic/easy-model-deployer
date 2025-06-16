@@ -7,6 +7,13 @@ QWEN2D5_SERIES = ModelSeries(
     reference_link="https://github.com/QwenLM/Qwen2.5"
 )
 
+QWEN3_SERIES = ModelSeries(
+    model_series_name = ModelSeriesType.QWEN3,
+    description="the latest addition to the Qwen family of large language models. These models represent our most advanced and intelligent systems to date, improving from our experience in building QwQ and Qwen2.5. We are making the weights of Qwen3 available to the public, including both dense and Mixture-of-Expert (MoE) models.",
+    reference_link="https://github.com/QwenLM/Qwen3"
+)
+
+
 GLM4_SERIES = ModelSeries(
     model_series_name = ModelSeriesType.GLM4,
     description="The GLM-4 series includes the latest generation of pre-trained models launched by Zhipu AI.",
@@ -62,6 +69,13 @@ Key Enhancements:
     reference_link="https://github.com/QwenLM/Qwen2-VL"
 )
 
+
+AGENT_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.AGENT,
+    description="""LLM or VLM models for Agentic tasks, e.g. computer-use,brower-use""",
+    reference_link=""
+)
+
 INTERNVL25_SERIES = ModelSeries(
     model_series_name=ModelSeriesType.INTERNVL25,
     description="""InternVL2.5 is an advanced multimodal large language model (MLLM) series with parameter coverage ranging from 1B to 78B. InternVL2_5-78B is the first open-source MLLMs to achieve over 70% on the MMMU benchmark, matching the performance of leading closed-source commercial models like GPT-4o.""",
@@ -103,6 +117,11 @@ TXGEMMA_SERIES = ModelSeries(
     reference_link="https://huggingface.co/collections/google/txgemma-release-67dd92e931c857d15e4d1e87"
 )
 
+MEDGEMMA_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.MEDGEMMA,
+    description="MedGemma is a collection of Gemma 3 variants that are trained for performance on medical text and image comprehension.",
+    reference_link="https://huggingface.co/collections/google/medgemma-release-680aade845f90bec6a3f60c4"
+)
 
 MISTRAL_SERIES = ModelSeries(
     model_series_name=ModelSeriesType.MISTRAL,

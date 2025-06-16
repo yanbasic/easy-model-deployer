@@ -16,10 +16,12 @@ sagemaker_service = Service(
         "EngineType":"engine_type",
         "Region":"region",
         "MaxCapacity": ValueWithDefault(name="max_capacity",default=1),
+        "MinCapacity": ValueWithDefault(name="min_capacity",default=1),
         "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10),
-        "SageMakerEndpointName": ValueWithDefault(name="sagemaker_endpoint_name",default="Auto-generate")
+        "SageMakerEndpointName": ValueWithDefault(name="sagemaker_endpoint_name",default="Auto-generate"),
+        "APIKey": ValueWithDefault(name="api_key",default="")
     },
-    name = "Amazon SageMaker AI Real-time inference with OpenAI Compatible API",
+    name = "Amazon SageMaker AI Real-time inference with OpenAI-Compatible API",
     service_type=ServiceType.SAGEMAKER,
     description="Amazon SageMaker Real-time inference provides low-latency, interactive inference through fully managed endpoints that support autoscaling. It provides an OpenAI-compatible REST API (e.g., /v1/completions) via an Application Load Balancer (ALB).\n(https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints.html)",
     support_cn_region = True
@@ -36,7 +38,8 @@ sagemaker_old_service = Service(
         "EngineType":"engine_type",
         "Region":"region",
         "MaxCapacity": ValueWithDefault(name="max_capacity",default=1),
-        "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10)
+        "MinCapacity": ValueWithDefault(name="min_capacity",default=1),
+        "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10),
     },
     name = "Amazon SageMaker AI Real-time inference",
     service_type=ServiceType.SAGEMAKER_OLDER,
@@ -55,9 +58,13 @@ sagemaker_async_service = Service(
         "FrameWorkType":"framework_type",
         "ServiceType":"service_type",
         "EngineType":"engine_type",
-        "Region":"region"
+        "Region":"region",
+        "MaxCapacity": ValueWithDefault(name="max_capacity",default=1),
+        "MinCapacity": ValueWithDefault(name="min_capacity",default=1),
+        "AutoScalingTargetValue": ValueWithDefault(name="auto_scaling_target_value",default=10),
+        "APIKey": ValueWithDefault(name="api_key",default="")
     },
-    name = "Amazon SageMaker AI Asynchronous inference with OpenAI Compatible API",
+    name = "Amazon SageMaker AI Asynchronous inference with OpenAI-Compatible API",
     service_type=ServiceType.SAGEMAKER_ASYNC,
     description="Amazon SageMaker Asynchronous Inference queues requests for processing asynchronously, making it suitable for large payloads (up to 1GB) and long processing times (up to one hour), while also enabling cost savings by autoscaling to zero when idle. It provides an OpenAI-compatible REST API (e.g., /v1/completions) via an Application Load Balancer (ALB).\n(https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html)",
     support_cn_region = True
@@ -97,9 +104,10 @@ ecs_service = Service(
         "Subnets": ValueWithDefault(name="subnet_ids",default=""),
         "ContainerCpu": "container_cpu",
         "ContainerMemory": "container_memory",
-        "ContainerGpu":"instance_gpu_num"
+        "ContainerGpu":"instance_gpu_num",
+        "APIKey": ValueWithDefault(name="api_key",default="")
     },
-    name = "Amazon ECS with OpenAI Compatible API",
+    name = "Amazon ECS with OpenAI-Compatible API",
     service_type=ServiceType.ECS,
     description="Amazon Elastic Container Service is a fully managed service that runs containerized applications in clusters with auto scaling. It provides an OpenAI-compatible REST API (e.g., /v1/completions) via an Application Load Balancer (ALB), enabling integration with AI models for tasks like chatbots or document analysis. (https://docs.aws.amazon.com/AmazonECS/latest/developerguide)",
     support_cn_region = True,

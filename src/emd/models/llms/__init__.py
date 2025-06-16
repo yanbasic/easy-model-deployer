@@ -6,5 +6,6 @@ from . import (
     deepseek,
     baichuan,
     jina,
-    txgemma
+    txgemma,
+    medgemma
 )
