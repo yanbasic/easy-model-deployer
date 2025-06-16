@@ -705,11 +705,11 @@ class ComfyUIBackend(BackendBase):
         try:
         # Wait for the execution to complete
             for attempt in range(self.maxtrynum):
-                logger.info(f"Attempt {attempt + 1} to get the outputs of comfyui")
+                print(f"Attempt {attempt + 1} to get the outputs of comfyui")
                 history = self.get_history(prompt_id)
                 if prompt_id in history:
                     if history[prompt_id]["status"]["status_str"] == "success":
-                        logger.info(f"ComfyUI execution completed successfully")
+                        print(f"ComfyUI execution completed successfully")
                         break
                     else:
                         raise ValueError(
@@ -719,44 +719,50 @@ class ComfyUIBackend(BackendBase):
                     print(f"History is: {history}")
                 if attempt < self.maxtrynum - 1:
                     time.sleep(5)
-            # convert the file in local output file to base64
-            base64_files = {}
-            for key in history[prompt_id]["outputs"]:
-                for key_sub in history[prompt_id]["outputs"][key]:
-                    for output_file in history[prompt_id]["outputs"][key][key_sub]:
-                        if output_file['type'] == 'output':
-                            file_name = output_file['filename']
-                            with open(f"{local_out_path}/{file_name}", "rb") as image_file:
-                                encoded_string = base64.b64encode(image_file.read())
-                                base64_files[file_name] = encoded_string.decode("utf-8")
-                                logger.info(f"File {file_name} converted to base64")
-                                if os.path.isfile(f"{local_out_path}/{file_name}"):
-                                    os.remove(f"{local_out_path}/{file_name}")
             
-            files = os.listdir(local_out_path)
-            print(f"Files in local output path: {files}")
-            # base64_files = {}
-            # if not files:
-            #     raise ValueError(f"No output files found in {local_out_path}")
-            # else:
-            #     logger.info(f"Output files found: {files}")
-            #     # convert to base64
-            #     for file in files:
-            #         if file.endswith(".png") or file.endswith(".mp4"):
-            #             with open(f"{local_out_path}/{file}", "rb") as image_file:
-            #                 encoded_string = base64.b64encode(image_file.read())
-            #                 base64_files[file] = encoded_string.decode("utf-8")
-            #                 logger.info(f"File {file} converted to base64")
-            #                 if os.path.isfile(f"{local_out_path}/{file}"):
-            #                     os.remove(f"{local_out_path}/{file}")
+            if prompt_id not in history:
+                raise ValueError(f"Prompt ID {prompt_id} timeout !!!!!!")
+            else:
+                # convert the file in local output file to base64
+                base64_files = {}
+                for key in history[prompt_id]["outputs"]:
+                    for key_sub in history[prompt_id]["outputs"][key]:
+                        for output_file in history[prompt_id]["outputs"][key][key_sub]:
+                            print('!!!!!output_file is', output_file)
+                            if isinstance(output_file, dict):
+                                if output_file['type'] == 'output':
+                                    file_name = output_file['filename']
+                                    with open(f"{local_out_path}/{file_name}", "rb") as image_file:
+                                        encoded_string = base64.b64encode(image_file.read())
+                                        base64_files[file_name] = encoded_string.decode("utf-8")
+                                        logger.info(f"File {file_name} converted to base64")
+                                        if os.path.isfile(f"{local_out_path}/{file_name}"):
+                                            os.remove(f"{local_out_path}/{file_name}")
+                
+                files = os.listdir(local_out_path)
+                print(f"Files in local output path: {files}")
+                # base64_files = {}
+                # if not files:
+                #     raise ValueError(f"No output files found in {local_out_path}")
+                # else:
+                #     logger.info(f"Output files found: {files}")
+                #     # convert to base64
+                #     for file in files:
+                #         if file.endswith(".png") or file.endswith(".mp4"):
+                #             with open(f"{local_out_path}/{file}", "rb") as image_file:
+                #                 encoded_string = base64.b64encode(image_file.read())
+                #                 base64_files[file] = encoded_string.decode("utf-8")
+                #                 logger.info(f"File {file} converted to base64")
+                #                 if os.path.isfile(f"{local_out_path}/{file}"):
+                #                     os.remove(f"{local_out_path}/{file}")
 
-            response_body = {
-                "prompt_id": prompt_id,
-                "status": "success",
-                "images": base64_files,
-            }
-            logger.info(f"execute inference response is {response_body}")
-            return response_body
+                response_body = {
+                    "prompt_id": prompt_id,
+                    "status": "success",
+                    "images": base64_files,
+                }
+                logger.info(f"execute inference response is {response_body}")
+                return response_body
         except Exception as e:
             print(f"Error during processing: {str(e)}")
             raise
