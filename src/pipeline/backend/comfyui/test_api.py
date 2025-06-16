@@ -208,7 +208,7 @@ if __name__ == "__main__":
     workflow_path = sys.argv[1]
     http_base_url = sys.argv[2]
 
-    encoded_image = base64.b64encode(open("src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
+    encoded_image = base64.b64encode(open("test_car.png", "rb").read()).decode("utf-8")
     #### remove background
     remove_background_request = {
         "taskType": "BACKGROUND_REMOVAL",
@@ -318,18 +318,25 @@ if __name__ == "__main__":
     #response = invoke(remove_object_request, http_base_url)
     #response = invoke(outpaint_request, http_base_url)
     #response = invoke_super_resolution(workflow_path, http_base_url)
-    #response = invoke_image_edit(workflow_path, http_base_url)
-    response = invoke_product_replace(workflow_path, http_base_url)
+    response = invoke_image_edit(workflow_path, http_base_url)
+    #response = invoke_product_replace(workflow_path, http_base_url)
     #response = invoke_sam(workflow_path, http_base_url)
 
     print("Response keys:", response.keys())
     base64_images = response.get("images")
-    print("Response images:", len(base64_images))
-    response_images = [
-        Image.open(io.BytesIO(base64.b64decode(base64_image)))
-        for base64_image in base64_images
-    ]
-    # save the response_images to a file
-    for i, img in enumerate(response_images):
-        task_type = outpaint_request.get("taskType")
-        img.save(f"src/pipeline/backend/comfyui/test_car_text_to_{task_type}_{i}.png")
+    if isinstance(base64_images, dict):
+        for key in base64_images.keys():
+            print("Response images:", key)
+            response_image = Image.open(io.BytesIO(base64.b64decode(base64_images[key])))
+            # save the response_images to a file
+            response_image.save(f"{key}")
+    else:
+        print("Response images:", len(base64_images))
+        response_images = [
+            Image.open(io.BytesIO(base64.b64decode(base64_image)))
+            for base64_image in base64_images
+        ]
+        # save the response_images to a file
+        for i, img in enumerate(response_images):
+            task_type = outpaint_request.get("taskType")
+            img.save(f"src/pipeline/backend/comfyui/test_car_text_to_{task_type}_{i}.png")
