@@ -51,7 +51,7 @@ def parse_args():
     parser.add_argument(
             "--extra_params",
             type=load_extra_params,
-            default=os.environ.get("extra_params","{}")
+            default=os.environ.get("extra_params",{})
         )
     return parser.parse_args()
 
