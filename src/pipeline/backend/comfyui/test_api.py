@@ -203,12 +203,88 @@ def invoke_super_resolution(workflow_path, server_address):
     print(response['images'].keys())
     return response
 
+def convertImageToPngBase64(image):
+    """
+    Converts an image to PNG format and returns the base64-encoded
+    representation of that PNG.
+    """
+    mem_file = io.BytesIO()
+    image.save(mem_file, format="PNG")
+    mem_file.seek(0)
+    png_bytes = mem_file.read()
+
+    return base64.b64encode(png_bytes).decode("utf-8")
+
+
+
+def invoke_expand_image(image_path, http_base_url, target_aspect_ratio=3/2):
+    """
+    Expands the image to the target aspect ratio by adding padding.
+    """
+    original_image = Image.open(image_path)
+    width, height = original_image.size
+    target_width = int(height * target_aspect_ratio)
+    
+    if width == target_width:
+        response_body = {
+                    "status": "success",
+                    "images": [base64.b64encode(open(image_path, "rb").read()).decode("utf-8")],
+                }
+        return response_body  # No expansion needed
+    else:
+        if width > target_width:
+            # If the image is wider than the target aspect ratio,
+            # expand the height to match the target aspect ratio
+            target_height = int(width / target_aspect_ratio)
+            target_width = width
+            top = (target_height - height) // 2
+            position = (0, top)
+        else:
+            target_width = int(height * target_aspect_ratio)
+            target_height = height
+            left = (target_width - width) // 2
+            position = (left, 0)
+
+        WHITE = (255, 255, 255)
+        BLACK = (0, 0, 0)
+        input_image = Image.new("RGB", (target_width, target_height), (230, 230, 230))
+        input_image.paste(original_image, position)
+        expanded_image_base64 = convertImageToPngBase64(input_image)
+
+        # Create mask that matches the canvas size and masks the place where the
+        # original image is positioned.
+        mask_image = Image.new("RGB", (target_width, target_height), WHITE)
+        original_image_shape = Image.new("RGB", (width, height), BLACK)
+        mask_image.paste(original_image_shape, position)
+        mask_image_base64 = convertImageToPngBase64(mask_image)
+        
+        outpaint_request = {
+        "taskType": "OUTPAINTING",
+        "outPaintingParams":
+        {
+                "text": "background",  # Text prompt to guide the generation
+                "negativeText": "blur",  # What to avoid generating inside the image
+                "image": expanded_image_base64,  # May provide up to 5 reference images here
+                "maskImage": mask_image_base64,
+                "outPaintingMode": "DEFAULT",  # Options: Either "DEFAULT" or "PRECISE"
+            },
+            "imageGenerationConfig": {
+                "numberOfImages": 1,  # Number of images to generate, up to 5.
+                "seed": 12,  # Any number from 0 through 858,993,459
+                "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+            }
+        }
+        response_body = invoke(outpaint_request, http_base_url)
+        return response_body
+
+
 if __name__ == "__main__":
     
     workflow_path = sys.argv[1]
-    http_base_url = sys.argv[2]
+    image_path = '/home/ubuntu/easy-model-deployer/src/pipeline/backend/comfyui/test6.png'#sys.argv[1]
+    http_base_url =  sys.argv[2]
 
-    encoded_image = base64.b64encode(open("test_car.png", "rb").read()).decode("utf-8")
+    encoded_image = base64.b64encode(open("/home/ubuntu/easy-model-deployer/src/pipeline/backend/comfyui/test_car.png", "rb").read()).decode("utf-8")
     #### remove background
     remove_background_request = {
         "taskType": "BACKGROUND_REMOVAL",
@@ -310,6 +386,7 @@ if __name__ == "__main__":
             }
     }  
 
+
     #response = invoke(remove_background_request, http_base_url)
     #response = invoke(text_to_image_request, http_base_url)
     #response = invoke(image_variation_request, http_base_url)
@@ -318,9 +395,10 @@ if __name__ == "__main__":
     #response = invoke(remove_object_request, http_base_url)
     #response = invoke(outpaint_request, http_base_url)
     #response = invoke_super_resolution(workflow_path, http_base_url)
-    response = invoke_image_edit(workflow_path, http_base_url)
+    #response = invoke_image_edit(workflow_path, http_base_url)
     #response = invoke_product_replace(workflow_path, http_base_url)
     #response = invoke_sam(workflow_path, http_base_url)
+    response = invoke_expand_image(image_path, http_base_url)
 
     print("Response keys:", response.keys())
     base64_images = response.get("images")
@@ -339,4 +417,4 @@ if __name__ == "__main__":
         # save the response_images to a file
         for i, img in enumerate(response_images):
             task_type = outpaint_request.get("taskType")
-            img.save(f"src/pipeline/backend/comfyui/test_car_text_to_{task_type}_{i}.png")
+            img.save(f"{task_type}_{i}_2.png")

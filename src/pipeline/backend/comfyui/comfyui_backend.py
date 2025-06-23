@@ -215,7 +215,7 @@ class ComfyUIBackend(BackendBase):
             return {"status": "error", "message": str(e)}
 
     def _outpaint_with_maskPrompt(self, reference_image_base64, prompt, negative_prompt, mask_prompt, num_imgs, seed=1, cfg=6.5):
-        # Generate image condition on reference image
+        # outpaint image while remain the designated area of input prompt
         body = json.dumps(
             {
             "taskType": "OUTPAINTING",
@@ -249,8 +249,8 @@ class ComfyUIBackend(BackendBase):
             print(f"Error during background removal: {str(e)}")
             return {"status": "error", "message": str(e)}
     
-    def _outpaint_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, seed=1, cfg=6.5):
-        # Generate image condition on reference image
+    def _outpaint_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, outPaintingMode, quality, seed=1, cfg=6.5):
+        # outpaint image while remain the designated area of input mask image
         body = json.dumps(
             {
             "taskType": "OUTPAINTING",
@@ -259,13 +259,13 @@ class ComfyUIBackend(BackendBase):
                 "negativeText": negative_prompt,  # What to avoid generating inside the mask
                 "image": reference_image_base64,  # The image to edit
                 "maskImage": mask_image_base64,  # One of "maskImage" or "maskPrompt" is required
-                "outPaintingMode": "PRECISE",  # Either "DEFAULT" or "PRECISE"
+                "outPaintingMode": outPaintingMode,  # Either "DEFAULT" or "PRECISE"
             },
             "imageGenerationConfig": {
                 "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
                 "cfgScale": cfg,  # How closely the prompt will be followed
                 "seed": seed,  # Any number from 0 through 858,993,459
-                "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
+                "quality": quality,  # Either "standard" or "premium". Defaults to "standard".
             },
         }
         )
@@ -283,42 +283,6 @@ class ComfyUIBackend(BackendBase):
         except Exception as e:
             print(f"Error during background removal: {str(e)}")
             return {"status": "error", "message": str(e)}
-
-    def _expand_with_maskImage(self, reference_image_base64, prompt, negative_prompt, mask_image_base64, num_imgs, seed=1):
-        # Generate image condition on reference image
-        body = json.dumps(
-            {
-            "taskType": "OUTPAINTING",
-            "outPaintingParams": {
-                "text": prompt,  # A description of the final desired image
-                "negativeText": negative_prompt,  # What to avoid generating inside the mask
-                "image": reference_image_base64,  # The image to edit
-                "maskImage": mask_image_base64,  # One of "maskImage" or "maskPrompt" is required
-                "outPaintingMode": "DEFAULT",  # Either "DEFAULT" or "PRECISE"
-            },
-            "imageGenerationConfig": {
-                "numberOfImages": num_imgs,  # Number of images to generate, up to 5.
-                "cfgScale": 6.5,  # How closely the prompt will be followed
-                "seed": seed,  # Any number from 0 through 858,993,459
-                "quality": "standard",  # Either "standard" or "premium". Defaults to "standard".
-            },
-        }
-        )
-
-        print("Generating image...")
-        try:
-            response = self.bedrock_runtime_client_image.invoke_model(
-                body=body,
-                modelId=self.image_generation_model_id,
-                accept="application/json",
-                contentType="application/json",
-            )
-            response_body = json.loads(response.get("body").read())
-            return response_body
-        except Exception as e:
-            print(f"Error during background removal: {str(e)}")
-            return {"status": "error", "message": str(e)}
-
 
     def _replace_object_with_maskPrompt(self, reference_image_base64, prompt, negative_prompt, mask_prompt, num_imgs, seed=1):
         """
@@ -866,6 +830,8 @@ class ComfyUIBackend(BackendBase):
                         request["outPaintingParams"].get("negativeText", ""),
                         request["outPaintingParams"]["maskImage"],
                         request["imageGenerationConfig"]["numberOfImages"],
+                        request["outPaintingParams"]["outPaintingMode"],
+                        request["imageGenerationConfig"]["quality"],
                         request["imageGenerationConfig"].get("seed", 1),
                     )
                 else:
@@ -912,7 +878,7 @@ class ComfyUIBackend(BackendBase):
                     )
                 else:
                     raise ValueError("Either maskPrompt or maskImage must be provided")
-                return self._get_response(response)
+                return self._get_response(response)   
             elif request["taskType"] == "WORKFLOW":
                 return self._ainvoke_comfyui(request["workflow"])
             else:
