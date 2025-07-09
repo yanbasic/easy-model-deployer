@@ -1,6 +1,7 @@
 from .. import Model
 from ..engines import (
     vllm_deepseek_r1_distill_qwen_engine071,
+    vllm_deepseek_r1_distill_qwen_engine085,
     vllm_deepseek_r1_distill_llama_engine071,
     ollama_deepseek_r1_qwen2d5_1d5b_engine057,
     llama_cpp_deepseek_r1_1d58_bit_engine_b9ab0a4,
@@ -17,6 +18,7 @@ from ..services import (
 )
 from ..frameworks import fastapi_framework
 from ..instances import (
+    g5dxlarge_instance,
     g5d2xlarge_instance,
     g5d4xlarge_instance,
     g5d8xlarge_instance,
@@ -303,6 +305,35 @@ Model.register(
     )
 )
 
+Model.register(
+    dict(
+        model_id = "DeepSeek-R1-0528-Qwen3-8B",
+        supported_engines=[vllm_deepseek_r1_distill_qwen_engine085],
+        supported_instances=[
+            g5dxlarge_instance,
+            g5d2xlarge_instance,
+            g5d4xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        huggingface_model_id="deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        modelscope_model_id="deepseek-ai/DeepSeek-R1-0528-Qwen3-8B",
+        require_huggingface_token=False,
+        application_scenario="Agent, tool use, translation, summary",
+        description="DeepSeek R1 got a minor upgrade (now DeepSeek-R1-0528). It does great in math, programming, and logic tests, almost as good as top models like O3 and Gemini 2.5 Pro.",
+        model_type=ModelType.LLM,
+        model_series=DEEPSEEK_REASONING_MODEL
+    )
+)
 
 Model.register(
     dict(

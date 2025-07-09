@@ -3,7 +3,7 @@ from emd.integrations.langchain_clients import SageMakerVllmEmbeddings
 from emd.integrations.langchain_clients import SageMakerVllmRerank
 
 embedding_model = SageMakerVllmEmbeddings(
-    model_id="bge-m3",
+    model_id="jina-embeddings-v4-vllm-retrieval",
     # model_tag='dev-2'
 )
 

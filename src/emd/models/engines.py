@@ -90,6 +90,18 @@ vllm_texgemma082 = VllmEngine(**{
 )
 
 
+vllm_medgemma082 = VllmEngine(**{
+            "engine_type":EngineType.VLLM,
+            "engine_dockerfile_config": {"VERSION":"v0.8.2"},
+            "engine_cls":"vllm.vllm_backend.VLLMBackend",
+            "base_image_host":"public.ecr.aws",
+            "use_public_ecr":True,
+            "docker_login_region":"us-east-1",
+            "default_cli_args": " --max_num_seq 10 --disable-log-stats"
+}
+)
+
+
 vllm_mistral_small_engine082 = VllmEngine(
     **{
     **vllm_engine064.model_dump(),
@@ -105,6 +117,13 @@ vllm_deepseek_r1_distill_qwen_engine071 = VllmEngine(**{
             "engine_dockerfile_config": {"VERSION":"v0.7.1"},
             "default_cli_args": "--max_num_seq 256 --max_model_len 16000 --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja"
 })
+
+vllm_deepseek_r1_distill_qwen_engine085 = VllmEngine(**{
+            **vllm_engine064.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"v0.8.5"},
+            "default_cli_args": "--max_num_seq 256 --max_model_len 16000 --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja"
+})
+
 
 vllm_deepseek_r1_distill_llama_engine071 = vllm_deepseek_r1_distill_qwen_engine071
 
@@ -148,6 +167,20 @@ vllm_qwen3_engin084 = VllmEngine(**{
              "engine_dockerfile_config": {"VERSION":"v0.8.5.dev649_g0189a65a2"},
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
             "default_cli_args": " --max_model_len 16000 --max_num_seq 30 --disable-log-stats  --enable-reasoning --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
+})
+
+vllm_qwen3_engin091 = VllmEngine(**{
+             **vllm_engine064.model_dump(),
+             "engine_dockerfile_config": {"VERSION":"v0.9.1"},
+            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --max_model_len 16000 --max_num_seq 30 --disable-log-stats  --enable-reasoning --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
+})
+
+vllm_embedding_engine091 = VllmEngine(**{
+             **vllm_engine064.model_dump(),
+             "engine_dockerfile_config": {"VERSION":"v0.9.1"},
+            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --max_num_seq 30 --disable-log-stats --trust-remote-code --task embed"
 })
 
 
