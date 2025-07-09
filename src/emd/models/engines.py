@@ -118,6 +118,13 @@ vllm_deepseek_r1_distill_qwen_engine071 = VllmEngine(**{
             "default_cli_args": "--max_num_seq 256 --max_model_len 16000 --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja"
 })
 
+vllm_deepseek_r1_distill_qwen_engine085 = VllmEngine(**{
+            **vllm_engine064.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"v0.8.5"},
+            "default_cli_args": "--max_num_seq 256 --max_model_len 16000 --chat-template emd/models/chat_templates/deepseek_r1_distill.jinja"
+})
+
+
 vllm_deepseek_r1_distill_llama_engine071 = vllm_deepseek_r1_distill_qwen_engine071
 
 vllm_deepseek_r1_engine084 = VllmEngine(**{
@@ -158,6 +165,13 @@ vllm_ui_tars_1_5_engin084 = VllmEngine(**{
 vllm_qwen3_engin084 = VllmEngine(**{
              **vllm_engine064.model_dump(),
              "engine_dockerfile_config": {"VERSION":"v0.8.5.dev649_g0189a65a2"},
+            "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+            "default_cli_args": " --max_model_len 16000 --max_num_seq 30 --disable-log-stats  --enable-reasoning --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
+})
+
+vllm_qwen3_engin091 = VllmEngine(**{
+             **vllm_engine064.model_dump(),
+             "engine_dockerfile_config": {"VERSION":"v0.9.1"},
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
             "default_cli_args": " --max_model_len 16000 --max_num_seq 30 --disable-log-stats  --enable-reasoning --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
 })
