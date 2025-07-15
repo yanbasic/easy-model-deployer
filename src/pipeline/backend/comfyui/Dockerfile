@@ -11,7 +11,8 @@ RUN adduser --disabled-password --gecos '' ubuntu && \
     apt-get install --no-install-recommends -y \
                     git libgl1 libtcmalloc-minimal4 libglib2.0-0 python3.10 python3.10-venv net-tools bc \
                     pkg-config file curl protobuf-compiler mesa-utils \
-                    python3-dev libaio-dev libcairo2-dev libprotobuf-dev build-essential cmake wget ffmpeg && \
+                    python3-dev libaio-dev libcairo2-dev libprotobuf-dev build-essential cmake wget ffmpeg \
+                    python3-pip python-is-python3 && \
     rm -rf /var/lib/apt/lists/* && \
     wget -q https://github.com/peak/s5cmd/releases/download/v2.2.2/s5cmd_2.2.2_Linux-64bit.tar.gz && \
     tar xzvf s5cmd_2.2.2_Linux-64bit.tar.gz && \
@@ -56,28 +57,38 @@ RUN wget -P /home/ubuntu/ComfyUI/models/loras https://huggingface.co/RiverZ/norm
 RUN wget -P /home/ubuntu/ComfyUI/models/unet https://huggingface.co/loremipsum3658/FluxRealistic/resolve/main/fluxRealisticSamayV2.WLdo.gguf
 RUN wget -P /home/ubuntu/ComfyUI/models/loras https://huggingface.co/Zose22/public/resolve/main/flux-hand-v2.safetensors
 
-
-RUN wget -qO '/home/ubuntu/ComfyUI/models/checkpoints/flux1-dev-fp8.safetensors' 'https://huggingface.co/lllyasviel/flux1_dev/resolve/main/flux1-dev-fp8.safetensors'
 RUN wget -qO '/home/ubuntu/ComfyUI/models/loras/flux-realism-lora.safetensors' 'https://huggingface.co/XLabs-AI/flux-RealismLora/resolve/main/lora.safetensors'
 RUN wget -qO '/home/ubuntu/ComfyUI/models/controlnet/flux_inpaint_beta.safetensors' 'https://huggingface.co/MikaelTradera/ae/resolve/b56b3ae98dc3873f4813d8d380812a0ba64a2619/FLUX.1-dev-Controlnet-Inpainting-Beta.safetensors'
+RUN wget -qO '/home/ubuntu/ComfyUI/models/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors' 'https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors'
 
 
-# COPY src /home/ubuntu/src
-# COPY src/deploy/on_sagemaker/serve /usr/bin/serve
-# RUN chmod +x /usr/bin/serve
+# add node comfyui-teacache
+RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
+    git clone https://github.com/welltop-cn/ComfyUI-TeaCache.git && \
+    cd ComfyUI-TeaCache && \
+    pip install -r requirements.txt
+
+RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
+    git clone https://github.com/HappyXY/Comfyui-PaddleOCR.git && \
+    cd Comfyui-PaddleOCR && \
+    git submodule update --init --recursive
+
+RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
+    git clone https://github.com/HappyXY/ComfyUI-AmazonBedrock.git
+
 COPY backend/comfyui/bus_mask.png backend/comfyui/bus2.jpeg backend/comfyui/test_car.png backend/comfyui/girl_test.png /home/ubuntu/ComfyUI/input/
 
-RUN apt-get update
-RUN apt-get install -y python3-pip
-RUN pip install uvicorn
-RUN pip install fastapi
-RUN pip install requests
-RUN pip install boto3
-RUN pip install aiohttp
-RUN pip install websocket
-RUN pip install websocket-client
-RUN pip install pillow
-RUN pip install botocore
+
+RUN pip install requests retry aiohttp websocket websocket-client pillow botocore \
+                boto3 aws_xray_sdk fastapi uvicorn watchdog python-dotenv httpx \
+                onnxruntime diffusers sentencepiece "insightface==0.7.3" opencv-python \
+                "protobuf==3.20.2" "open-clip-torch==2.20.0" xformers torchaudio \
+                accelerate omegaconf "paddleocr==3.0.2" && \
+    pip install transformers -U && \
+    pip install paddlepaddle-gpu==3.1.0 -i "https://www.paddlepaddle.org.cn/packages/stable/cu126/" && \
+    pip install "https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip" && \
+    pip install "https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip"
+
 # Set the serve script as the entrypoint
 EXPOSE 8188
 ENTRYPOINT ["/usr/bin/serve"]
