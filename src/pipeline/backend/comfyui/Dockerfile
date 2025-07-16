@@ -89,6 +89,11 @@ RUN pip install requests retry aiohttp websocket websocket-client pillow botocor
     pip install "https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip" && \
     pip install "https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip"
 
+
+RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
+    git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
+
+
 # Set the serve script as the entrypoint
 EXPOSE 8188
 ENTRYPOINT ["/usr/bin/serve"]
