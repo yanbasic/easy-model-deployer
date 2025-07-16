@@ -9,7 +9,8 @@ from ..engines import (
     vllm_qwen2d5_72b_engine064,
     vllm_qwq_engine073,
     vllm_qwq_engine082,
-    vllm_qwen3_engin084
+    vllm_qwen3_engin084,
+    vllm_qwen3_engin091
 )
 from ..services import (
     sagemaker_service,
@@ -504,7 +505,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-8B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d2xlarge_instance,
             g5d4xlarge_instance,
