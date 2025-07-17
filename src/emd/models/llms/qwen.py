@@ -9,6 +9,7 @@ from ..engines import (
     vllm_qwen2d5_72b_engine064,
     vllm_qwq_engine073,
     vllm_qwq_engine082,
+    vllm_qwen3_engin084,
     vllm_qwen3_engin091
 )
 from ..services import (
