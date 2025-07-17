@@ -9,7 +9,7 @@ from ..engines import (
     vllm_qwen2d5_72b_engine064,
     vllm_qwq_engine073,
     vllm_qwq_engine082,
-    vllm_qwen3_engin084,
+    vllm_qwen3_engin091,
     vllm_qwen3_engin091
 )
 from ..services import (
@@ -539,7 +539,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-0.6B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d2xlarge_instance,
             g5d4xlarge_instance,
@@ -573,7 +573,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-1.7B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d2xlarge_instance,
             g5d4xlarge_instance,
@@ -608,7 +608,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-4B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d2xlarge_instance,
             g5d4xlarge_instance,
@@ -644,7 +644,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-14B-AWQ",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d2xlarge_instance,
             g5d4xlarge_instance,
@@ -679,7 +679,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-14B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d12xlarge_instance,
             g5d24xlarge_instance,
@@ -714,7 +714,7 @@ Model.register(
 # Model.register(
 #     dict(
 #         model_id = "Qwen3-14B-FP8",
-#         supported_engines=[vllm_qwen3_engin084],
+#         supported_engines=[vllm_qwen3_engin091],
 #         supported_instances=[
 #             g5d2xlarge_instance,
 #             g5d4xlarge_instance,
@@ -750,7 +750,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-32B-AWQ",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d12xlarge_instance,
             g5d24xlarge_instance,
@@ -784,7 +784,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-32B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d12xlarge_instance,
             g5d24xlarge_instance,
@@ -817,7 +817,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-30B-A3B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             g5d12xlarge_instance,
             g5d24xlarge_instance,
@@ -850,7 +850,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-235B-A22B",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             local_instance
         ],
@@ -874,7 +874,7 @@ Model.register(
 Model.register(
     dict(
         model_id = "Qwen3-235B-A22B-FP8",
-        supported_engines=[vllm_qwen3_engin084],
+        supported_engines=[vllm_qwen3_engin091],
         supported_instances=[
             local_instance
         ],
