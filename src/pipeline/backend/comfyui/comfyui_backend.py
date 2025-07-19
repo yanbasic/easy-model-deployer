@@ -689,19 +689,26 @@ class ComfyUIBackend(BackendBase):
             else:
                 # convert the file in local output file to base64
                 base64_files = {}
+                text_files = {}
                 for key in history[prompt_id]["outputs"]:
                     for key_sub in history[prompt_id]["outputs"][key]:
                         for output_file in history[prompt_id]["outputs"][key][key_sub]:
                             print('!!!!!output_file is', output_file)
                             if isinstance(output_file, dict):
-                                if output_file['type'] == 'output':
+                                if output_file['type'] == 'output': 
                                     file_name = output_file['filename']
-                                    with open(f"{local_out_path}/{file_name}", "rb") as image_file:
-                                        encoded_string = base64.b64encode(image_file.read())
-                                        base64_files[file_name] = encoded_string.decode("utf-8")
-                                        logger.info(f"File {file_name} converted to base64")
-                                        if os.path.isfile(f"{local_out_path}/{file_name}"):
-                                            os.remove(f"{local_out_path}/{file_name}")
+                                    if key_sub == "images":
+                                        with open(f"{local_out_path}/{file_name}", "rb") as image_file:
+                                            encoded_string = base64.b64encode(image_file.read())
+                                            base64_files[file_name] = encoded_string.decode("utf-8")
+                                            logger.info(f"File {file_name} converted to base64")
+                                            
+                                    if key_sub == "text":
+                                        text_files[file_name] = output_file['text']
+                                    
+                                    if os.path.isfile(f"{local_out_path}/{file_name}"):
+                                        os.remove(f"{local_out_path}/{file_name}")
+
                 
                 files = os.listdir(local_out_path)
                 print(f"Files in local output path: {files}")
@@ -724,6 +731,7 @@ class ComfyUIBackend(BackendBase):
                     "prompt_id": prompt_id,
                     "status": "success",
                     "images": base64_files,
+                    "text": text_files,
                 }
                 logger.info(f"execute inference response is {response_body}")
                 return response_body
