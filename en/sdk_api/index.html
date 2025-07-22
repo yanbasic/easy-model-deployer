@@ -165,7 +165,7 @@
 <p><strong>Getting Started</strong>: The EMD SDK provides a comprehensive Python interface for deploying, managing, and invoking machine learning models on AWS infrastructure. Install the SDK with <code>pip install easy-model-deployer</code> and import the modules you need.</p>
 <p>Quick example:
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">bootstrap</span><span class="p">,</span> <span class="n">deploy</span><span class="p">,</span> <span class="n">destroy</span>
-</span><span id="__span-0-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-0-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
 </span><span id="__span-0-3">
 </span><span id="__span-0-4"><span class="c1"># Bootstrap infrastructure</span>
 </span><span id="__span-0-5"><span class="n">bootstrap</span><span class="p">()</span>
@@ -301,7 +301,7 @@
 <h2 id="sagemaker-client">SageMaker Client</h2>
 <p>Interact with models deployed on Amazon SageMaker.</p>
 <p><strong>Initialization:</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
 </span><span id="__span-8-2">
 </span><span id="__span-8-3"><span class="c1"># Initialize with model ID</span>
 </span><span id="__span-8-4"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
@@ -432,7 +432,7 @@
 <h2 id="embedding-models">Embedding Models</h2>
 <p>Work with text embedding models.</p>
 <p><strong>Python Example:</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
 </span><span id="__span-18-2">
 </span><span id="__span-18-3"><span class="c1"># Initialize embedding model client</span>
 </span><span id="__span-18-4"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
@@ -463,7 +463,7 @@
 <h2 id="reranking-models">Reranking Models</h2>
 <p>Rerank documents based on relevance to a query.</p>
 <p><strong>Python Example:</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
 </span><span id="__span-19-2">
 </span><span id="__span-19-3"><span class="c1"># Initialize reranking model client</span>
 </span><span id="__span-19-4"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
@@ -491,7 +491,7 @@
 <h2 id="vision-models">Vision Models</h2>
 <p>Process images with vision-language models.</p>
 <p><strong>Python Example:</strong>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
 </span><span id="__span-20-2"><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
 </span><span id="__span-20-3">
 </span><span id="__span-20-4"><span class="c1"># Function to encode image</span>
@@ -530,7 +530,7 @@
 <p>Use the SDK in AWS Lambda functions.</p>
 <p><strong>Lambda Function Example:</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-</span><span id="__span-21-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-21-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
 </span><span id="__span-21-3">
 </span><span id="__span-21-4"><span class="k">def</span><span class="w"> </span><span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
 </span><span id="__span-21-5">    <span class="c1"># Initialize client</span>
@@ -580,7 +580,7 @@
 <p>Handle common errors when using the SDK.</p>
 <p><strong>Python Example:</strong>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">deploy</span>
-</span><span id="__span-23-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-23-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
 </span><span id="__span-23-3"><span class="kn">from</span><span class="w"> </span><span class="nn">botocore.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientError</span>
 </span><span id="__span-23-4">
 </span><span id="__span-23-5"><span class="k">try</span><span class="p">:</span>
@@ -614,7 +614,7 @@
 <p><strong>Python Example:</strong>
 ```python
 from emd.sdk import bootstrap, deploy, get_model_status, destroy
-from emd.sdk.clients import SageMakerClient
+from emd.sdk.clients.sagemaker_client import SageMakerClient
 import time</p>
 <h1 id="1-bootstrap-infrastructure">1. Bootstrap infrastructure</h1>
 <p>print("Setting up AWS infrastructure...")
