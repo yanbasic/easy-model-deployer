@@ -190,17 +190,16 @@ class TransformerEmbeddingBackend(BackendBase):
         # Process image-only inputs
         if image_inputs:
             try:
-                for bytesio_image in image_inputs:
-                    # Convert BytesIO back to PIL Image for MLLM model
-                    pil_image = Image.open(bytesio_image)
-                    candidate_inputs = self.model.data_process(
-                        images=[pil_image],
-                        q_or_c="c"
-                    )
-                    with torch.no_grad():
-                        image_emb = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
-                        image_emb = torch.nn.functional.normalize(image_emb, dim=-1)
-                        all_embeddings.append(image_emb.cpu().tolist()[0])
+                candidate_inputs = self.model.data_process(
+                    images=image_inputs,
+                    q_or_c="c"
+                )
+                image_embeddings = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
+                image_embeddings = torch.nn.functional.normalize(image_embeddings, dim=-1)
+                if hasattr(image_embeddings, 'tolist'):
+                    all_embeddings.extend(image_embeddings.tolist())
+                else:
+                    all_embeddings.extend(image_embeddings)
             except Exception as e:
                 logger.error(f"Failed to encode image inputs with MLLM: {e}")
                 raise ValueError(f"BGE-VL-MLLM image encoding failed: {e}")
