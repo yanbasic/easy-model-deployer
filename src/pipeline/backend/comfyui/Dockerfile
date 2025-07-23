@@ -58,8 +58,8 @@ RUN wget -P /home/ubuntu/ComfyUI/models/loras https://huggingface.co/Zose22/publ
 RUN wget -qO '/home/ubuntu/ComfyUI/models/loras/flux-realism-lora.safetensors' 'https://huggingface.co/XLabs-AI/flux-RealismLora/resolve/main/lora.safetensors'
 RUN wget -qO '/home/ubuntu/ComfyUI/models/controlnet/flux_inpaint_beta.safetensors' 'https://huggingface.co/MikaelTradera/ae/resolve/b56b3ae98dc3873f4813d8d380812a0ba64a2619/FLUX.1-dev-Controlnet-Inpainting-Beta.safetensors'
 RUN wget -qO '/home/ubuntu/ComfyUI/models/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors' 'https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors'
-RUN wget -q0 '/home/ubuntu/ComfyUI/models/loras/flux-turbo-alpha.safetensors' 'https://huggingface.co/alimama-creative/FLUX.1-Turbo-Alpha/resolve/main/diffusion_pytorch_model.safetensors'
-RUN wget -q0 '/home/ubuntu/ComfyUI/models/vae/ae.safetensors' 'https://huggingface.co/ffxvs/vae-flux/resolve/main/ae.safetensors'
+RUN wget -qO '/home/ubuntu/ComfyUI/models/loras/flux-turbo-alpha.safetensors' 'https://huggingface.co/alimama-creative/FLUX.1-Turbo-Alpha/resolve/main/diffusion_pytorch_model.safetensors'
+RUN wget -qO '/home/ubuntu/ComfyUI/models/vae/ae.safetensors' 'https://huggingface.co/ffxvs/vae-flux/resolve/main/ae.safetensors'
 
 
 # add node comfyui-teacache
