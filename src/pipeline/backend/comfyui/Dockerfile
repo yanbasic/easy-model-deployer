@@ -79,7 +79,7 @@ RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
 COPY backend/comfyui/bus_mask.png backend/comfyui/bus2.jpeg backend/comfyui/test_car.png backend/comfyui/girl_test.png /home/ubuntu/ComfyUI/input/
 
 
-RUN pip install requests retry aiohttp websocket websocket-client pillow botocore \
+RUN pip install requests retry aiohttp websocket-client pillow botocore \
                 boto3 aws_xray_sdk fastapi uvicorn watchdog python-dotenv httpx \
                 onnxruntime diffusers sentencepiece "insightface==0.7.3" opencv-python \
                 "protobuf==3.20.2" "open-clip-torch==2.20.0" xformers torchaudio \
