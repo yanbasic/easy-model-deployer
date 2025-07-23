@@ -49,9 +49,6 @@ comfy_launch(){
   set_conda
 
   cd ComfyUI || exit 1
-  chmod -R +x venv/bin
-
-  source venv/bin/activate
 
   python main.py --listen
 }
