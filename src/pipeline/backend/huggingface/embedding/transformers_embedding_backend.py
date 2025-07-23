@@ -191,8 +191,10 @@ class TransformerEmbeddingBackend(BackendBase):
         if image_inputs:
             try:
                 for bytesio_image in image_inputs:
+                    # Convert BytesIO back to PIL Image for MLLM model
+                    pil_image = Image.open(bytesio_image)
                     candidate_inputs = self.model.data_process(
-                        images=bytesio_image,
+                        images=[pil_image],
                         q_or_c="c"
                     )
                     with torch.no_grad():
@@ -207,9 +209,11 @@ class TransformerEmbeddingBackend(BackendBase):
         if multimodal_inputs:
             for text, bytesio_image in multimodal_inputs:
                 try:
+                    # Convert BytesIO back to PIL Image for MLLM model
+                    pil_image = Image.open(bytesio_image)
                     candidate_inputs = self.model.data_process(
                         text=text,
-                        images=bytesio_image,
+                        images=[pil_image],
                         q_or_c="c"
                     )
                     with torch.no_grad():
