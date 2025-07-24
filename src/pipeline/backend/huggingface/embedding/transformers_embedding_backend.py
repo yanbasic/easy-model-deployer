@@ -67,7 +67,7 @@ class TransformerEmbeddingBackend(BackendBase):
                 device_map="cuda",
                 **self.pretrained_model_init_kwargs
         )
-        
+
         if self.is_bge_vl_mllm:
             self.model.eval()
 
