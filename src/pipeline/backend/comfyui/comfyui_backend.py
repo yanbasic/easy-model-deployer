@@ -684,6 +684,7 @@ class ComfyUIBackend(BackendBase):
                 if attempt < self.maxtrynum - 1:
                     time.sleep(5)
             
+            file_names = []
             if prompt_id not in history:
                 raise ValueError(f"Prompt ID {prompt_id} timeout !!!!!!")
             else:
@@ -707,11 +708,16 @@ class ComfyUIBackend(BackendBase):
                                         text_files[file_name] = output_file['text']
                                     
                                     if os.path.isfile(f"{local_out_path}/{file_name}"):
-                                        os.remove(f"{local_out_path}/{file_name}")
+                                        file_names.append(file_name)
+                                        #os.remove(f"{local_out_path}/{file_name}")
 
                 
                 files = os.listdir(local_out_path)
                 print(f"Files in local output path: {files}")
+                for file in files:
+                    if file not in file_names:
+                        os.remove(f"{local_out_path}/{file}")
+
                 # base64_files = {}
                 # if not files:
                 #     raise ValueError(f"No output files found in {local_out_path}")

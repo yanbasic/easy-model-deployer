@@ -73,6 +73,7 @@ RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
     cd Comfyui-PaddleOCR && \
     git submodule update --init --recursive
 
+
 RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
     git clone https://github.com/HappyXY/ComfyUI-AmazonBedrock.git
 
@@ -93,6 +94,8 @@ RUN pip install requests retry aiohttp websocket-client pillow botocore \
 RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
     git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
 
+RUN cd /home/ubuntu/ComfyUI/custom_nodes/Comfyui-PaddleOCR && \
+    git pull
 
 # Set the serve script as the entrypoint
 EXPOSE 8188
