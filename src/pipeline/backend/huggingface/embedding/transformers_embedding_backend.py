@@ -37,6 +37,7 @@ class TransformerEmbeddingBackend(BackendBase):
         self.pretrained_model_init_kwargs = self.execute_model.executable_config.current_engine.pretrained_model_init_kwargs or {}
         self.is_bge_vl = "bge-vl" in self.model_id.lower()
         self.is_bge_vl_mllm = "bge-vl-mllm" in self.model_id.lower()
+        self.model_abs_path = None
 
 
     def start(self):
@@ -49,7 +50,7 @@ class TransformerEmbeddingBackend(BackendBase):
                 s3_key = model_dir,
                 model_files_s3_path=self.model_files_s3_path
             )
-        model_abs_path = os.path.abspath(model_dir)
+        self.model_abs_path = os.path.abspath(model_dir)
 
         # TODO add model init args from model's definition
         torch_dtype = self.pretrained_model_init_kwargs.get("torch_dtype")
@@ -62,15 +63,18 @@ class TransformerEmbeddingBackend(BackendBase):
             }[torch_dtype]
 
         self.model = AutoModel.from_pretrained(
-                model_abs_path,
+                self.model_abs_path,
                 device_map="cuda",
                 **self.pretrained_model_init_kwargs
         )
+        
+        if self.is_bge_vl_mllm:
+            self.model.eval()
 
         # BGE-VL specific initialization
-        if self.is_bge_vl:
+        if self.is_bge_vl and not self.is_bge_vl_mllm:
             try:
-                self.model.set_processor(model_abs_path)
+                self.model.set_processor(self.model_abs_path)
                 logger.info(f"BGE-VL processor set successfully for model: {self.model_id}")
             except Exception as e:
                 logger.warning(f"Failed to set BGE-VL processor: {e}")
@@ -190,16 +194,18 @@ class TransformerEmbeddingBackend(BackendBase):
         # Process image-only inputs
         if image_inputs:
             try:
-                candidate_inputs = self.model.data_process(
-                    images=image_inputs,
-                    q_or_c="c"
-                )
-                image_embeddings = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
-                image_embeddings = torch.nn.functional.normalize(image_embeddings, dim=-1)
-                if hasattr(image_embeddings, 'tolist'):
-                    all_embeddings.extend(image_embeddings.tolist())
-                else:
-                    all_embeddings.extend(image_embeddings)
+                with torch.no_grad():
+                    self.model.set_processor(self.model_abs_path)
+                    candidate_inputs = self.model.data_process(
+                        images=image_inputs,
+                        q_or_c="c"
+                    )
+                    image_embeddings = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
+                    image_embeddings = torch.nn.functional.normalize(image_embeddings, dim=-1)
+                    if hasattr(image_embeddings, 'tolist'):
+                        all_embeddings.extend(image_embeddings.tolist())
+                    else:
+                        all_embeddings.extend(image_embeddings)
             except Exception as e:
                 logger.error(f"Failed to encode image inputs with MLLM: {e}")
                 raise ValueError(f"BGE-VL-MLLM image encoding failed: {e}")
