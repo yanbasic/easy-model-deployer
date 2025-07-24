@@ -178,15 +178,18 @@ class TransformerEmbeddingBackend(BackendBase):
         # Process text-only inputs
         if text_inputs:
             try:
-                for text in text_inputs:
+                with torch.no_grad():
+                    self.model.set_processor(self.model_abs_path)
                     candidate_inputs = self.model.data_process(
-                        text=text,
+                        text=text_inputs,
                         q_or_c="c"
                     )
-                    with torch.no_grad():
-                        text_emb = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
-                        text_emb = torch.nn.functional.normalize(text_emb, dim=-1)
-                        all_embeddings.append(text_emb.cpu().tolist()[0])
+                    text_emb = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
+                    text_emb = torch.nn.functional.normalize(text_emb, dim=-1)
+                    if hasattr(text_emb, 'tolist'):
+                        all_embeddings.extend(text_emb.tolist())
+                    else:
+                        all_embeddings.extend(text_emb)
             except Exception as e:
                 logger.error(f"Failed to encode text inputs with MLLM: {e}")
                 raise ValueError(f"BGE-VL-MLLM text encoding failed: {e}")
@@ -212,22 +215,26 @@ class TransformerEmbeddingBackend(BackendBase):
 
         # Process multimodal inputs (text + image)
         if multimodal_inputs:
-            for text, bytesio_image in multimodal_inputs:
-                try:
-                    # Convert BytesIO back to PIL Image for MLLM model
-                    pil_image = Image.open(bytesio_image)
-                    candidate_inputs = self.model.data_process(
-                        text=text,
-                        images=[pil_image],
-                        q_or_c="c"
-                    )
-                    with torch.no_grad():
-                        multimodal_emb = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
-                        multimodal_emb = torch.nn.functional.normalize(multimodal_emb, dim=-1)
-                        all_embeddings.append(multimodal_emb.cpu().tolist()[0])
-                except Exception as e:
-                    logger.error(f"Failed to encode multimodal input with MLLM: {e}")
-                    raise ValueError(f"BGE-VL-MLLM multimodal encoding failed: {e}")
+            with torch.no_grad():
+                self.model.set_processor(self.model_abs_path)
+                for text, bytesio_image in multimodal_inputs:
+                    try:
+                        # Convert BytesIO back to PIL Image for MLLM model
+                        candidate_inputs = self.model.data_process(
+                            text=[text],
+                            images=[bytesio_image],
+                            q_or_c="c"
+                        )
+                        with torch.no_grad():
+                            multimodal_emb = self.model(**candidate_inputs, output_hidden_states=True)[:, -1, :]
+                            multimodal_emb = torch.nn.functional.normalize(multimodal_emb, dim=-1)
+                            if hasattr(multimodal_emb, 'tolist'):
+                                all_embeddings.extend(multimodal_emb.tolist())
+                            else:
+                                all_embeddings.extend(multimodal_emb)
+                    except Exception as e:
+                        logger.error(f"Failed to encode multimodal input with MLLM: {e}")
+                        raise ValueError(f"BGE-VL-MLLM multimodal encoding failed: {e}")
 
         return all_embeddings
 

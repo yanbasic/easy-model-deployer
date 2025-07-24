@@ -1,5 +1,5 @@
 from .. import Model
-from ..engines import huggingface_embedding_engine449, huggingface_embedding_engine447
+from ..engines import huggingface_embedding_engine449, huggingface_embedding_engine_447
 from ..services import sagemaker_service, local_service, ecs_service
 from ..frameworks import fastapi_framework
 from ..instances import (
@@ -77,7 +77,7 @@ Model.register(
 Model.register(
     dict(
         model_id="bge-vl-mllm-s1",
-        supported_engines=[huggingface_embedding_engine447],
+        supported_engines=[huggingface_embedding_engine_447],
         supported_instances=[
             g5dxlarge_instance,
             g5d2xlarge_instance,

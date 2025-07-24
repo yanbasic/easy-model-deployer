@@ -507,7 +507,7 @@ huggingface_baichuan_engine_4d41d2 = HuggingFaceLLMEngine(**{
             "pretrained_tokenizer_init_kwargs":{"trust_remote_code":True}
 })
 
-huggingface_embedding_engine447 = HuggingFaceLLMEngine(**{
+huggingface_embedding_engine_447 = HuggingFaceLLMEngine(**{
             "engine_type":EngineType.HUGGINGFACE,
             "engine_cls":"huggingface.embedding.transformers_embedding_backend.TransformerEmbeddingBackend",
             "python_name":"python3",
