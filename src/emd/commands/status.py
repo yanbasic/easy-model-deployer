@@ -44,10 +44,10 @@ def status(
             "model_id": d['model_id'],
             "model_tag": d['model_tag'],
             "status": f"{d['status']} ({d['stage_name']})" if d.get('stage_name') else d['status'],
-            "service_type": d['service_type'],
-            "instance_type": d['instance_type'],
-            "create_time": d['create_time'],
-            "outputs": d['outputs'],
+            "service_type": d.get('service_type', ''),
+            "instance_type": d.get('instance_type', ''),
+            "create_time": d.get('create_time', ''),
+            "outputs": d.get('outputs', ''),  # Use .get() to handle missing outputs field
         })
 
     # Process completed models
