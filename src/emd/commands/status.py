@@ -8,6 +8,8 @@ from emd.utils.decorators import catch_aws_credential_errors, check_emd_env_exis
 from emd.utils.logger_utils import make_layout
 from rich.console import Console
 from rich.table import Table
+from rich.spinner import Spinner
+from rich.live import Live
 
 app = typer.Typer(pretty_exceptions_enable=False)
 console = Console()
@@ -26,24 +28,29 @@ def status(
         str, typer.Argument(help="Model tag")
     ] = MODEL_DEFAULT_TAG,
 ):
-    ret = get_model_status(model_id, model_tag=model_tag)
+    # Show loading indicator while fetching model status
+    with console.status("[bold green]Fetching model status...", spinner="dots"):
+        ret = get_model_status(model_id, model_tag=model_tag)
+
     inprogress = ret['inprogress']
     completed = ret['completed']
 
     data = []
+    # Process all in-progress executions (now includes ALL parallel executions)
     for d in inprogress:
         if d['status'] == "Stopped":
             continue
         data.append({
             "model_id": d['model_id'],
             "model_tag": d['model_tag'],
-            "status": f"{d['status']} ({d['stage_name']})",
+            "status": f"{d['status']} ({d['stage_name']})" if d.get('stage_name') else d['status'],
             "service_type": d['service_type'],
             "instance_type": d['instance_type'],
             "create_time": d['create_time'],
             "outputs": d['outputs'],
         })
 
+    # Process completed models
     for d in completed:
         data.append({
             "model_id": d['model_id'],
@@ -79,8 +86,6 @@ def status(
     # Display the Models section
     console.print("\nModels", style="bold")
 
-    # Create a custom box style without vertical lines
-
     # Create a single table for all models with normal horizontal lines but no vertical lines
     models_table = Table(show_header=False, expand=True)
 
@@ -88,7 +93,7 @@ def status(
     models_table.add_column(justify="left", style="cyan", width=22)
     models_table.add_column(justify="left", overflow="fold")
 
-    # Add each model to the table
+    # Add each model to the table (now shows ALL parallel executions)
     for model_data in data:
         # Add model name as a name/value pair with bold styling
         model_name = f"{model_data['model_id']}/{model_data['model_tag']}"

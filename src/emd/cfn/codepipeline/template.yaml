@@ -276,7 +276,7 @@ Resources:
         - Name: CreateTime
         - Name: Region
       PipelineType: V2
-      ExecutionMode: QUEUED
+      ExecutionMode: PARALLEL
       Stages:
         - Name: Source
           Actions:
