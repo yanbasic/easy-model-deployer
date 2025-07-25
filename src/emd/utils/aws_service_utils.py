@@ -188,42 +188,67 @@ def get_pipeline_active_executions(
     filter_failed=True,
 ) -> list[dict]:
     client = client or boto3.client("codepipeline", region_name=get_current_region())
+
     try:
-        stage_states = client.get_pipeline_state(name=pipeline_name)[
-            "stageStates"
-        ]
+        # Use list_pipeline_executions to get ALL executions (better for PARALLEL mode)
+        response = client.list_pipeline_executions(pipelineName=pipeline_name)
+        all_executions = response.get("pipelineExecutionSummaries", [])
+
+        # Get additional pages if needed
+        while "nextToken" in response:
+            response = client.list_pipeline_executions(
+                pipelineName=pipeline_name,
+                nextToken=response["nextToken"]
+            )
+            all_executions.extend(response.get("pipelineExecutionSummaries", []))
+
     except client.exceptions.PipelineNotFoundException:
         raise EnvStackNotExistError
+
+    # Filter for active executions
     active_executuion_infos = []
-    status = ["Stopping", "InProgress", "Stopped", "Failed"]
+    status_filter = ["Stopping", "InProgress", "Stopped", "Failed"]
     if filter_stoped:
-        status.remove("Stopped")
+        status_filter.remove("Stopped")
     if filter_failed:
-        status.remove("Failed")
+        status_filter.remove("Failed")
 
-    for stage_state in stage_states:
-        # inbound executions
-        active_execution_ids = [
-            d["pipelineExecutionId"] for d in stage_state["inboundExecutions"]
-        ]
-        # latest executions
-        latest_execution = stage_state.get("latestExecution", {})
+    # Get pipeline state for stage information
+    try:
+        pipeline_state = client.get_pipeline_state(name=pipeline_name)
+        stage_states = pipeline_state["stageStates"]
+    except Exception as e:
+        logger.warning(f"Could not get pipeline state: {e}")
+        stage_states = []
 
-        if latest_execution and latest_execution["status"] in status:
-            active_execution_ids.append(latest_execution["pipelineExecutionId"])
+    # Process each execution
+    for execution_summary in all_executions:
+        execution_status = execution_summary["status"]
+        execution_id = execution_summary["pipelineExecutionId"]
 
-        for active_execution_id in active_execution_ids:
+        # Skip if not in our status filter
+        if execution_status not in status_filter:
+            continue
+
+        try:
+            # Get detailed execution info
             execution_info = get_pipeline_execution_info(
                 pipeline_name=pipeline_name,
-                pipeline_execution_id=active_execution_id,
+                pipeline_execution_id=execution_id,
                 client=client,
             )
-            # get model_id
-            variables = execution_info["variables"]
+
+            # Extract variables
+            variables = execution_info.get("variables", [])
             variables_d = {
                 variable["name"]: variable["resolvedValue"]
                 for variable in variables
             }
+
+            # Skip if missing required variables
+            if "ModelId" not in variables_d or "CreateTime" not in variables_d:
+                continue
+
             create_timestamp = float(variables_d["CreateTime"])
             create_time = (
                 datetime.datetime.fromtimestamp(create_timestamp)
@@ -231,11 +256,37 @@ def get_pipeline_active_executions(
                 .strftime("%Y-%m-%d %H:%M:%S %Z")
             )
 
+            # Find current stage for this execution
+            current_stage = "Unknown"
+            for stage_state in stage_states:
+                # Check if this execution is in this stage
+                stage_execution_ids = []
+
+                # Check inbound executions
+                stage_execution_ids.extend([
+                    d["pipelineExecutionId"] for d in stage_state.get("inboundExecutions", [])
+                ])
+
+                # Check latest execution
+                latest_execution = stage_state.get("latestExecution", {})
+                if latest_execution and latest_execution.get("pipelineExecutionId"):
+                    stage_execution_ids.append(latest_execution["pipelineExecutionId"])
+
+                # Check action states for parallel executions
+                for action_state in stage_state.get("actionStates", []):
+                    latest_action = action_state.get("latestExecution", {})
+                    if latest_action and latest_action.get("pipelineExecutionId"):
+                        stage_execution_ids.append(latest_action["pipelineExecutionId"])
+
+                if execution_id in stage_execution_ids:
+                    current_stage = stage_state["stageName"]
+                    break
+
             active_executuion_infos.append(
                 {
-                    "stage_name": stage_state["stageName"],
-                    "status": execution_info["status"],
-                    "pipeline_execution_id": active_execution_id,
+                    "stage_name": current_stage,
+                    "status": execution_status,
+                    "pipeline_execution_id": execution_id,
                     "model_id": variables_d["ModelId"],
                     "model_tag": variables_d["ModelTag"],
                     "region": variables_d.get("Region", ""),
@@ -253,6 +304,11 @@ def get_pipeline_active_executions(
                     "deploy_version": variables_d.get("DeployVersion", ""),
                 }
             )
+
+        except Exception as e:
+            logger.warning(f"Error processing execution {execution_id}: {e}")
+            continue
+
     if return_dict:
         return {
             active_executuion_info[
