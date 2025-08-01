@@ -73,26 +73,21 @@ jobs:
           exit 1
         fi
 
-    - name: Commit and push changes
-      if: github.event_name != 'pull_request'
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-        if [ -n "$(git status --porcelain docs/model_config.js)" ]; then
-          git add docs/model_config.js
-          git commit -m "🤖 Auto-update model configuration
-
+    - name: Deploy to GitHub Pages
+      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
+        destination_dir: .
+        keep_files: true
+        commit_message: |
+          🤖 Auto-update model configuration
+          
           - Generated from EMD Python model definitions
           - Updated at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
           - Triggered by: ${{ github.event_name }}
-          - Commit: ${{ github.sha }}"
-
-          git push
-          echo "✅ Model configuration updated and committed"
-        else
-          echo "ℹ️ No changes to model configuration"
-        fi
+          - Source commit: ${{ github.sha }}
 
     - name: Upload model config as artifact
       uses: actions/upload-artifact@v4
