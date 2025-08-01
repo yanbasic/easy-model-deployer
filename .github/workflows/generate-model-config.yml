@@ -1,0 +1,131 @@
+name: Generate Model Configuration
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/emd/models/**'
+      - 'tests/generate_model_config.py'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/emd/models/**'
+      - 'tests/generate_model_config.py'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  generate-config:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt', '**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # Install from pyproject.toml if it exists
+        if [ -f pyproject.toml ]; then
+          pip install -e .
+        elif [ -f requirements.txt ]; then
+          pip install -r requirements.txt
+        fi
+        # Install additional dependencies that might be needed
+        pip install pathlib datetime
+
+    - name: Create docs directory
+      run: |
+        mkdir -p docs
+
+    - name: Run model configuration generator
+      run: |
+        cd ${{ github.workspace }}
+        python tests/generate_model_config.py
+      env:
+        PYTHONPATH: ${{ github.workspace }}/src
+
+    - name: Check if model config was generated
+      run: |
+        if [ -f docs/model_config.js ]; then
+          echo "✅ Model configuration file generated successfully"
+          echo "File size: $(wc -c < docs/model_config.js) bytes"
+          echo "Lines: $(wc -l < docs/model_config.js)"
+          # Show first few lines for verification
+          echo "First 10 lines of generated file:"
+          head -10 docs/model_config.js
+        else
+          echo "❌ Model configuration file was not generated"
+          exit 1
+        fi
+
+    - name: Commit and push changes
+      if: github.event_name != 'pull_request'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+
+        if [ -n "$(git status --porcelain docs/model_config.js)" ]; then
+          git add docs/model_config.js
+          git commit -m "🤖 Auto-update model configuration
+
+          - Generated from EMD Python model definitions
+          - Updated at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          - Triggered by: ${{ github.event_name }}
+          - Commit: ${{ github.sha }}"
+
+          git push
+          echo "✅ Model configuration updated and committed"
+        else
+          echo "ℹ️ No changes to model configuration"
+        fi
+
+    - name: Upload model config as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: model-config
+        path: docs/model_config.js
+        retention-days: 30
+
+    - name: Generate summary
+      run: |
+        echo "## 📊 Model Configuration Generation Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        if [ -f docs/model_config.js ]; then
+          echo "✅ **Status**: Successfully generated" >> $GITHUB_STEP_SUMMARY
+          echo "📁 **Output**: \`docs/model_config.js\`" >> $GITHUB_STEP_SUMMARY
+          echo "📏 **Size**: $(wc -c < docs/model_config.js) bytes" >> $GITHUB_STEP_SUMMARY
+          echo "📄 **Lines**: $(wc -l < docs/model_config.js)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Extract model count from the generated file if possible
+          if grep -q "getModelCount" docs/model_config.js; then
+            echo "🎯 **Generated**: Model configuration with helper functions" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Generated Configuration Includes:" >> $GITHUB_STEP_SUMMARY
+          echo "- 🤖 Model definitions and metadata" >> $GITHUB_STEP_SUMMARY
+          echo "- 🖥️ Instance type specifications" >> $GITHUB_STEP_SUMMARY
+          echo "- ⚙️ Engine configurations" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔧 Service definitions" >> $GITHUB_STEP_SUMMARY
+          echo "- 🛠️ JavaScript helper functions" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **Status**: Generation failed" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the workflow logs for details." >> $GITHUB_STEP_SUMMARY
+        fi

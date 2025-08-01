@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMD Model Deploy Command Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 100vw;
+            height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .config-status {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Top 40% - Model Table */
+        .models-table-section {
+            height: 40vh;
+            min-height: 200px;
+            max-height: 80vh;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Resize handle for table */
+        .table-resize-handle {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(to bottom, transparent 0%, #667eea 50%, transparent 100%);
+            cursor: ns-resize;
+            z-index: 100;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+
+        .table-resize-handle:hover {
+            opacity: 0.8;
+            background: linear-gradient(to bottom, transparent 0%, #667eea 30%, #667eea 70%, transparent 100%);
+        }
+
+        .table-resize-handle.dragging {
+            opacity: 1;
+            background: #667eea;
+        }
+
+        /* Resize indicator */
+        .table-resize-handle::after {
+            content: '⋯';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .table-header {
+            padding: 15px 20px;
+            background: #34495e;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .table-stats {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .models-table-container {
+            flex: 1;
+            overflow: auto;
+            padding: 0;
+        }
+
+        .models-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .models-table th {
+            background: #495057;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .models-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        .models-table tbody tr:hover {
+            background: #e3f2fd;
+            cursor: pointer;
+        }
+
+        .models-table tbody tr.selected {
+            background: #bbdefb;
+        }
+
+        .model-type-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .model-type-llm { background: #e3f2fd; color: #1976d2; }
+        .model-type-vlm { background: #f3e5f5; color: #7b1fa2; }
+        .model-type-embedding { background: #e8f5e8; color: #388e3c; }
+        .model-type-whisper { background: #fff3e0; color: #f57c00; }
+        .model-type-rerank { background: #fce4ec; color: #c2185b; }
+
+        .china-region {
+            color: #d32f2f;
+            font-weight: 500;
+        }
+
+        .instances-list, .engines-list, .services-list {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Bottom 60% - Configuration and Results */
+        .main-content {
+            flex: 1;
+            display: flex;
+            min-height: 300px;
+        }
+
+        /* Left 50% - Configuration */
+        .config-section {
+            width: 50%;
+            background: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #e9ecef;
+        }
+
+        .config-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Right 50% - Results */
+        .results-section {
+            width: 50%;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-input {
+            position: relative;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+
+        .suggestion-item.highlighted {
+            background: #e3f2fd;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .config-flat {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            margin-left: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .model-queue {
+            background: #34495e;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px;
+            min-height: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .model-queue h3 {
+            margin-bottom: 15px;
+            color: #ecf0f1;
+            font-size: 1.1rem;
+        }
+
+        .queue-empty {
+            color: #bdc3c7;
+            text-align: center;
+            font-style: italic;
+            padding: 30px;
+        }
+
+        .queue-item {
+            background: #2c3e50;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .queue-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .queue-item-info {
+            flex-grow: 1;
+        }
+
+        .queue-item-title {
+            font-weight: 600;
+            color: #ecf0f1;
+            margin-bottom: 3px;
+            font-size: 0.9rem;
+        }
+
+        .queue-item-details {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+
+        .queue-item-delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .queue-item-delete:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .command-output {
+            background: #1a252f;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 20px;
+            flex-grow: 1;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .command-output.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .copy-button-container {
+            text-align: center;
+            padding: 0 20px 20px;
+        }
+
+        .model-info {
+            background: #34495e;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        .model-info h4 {
+            margin-bottom: 6px;
+            color: #ecf0f1;
+            font-size: 0.9rem;
+        }
+
+        .model-info p {
+            color: #bdc3c7;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .model-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .model-badge {
+            display: inline-block;
+            padding: 3px 6px;
+            background: #667eea;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+
+        .model-links {
+            margin-top: 8px;
+        }
+
+        .model-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .model-links a:hover {
+            text-decoration: underline;
+        }
+
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-size: 0.9rem;
+        }
+
+        .copy-success.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .config-section, .results-section {
+                width: 100%;
+            }
+
+            .models-table-section {
+                height: 50vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .models-table {
+                font-size: 0.8rem;
+            }
+
+            .models-table th, .models-table td {
+                padding: 8px 4px;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top 40% - Models Table -->
+        <div class="models-table-section" id="modelsTableSection">
+            <div class="table-header">
+                <h2>Model Deploy CommandLine Generator</h2>
+                <div class="table-stats" id="tableStats">
+                    Loading models...
+                </div>
+            </div>
+            <div class="models-table-container">
+                <table class="models-table" id="modelsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%">Model ID</th>
+                            <th style="width: 6%">Type</th>
+                            <th style="width: 25%">Description</th>
+                            <th style="width: 18%">Instances</th>
+                            <th style="width: 12%">Engines</th>
+                            <th style="width: 14%">Services</th>
+                            <th style="width: 5%">China</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modelsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <span class="loading"></span> Loading models...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-resize-handle" id="tableResizeHandle"></div>
+        </div>
+
+        <!-- Bottom 60% - Configuration and Results -->
+        <div class="main-content">
+            <!-- Left 50% - Configuration -->
+            <div class="config-section">
+
+                <form id="modelConfigForm">
+                    <div class="form-group">
+                        <label for="modelSearch">Model ID (Fuzzy Search)</label>
+                        <div class="search-input">
+                            <input type="text" id="modelSearch" class="form-control"
+                                   placeholder="Type to search models (e.g., 'qwen', 'deep', 'glm')..."
+                                   autocomplete="off">
+                            <div id="searchSuggestions" class="search-suggestions"></div>
+                        </div>
+                    </div>
+
+                    <div id="selectedModelInfo" class="model-info" style="display: none;">
+                        <h4 id="modelInfoTitle">Model Information</h4>
+                        <p id="modelInfoDescription"></p>
+                        <div id="modelInfoBadges" class="model-badges"></div>
+                        <div id="modelInfoLinks" class="model-links"></div>
+                    </div>
+
+                    <div class="config-grid">
+                        <div class="form-group">
+                            <label for="instanceType">Instance Type</label>
+                            <select id="instanceType" class="form-control" required>
+                                <option value="">Select instance type...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="engineType">Engine Type</label>
+                            <select id="engineType" class="form-control" required>
+                                <option value="">Select engine type...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="config-grid">
+                        <div class="form-group">
+                            <label for="serviceType">Service Type</label>
+                            <select id="serviceType" class="form-control" required>
+                                <option value="sagemaker_realtime">SageMaker Realtime</option>
+                                <option value="sagemaker_async">SageMaker Async</option>
+                                <option value="ecs">ECS</option>
+                                <option value="local">Local</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="modelTag">Model Tag</label>
+                            <input type="text" id="modelTag" class="form-control" placeholder="dev" value="dev">
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 20px 0 15px 0; color: #2c3e50; font-size: 1rem;">Extra Parameters</h4>
+
+                    <div class="config-flat">
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="maxModelLen">Max Model Length</label>
+                                <input type="number" id="maxModelLen" class="form-control" placeholder="16000">
+                            </div>
+                            <div class="form-group">
+                                <label for="maxNumSeqs">Max Number of Sequences</label>
+                                <input type="number" id="maxNumSeqs" class="form-control" placeholder="10">
+                            </div>
+                        </div>
+
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="gpuMemoryUtilization">GPU Memory Utilization</label>
+                                <input type="number" id="gpuMemoryUtilization" class="form-control"
+                                       step="0.1" min="0.1" max="1.0" placeholder="0.9">
+                            </div>
+                            <div class="form-group">
+                                <label for="apiKey">API Key</label>
+                                <input type="text" id="apiKey" class="form-control" placeholder="your-api-key">
+                            </div>
+                        </div>
+
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="maxCapacity">Max Capacity</label>
+                                <input type="number" id="maxCapacity" class="form-control" placeholder="2">
+                            </div>
+                            <div class="form-group">
+                                <label for="minCapacity">Min Capacity</label>
+                                <input type="number" id="minCapacity" class="form-control" placeholder="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="environmentVariables">Environment Variables</label>
+                            <textarea id="environmentVariables" class="form-control" rows="2"
+                                      placeholder="export VAR1=value1 && export VAR2=value2"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="skipConfirm" style="margin-right: 8px;">
+                                Skip confirmation prompts (--skip-confirm)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button type="submit" class="btn btn-primary">Generate</button>
+                        <button type="button" id="resetForm" class="btn btn-secondary">Reset</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right 50% - Results -->
+            <div class="results-section">
+                <div class="model-queue">
+                    <div id="modelQueueContainer">
+                        <div class="queue-empty">
+                            No models configured yet. Add models from the left panel.
+                        </div>
+                    </div>
+                </div>
+
+                <div id="commandOutput" class="command-output empty">
+                    Add models to the queue to generate deployment commands
+                </div>
+
+                <div class="copy-button-container">
+                    <button id="copyCommand" class="btn btn-primary" style="display: none;">
+                        Copy Commands
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="copySuccess" class="copy-success">
+        Commands copied to clipboard!
+    </div>
+
+    <!-- Load the dynamic model configuration -->
+    <script src="../model_config.js"></script>
+
+    <script>
+        // Global variables
+        let supportedModels = {};
+        let instanceDefinitions = {};
+        let engineDefinitions = {};
+        let serviceDefinitions = {};
+        let modelQueue = [];
+        let modelIdCounter = 0;
+        let currentSelectedModel = null;
+
+        // DOM elements
+        const modelSearch = document.getElementById('modelSearch');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        const instanceSelect = document.getElementById('instanceType');
+        const engineSelect = document.getElementById('engineType');
+        const serviceSelect = document.getElementById('serviceType');
+        const modelConfigForm = document.getElementById('modelConfigForm');
+        const resetButton = document.getElementById('resetForm');
+        const modelQueueContainer = document.getElementById('modelQueueContainer');
+        const commandOutput = document.getElementById('commandOutput');
+        const copyButton = document.getElementById('copyCommand');
+        const copySuccess = document.getElementById('copySuccess');
+        const modelsTable = document.getElementById('modelsTable');
+        const modelsTableBody = document.getElementById('modelsTableBody');
+        const selectedModelInfo = document.getElementById('selectedModelInfo');
+
+        // Initialize with dynamic configuration
+        function initializeDynamicConfig() {
+            if (typeof window.EMD_MODEL_CONFIG !== 'undefined') {
+                supportedModels = window.EMD_MODEL_CONFIG.models;
+                instanceDefinitions = window.EMD_MODEL_CONFIG.instances;
+                engineDefinitions = window.EMD_MODEL_CONFIG.engines;
+                serviceDefinitions = window.EMD_MODEL_CONFIG.services;
+
+                // Update status
+                const configStatus = document.getElementById('tableStats');
+                const modelCount = window.EMD_HELPERS.getModelCount();
+                const generatedAt = new Date(window.EMD_HELPERS.getGeneratedAt()).toLocaleString();
+                configStatus.innerHTML = `✅ Loaded ${modelCount} models (Updated: ${generatedAt})`;
+
+                // Initialize UI
+                populateModelsTable();
+                setupEventListeners();
+
+                console.log('✅ Dynamic model configuration initialized');
+            } else {
+                console.error('❌ EMD model configuration not loaded');
+                document.getElementById('configStatus').innerHTML = '❌ Failed to load model configurations';
+            }
+        }
+
+        // Populate models table
+        function populateModelsTable() {
+
+            const tbody = modelsTableBody;
+            tbody.innerHTML = '';
+
+            Object.entries(supportedModels).forEach(([modelId, model]) => {
+                const row = document.createElement('tr');
+                row.dataset.modelId = modelId;
+                row.addEventListener('click', () => selectModelFromTable(modelId));
+
+                row.innerHTML = `
+                    <td><strong>${modelId}</strong></td>
+                    <td><span class="model-type-badge model-type-${model.model_type}">${model.model_type}</span></td>
+                    <td>${model.description.substring(0, 100)}${model.description.length > 100 ? '...' : ''}</td>
+                    <td class="instances-list">${model.supported_instances.join(', ')}</td>
+                    <td class="engines-list">${model.supported_engines.join(', ')}</td>
+                    <td class="services-list">${model.supported_services.join(', ')}</td>
+                    <td>${model.allow_china_region ? '<span class="china-region">✓</span>' : '✗'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Select model from table
+        function selectModelFromTable(modelId) {
+            // Update search input
+            modelSearch.value = modelId;
+
+            // Clear previous selection
+            document.querySelectorAll('.models-table tbody tr').forEach(row => {
+                row.classList.remove('selected');
+            });
+
+            // Highlight selected row
+            const selectedRow = document.querySelector(`tr[data-model-id="${modelId}"]`);
+            if (selectedRow) {
+                selectedRow.classList.add('selected');
+            }
+
+            // Update model configuration directly without calling onModelSearchChange
+            updateModelConfiguration(modelId);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            modelSearch.addEventListener('input', onModelSearchInput);
+            modelSearch.addEventListener('focus', onModelSearchFocus);
+            modelSearch.addEventListener('blur', onModelSearchBlur);
+            modelConfigForm.addEventListener('submit', handleAddModel);
+            resetButton.addEventListener('click', resetForm);
+            copyButton.addEventListener('click', copyCommands);
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-input')) {
+                    searchSuggestions.style.display = 'none';
+                }
+            });
+        }
+
+        // Handle model search input
+        function onModelSearchInput() {
+            const query = modelSearch.value.toLowerCase().trim();
+
+            if (query.length === 0) {
+                searchSuggestions.style.display = 'none';
+                clearModelSelection();
+                return;
+            }
+
+            // Fuzzy search
+            const matches = Object.keys(supportedModels).filter(modelId =>
+                modelId.toLowerCase().includes(query)
+            ).slice(0, 10);
+
+            if (matches.length > 0) {
+                showSearchSuggestions(matches);
+
+                // If exact match, select it
+                if (matches.includes(modelSearch.value)) {
+                    onModelSearchChange();
+                }
+            } else {
+                searchSuggestions.style.display = 'none';
+                clearModelSelection();
+            }
+        }
+
+        // Show search suggestions
+        function showSearchSuggestions(matches) {
+            searchSuggestions.innerHTML = '';
+
+            matches.forEach(modelId => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = modelId;
+                item.addEventListener('click', () => {
+                    modelSearch.value = modelId;
+                    searchSuggestions.style.display = 'none';
+                    onModelSearchChange();
+                });
+                searchSuggestions.appendChild(item);
+            });
+
+            searchSuggestions.style.display = 'block';
+        }
+
+        // Handle model search focus
+        function onModelSearchFocus() {
+            if (modelSearch.value.trim()) {
+                onModelSearchInput();
+            }
+        }
+
+        // Handle model search blur
+        function onModelSearchBlur() {
+            // Delay hiding to allow click on suggestions
+            setTimeout(() => {
+                searchSuggestions.style.display = 'none';
+            }, 200);
+        }
+
+        // Handle model search change
+        function onModelSearchChange() {
+            const modelId = modelSearch.value.trim();
+
+            if (!modelId || !supportedModels[modelId]) {
+                clearModelSelection();
+                return;
+            }
+
+            updateModelConfiguration(modelId);
+        }
+
+        // Update model configuration (shared function)
+        function updateModelConfiguration(modelId) {
+            if (!modelId || !supportedModels[modelId]) {
+                clearModelSelection();
+                return;
+            }
+
+            const model = supportedModels[modelId];
+            currentSelectedModel = modelId;
+
+            // Show model information
+            showModelInfo(model);
+
+            // Populate compatible options with auto-fill
+            populateInstanceSelect(model.supported_instances, true);
+            populateEngineSelect(model.supported_engines, true);
+            updateServiceSelect(model.supported_services, true);
+        }
+
+        // Show model information
+        function showModelInfo(model) {
+            document.getElementById('modelInfoTitle').textContent = `${model.model_id} Information`;
+            document.getElementById('modelInfoDescription').textContent = model.description;
+
+            // Create badges
+            const badgesContainer = document.getElementById('modelInfoBadges');
+            badgesContainer.innerHTML = '';
+
+            const badges = [
+                { label: 'Type', value: model.model_type.toUpperCase() },
+                { label: 'Series', value: model.model_series?.name || 'N/A' },
+                { label: 'China Region', value: model.allow_china_region ? 'Yes' : 'No' }
+            ];
+
+            if (model.application_scenario) {
+                badges.push({ label: 'Use Cases', value: model.application_scenario });
+            }
+
+            badges.forEach(badge => {
+                const span = document.createElement('span');
+                span.className = 'model-badge';
+                span.textContent = `${badge.label}: ${badge.value}`;
+                badgesContainer.appendChild(span);
+            });
+
+            // Add model links
+            const linksContainer = document.getElementById('modelInfoLinks');
+            linksContainer.innerHTML = '';
+
+            if (model.huggingface_model_id) {
+                const hfLink = document.createElement('a');
+                hfLink.href = `https://huggingface.co/${model.huggingface_model_id}`;
+                hfLink.target = '_blank';
+                hfLink.textContent = '🤗 Hugging Face';
+                linksContainer.appendChild(hfLink);
+            }
+
+            if (model.modelscope_model_id) {
+                const msLink = document.createElement('a');
+                msLink.href = `https://modelscope.cn/models/${model.modelscope_model_id}`;
+                msLink.target = '_blank';
+                msLink.textContent = '🔬 ModelScope';
+                linksContainer.appendChild(msLink);
+            }
+
+            selectedModelInfo.style.display = 'block';
+        }
+
+        // Clear model selection
+        function clearModelSelection() {
+            currentSelectedModel = null;
+            selectedModelInfo.style.display = 'none';
+            instanceSelect.innerHTML = '<option value="">Select instance type...</option>';
+            engineSelect.innerHTML = '<option value="">Select engine type...</option>';
+
+            // Clear table selection
+            document.querySelectorAll('.models-table tbody tr').forEach(row => {
+                row.classList.remove('selected');
+            });
+        }
+
+        // Populate instance select with real instance data
+        function populateInstanceSelect(supportedInstanceTypes, autoFill = false) {
+            instanceSelect.innerHTML = '<option value="">Select instance type...</option>';
+
+            supportedInstanceTypes.forEach((instanceType, index) => {
+                const instanceDef = window.EMD_HELPERS.getInstance(instanceType);
+                if (instanceDef) {
+                    const option = document.createElement('option');
+                    option.value = instanceType;
+
+                    // Enhanced option text with real specifications
+                    const specs = window.EMD_HELPERS.getInstanceSpecs(instanceType);
+                    option.textContent = `${instanceType} (${specs.text})`;
+
+                    // Auto-select first option if autoFill is true
+                    if (autoFill && index === 0) {
+                        option.selected = true;
+                    }
+
+                    instanceSelect.appendChild(option);
+                }
+            });
+        }
+
+        // Populate engine select with real engine data
+        function populateEngineSelect(supportedEngineTypes, autoFill = false) {
+            engineSelect.innerHTML = '<option value="">Select engine type...</option>';
+
+            supportedEngineTypes.forEach((engineType, index) => {
+                const engineDef = window.EMD_HELPERS.getEngine(engineType);
+                if (engineDef) {
+                    const option = document.createElement('option');
+                    option.value = engineType;
+                    option.textContent = `${engineType} - ${engineDef.description}`;
+
+                    // Auto-select first option if autoFill is true
+                    if (autoFill && index === 0) {
+                        option.selected = true;
+                    }
+
+                    engineSelect.appendChild(option);
+                }
+            });
+        }
+
+        // Update service select with real service data
+        function updateServiceSelect(supportedServiceTypes, autoFill = false) {
+            const options = serviceSelect.querySelectorAll('option');
+            let firstAvailableOption = null;
+
+            options.forEach(option => {
+                if (option.value === '') return;
+
+                if (supportedServiceTypes.includes(option.value)) {
+                    option.disabled = false;
+                    option.style.display = 'block';
+
+                    // Update option text with real service info
+                    const serviceDef = window.EMD_HELPERS.getService(option.value);
+                    if (serviceDef) {
+                        option.textContent = serviceDef.name;
+                    }
+
+                    // Track first available option for auto-fill
+                    if (!firstAvailableOption) {
+                        firstAvailableOption = option;
+                    }
+                } else {
+                    option.disabled = true;
+                    option.style.display = 'none';
+                }
+            });
+
+            // Reset selection if current value is not supported
+            if (serviceSelect.value && !supportedServiceTypes.includes(serviceSelect.value)) {
+                serviceSelect.value = '';
+            }
+
+            // Auto-select first available option if autoFill is true
+            if (autoFill && firstAvailableOption && !serviceSelect.value) {
+                firstAvailableOption.selected = true;
+            }
+        }
+
+        // Handle adding model to queue
+        function handleAddModel(e) {
+            e.preventDefault();
+
+            const modelId = currentSelectedModel;
+            const instanceType = instanceSelect.value;
+            const engineType = engineSelect.value;
+            const serviceType = serviceSelect.value;
+
+            if (!modelId || !instanceType || !engineType || !serviceType) {
+                alert('Please select all required parameters before adding the model to the queue.');
+                return;
+            }
+
+            // Create model configuration object
+            const modelConfig = {
+                id: ++modelIdCounter,
+                modelId,
+                instanceType,
+                engineType,
+                serviceType,
+                extraParams: buildExtraParams()
+            };
+
+            // Add to queue
+            modelQueue.push(modelConfig);
+
+            // Update UI
+            updateModelQueue();
+            updateCommands();
+
+            // Reset form for next model
+            resetForm();
+        }
+
+        // Update model queue display
+        function updateModelQueue() {
+            if (modelQueue.length === 0) {
+                modelQueueContainer.innerHTML = '<div class="queue-empty">No models configured yet. Add models from the left panel.</div>';
+                return;
+            }
+
+            const queueHTML = modelQueue.map(config => `
+                <div class="queue-item">
+                    <div class="queue-item-info">
+                        <div class="queue-item-title">${config.modelId}</div>
+                        <div class="queue-item-details">
+                            ${config.instanceType} | ${config.engineType} | ${config.serviceType}
+                        </div>
+                    </div>
+                    <button class="queue-item-delete" onclick="removeModel(${config.id})">
+                        Delete
+                    </button>
+                </div>
+            `).join('');
+
+            modelQueueContainer.innerHTML = queueHTML;
+        }
+
+        // Remove model from queue
+        function removeModel(modelId) {
+            modelQueue = modelQueue.filter(config => config.id !== modelId);
+            updateModelQueue();
+            updateCommands();
+        }
+
+        // Update commands display
+        function updateCommands() {
+            if (modelQueue.length === 0) {
+                commandOutput.textContent = 'Add models to the queue to generate deployment commands';
+                commandOutput.className = 'command-output empty';
+                copyButton.style.display = 'none';
+                return;
+            }
+
+            let commands;
+            if (modelQueue.length === 1) {
+                commands = generateSingleCommandFromConfig(modelQueue[0]);
+            } else {
+                commands = generateParallelCommandsFromQueue();
+            }
+
+            commandOutput.textContent = commands;
+            commandOutput.className = 'command-output';
+            copyButton.style.display = 'inline-block';
+        }
+
+        // Generate single command from configuration
+        function generateSingleCommandFromConfig(config) {
+            let command = `emd deploy --model-id ${config.modelId} --instance-type ${config.instanceType} --engine-type ${config.engineType} --service-type ${config.serviceType}`;
+
+            // Add command-line arguments
+            const modelTag = document.getElementById('modelTag').value.trim();
+            if (modelTag) {
+                command += ` --model-tag ${modelTag}`;
+            }
+
+            // Add skip-confirm if checked
+            const skipConfirm = document.getElementById('skipConfirm').checked;
+            if (skipConfirm) {
+                command += ` --skip-confirm`;
+            }
+
+            // Build extra parameters
+            if (Object.keys(config.extraParams).length > 0) {
+                command += ` --extra-params '${JSON.stringify(config.extraParams, null, 2)}'`;
+            }
+
+            return command;
+        }
+
+        // Generate parallel commands from queue
+        function generateParallelCommandsFromQueue() {
+            const commands = [];
+            const modelIds = modelQueue.map(config => config.modelId);
+
+            // Add header comment
+            const header = `# Parallel deployment of ${modelQueue.length} different models:\n# ${modelIds.join(', ')}\n`;
+
+            modelQueue.forEach((config, index) => {
+                // Generate unique tag for each model
+                const baseTag = 'parallel';
+                const uniqueTag = `${baseTag}-${index + 1}`;
+
+                let baseCommand = `emd deploy --model-id ${config.modelId} --instance-type ${config.instanceType} --engine-type ${config.engineType} --service-type ${config.serviceType} --model-tag ${uniqueTag}`;
+
+                // Always add --skip-confirm for parallel deployments
+                baseCommand += ` --skip-confirm`;
+
+                // Build extra parameters
+                if (Object.keys(config.extraParams).length > 0) {
+                    baseCommand += ` --extra-params '${JSON.stringify(config.extraParams)}'`;
+                }
+
+                // Add nohup wrapper for background execution
+                baseCommand = `nohup ${baseCommand} > /dev/null 2>&1 &`;
+
+                commands.push(baseCommand);
+            });
+
+            return header + '\n' + commands.join('\n\n');
+        }
+
+        // Build extra parameters object
+        function buildExtraParams() {
+            const extraParams = {};
+
+            // Engine parameters
+            const engineParams = {};
+            const envVars = document.getElementById('environmentVariables').value.trim();
+            const maxModelLen = document.getElementById('maxModelLen').value.trim();
+            const maxNumSeqs = document.getElementById('maxNumSeqs').value.trim();
+            const gpuMemoryUtilization = document.getElementById('gpuMemoryUtilization').value.trim();
+
+            if (envVars) engineParams.environment_variables = envVars;
+
+            // Build default CLI args from basic parameters
+            const defaultCliArgs = [];
+            if (maxModelLen) defaultCliArgs.push(`--max_model_len ${maxModelLen}`);
+            if (maxNumSeqs) defaultCliArgs.push(`--max_num_seqs ${maxNumSeqs}`);
+            if (gpuMemoryUtilization) defaultCliArgs.push(`--gpu_memory_utilization ${gpuMemoryUtilization}`);
+
+            if (defaultCliArgs.length > 0) {
+                engineParams.default_cli_args = defaultCliArgs.join(' ');
+            }
+
+            if (Object.keys(engineParams).length > 0) {
+                extraParams.engine_params = engineParams;
+            }
+
+            // Service parameters
+            const serviceParams = {};
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const maxCapacity = document.getElementById('maxCapacity').value.trim();
+            const minCapacity = document.getElementById('minCapacity').value.trim();
+
+            if (apiKey) serviceParams.api_key = apiKey;
+            if (maxCapacity) serviceParams.max_capacity = parseInt(maxCapacity);
+            if (minCapacity) serviceParams.min_capacity = parseInt(minCapacity);
+
+            if (Object.keys(serviceParams).length > 0) {
+                extraParams.service_params = serviceParams;
+            }
+
+            return extraParams;
+        }
+
+        // Copy commands to clipboard
+        function copyCommands() {
+            const commands = commandOutput.textContent;
+            navigator.clipboard.writeText(commands).then(() => {
+                showCopySuccess();
+            }).catch(err => {
+                console.error('Failed to copy commands: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = commands;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showCopySuccess();
+            });
+        }
+
+        // Show copy success message
+        function showCopySuccess() {
+            copySuccess.classList.add('show');
+            setTimeout(() => {
+                copySuccess.classList.remove('show');
+            }, 3000);
+        }
+
+        // Reset form
+        function resetForm() {
+            modelConfigForm.reset();
+            modelSearch.value = '';
+            clearModelSelection();
+            searchSuggestions.style.display = 'none';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait a bit for the config script to load
+            setTimeout(initializeDynamicConfig, 100);
+
+            // Initialize table resizing functionality
+            initializeTableResize();
+        });
+
+        // Table resize functionality
+        function initializeTableResize() {
+            const tableSection = document.getElementById('modelsTableSection');
+            const resizeHandle = document.getElementById('tableResizeHandle');
+            const mainContent = document.querySelector('.main-content');
+
+            let isResizing = false;
+            let startY = 0;
+            let startHeight = 0;
+
+            // Mouse down on resize handle
+            resizeHandle.addEventListener('mousedown', function(e) {
+                isResizing = true;
+                startY = e.clientY;
+                startHeight = tableSection.offsetHeight;
+
+                resizeHandle.classList.add('dragging');
+                document.body.style.cursor = 'ns-resize';
+                document.body.style.userSelect = 'none';
+
+                e.preventDefault();
+            });
+
+            // Mouse move - resize table
+            document.addEventListener('mousemove', function(e) {
+                if (!isResizing) return;
+
+                const deltaY = e.clientY - startY;
+                const newHeight = startHeight + deltaY;
+
+                // Enforce min and max height constraints
+                const minHeight = 200;
+                const maxHeight = window.innerHeight * 0.8;
+
+                if (newHeight >= minHeight && newHeight <= maxHeight) {
+                    tableSection.style.height = newHeight + 'px';
+
+                    // Update main content to fill remaining space
+                    const remainingHeight = window.innerHeight - newHeight - 120; // 120px for header
+                    mainContent.style.height = remainingHeight + 'px';
+                }
+
+                e.preventDefault();
+            });
+
+            // Mouse up - stop resizing
+            document.addEventListener('mouseup', function() {
+                if (isResizing) {
+                    isResizing = false;
+                    resizeHandle.classList.remove('dragging');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                }
+            });
+
+            // Touch events for mobile support
+            resizeHandle.addEventListener('touchstart', function(e) {
+                isResizing = true;
+                startY = e.touches[0].clientY;
+                startHeight = tableSection.offsetHeight;
+
+                resizeHandle.classList.add('dragging');
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', function(e) {
+                if (!isResizing) return;
+
+                const deltaY = e.touches[0].clientY - startY;
+                const newHeight = startHeight + deltaY;
+
+                const minHeight = 200;
+                const maxHeight = window.innerHeight * 0.8;
+
+                if (newHeight >= minHeight && newHeight <= maxHeight) {
+                    tableSection.style.height = newHeight + 'px';
+
+                    const remainingHeight = window.innerHeight - newHeight - 120;
+                    mainContent.style.height = remainingHeight + 'px';
+                }
+
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchend', function() {
+                if (isResizing) {
+                    isResizing = false;
+                    resizeHandle.classList.remove('dragging');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const currentHeight = tableSection.offsetHeight;
+                const maxHeight = window.innerHeight * 0.8;
+
+                if (currentHeight > maxHeight) {
+                    tableSection.style.height = maxHeight + 'px';
+                    const remainingHeight = window.innerHeight - maxHeight - 120;
+                    mainContent.style.height = remainingHeight + 'px';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
