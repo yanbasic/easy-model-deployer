@@ -488,11 +488,11 @@
                 flex-direction: column;
                 height: auto;
             }
-            
+
             .config-section, .results-section {
                 width: 100%;
             }
-            
+
             .models-table-section {
                 height: 50vh;
             }
@@ -502,11 +502,11 @@
             .config-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .models-table {
                 font-size: 0.8rem;
             }
-            
+
             .models-table th, .models-table td {
                 padding: 8px 4px;
             }
@@ -567,13 +567,13 @@
         <div class="main-content">
             <!-- Left 50% - Configuration -->
             <div class="config-section">
-                
+
                 <form id="modelConfigForm">
                     <div class="form-group">
                         <label for="modelSearch">Model ID (Fuzzy Search)</label>
                         <div class="search-input">
-                            <input type="text" id="modelSearch" class="form-control" 
-                                   placeholder="Type to search models (e.g., 'qwen', 'deep', 'glm')..." 
+                            <input type="text" id="modelSearch" class="form-control"
+                                   placeholder="Type to search models (e.g., 'qwen', 'deep', 'glm')..."
                                    autocomplete="off">
                             <div id="searchSuggestions" class="search-suggestions"></div>
                         </div>
@@ -620,7 +620,7 @@
                     </div>
 
                     <h4 style="margin: 20px 0 15px 0; color: #2c3e50; font-size: 1rem;">Extra Parameters</h4>
-                    
+
                     <div class="config-flat">
                         <div class="config-grid">
                             <div class="form-group">
@@ -636,7 +636,7 @@
                         <div class="config-grid">
                             <div class="form-group">
                                 <label for="gpuMemoryUtilization">GPU Memory Utilization</label>
-                                <input type="number" id="gpuMemoryUtilization" class="form-control" 
+                                <input type="number" id="gpuMemoryUtilization" class="form-control"
                                        step="0.1" min="0.1" max="1.0" placeholder="0.9">
                             </div>
                             <div class="form-group">
@@ -706,7 +706,7 @@
 
     <!-- Load the dynamic model configuration -->
     <script src="../model_config.js"></script>
-    
+
     <script>
         // Global variables
         let supportedModels = {};
@@ -740,17 +740,17 @@
                 instanceDefinitions = window.EMD_MODEL_CONFIG.instances;
                 engineDefinitions = window.EMD_MODEL_CONFIG.engines;
                 serviceDefinitions = window.EMD_MODEL_CONFIG.services;
-                
+
                 // Update status
                 const configStatus = document.getElementById('tableStats');
                 const modelCount = window.EMD_HELPERS.getModelCount();
                 const generatedAt = new Date(window.EMD_HELPERS.getGeneratedAt()).toLocaleString();
                 configStatus.innerHTML = `✅ Loaded ${modelCount} models (Updated: ${generatedAt})`;
-                
+
                 // Initialize UI
                 populateModelsTable();
                 setupEventListeners();
-                
+
                 console.log('✅ Dynamic model configuration initialized');
             } else {
                 console.error('❌ EMD model configuration not loaded');
@@ -787,18 +787,18 @@
         function selectModelFromTable(modelId) {
             // Update search input
             modelSearch.value = modelId;
-            
+
             // Clear previous selection
             document.querySelectorAll('.models-table tbody tr').forEach(row => {
                 row.classList.remove('selected');
             });
-            
+
             // Highlight selected row
             const selectedRow = document.querySelector(`tr[data-model-id="${modelId}"]`);
             if (selectedRow) {
                 selectedRow.classList.add('selected');
             }
-            
+
             // Update model configuration directly without calling onModelSearchChange
             updateModelConfiguration(modelId);
         }
@@ -811,7 +811,7 @@
             modelConfigForm.addEventListener('submit', handleAddModel);
             resetButton.addEventListener('click', resetForm);
             copyButton.addEventListener('click', copyCommands);
-            
+
             // Hide suggestions when clicking outside
             document.addEventListener('click', (e) => {
                 if (!e.target.closest('.search-input')) {
@@ -823,7 +823,7 @@
         // Handle model search input
         function onModelSearchInput() {
             const query = modelSearch.value.toLowerCase().trim();
-            
+
             if (query.length === 0) {
                 searchSuggestions.style.display = 'none';
                 clearModelSelection();
@@ -831,13 +831,13 @@
             }
 
             // Fuzzy search
-            const matches = Object.keys(supportedModels).filter(modelId => 
+            const matches = Object.keys(supportedModels).filter(modelId =>
                 modelId.toLowerCase().includes(query)
             ).slice(0, 10);
 
             if (matches.length > 0) {
                 showSearchSuggestions(matches);
-                
+
                 // If exact match, select it
                 if (matches.includes(modelSearch.value)) {
                     onModelSearchChange();
@@ -851,7 +851,7 @@
         // Show search suggestions
         function showSearchSuggestions(matches) {
             searchSuggestions.innerHTML = '';
-            
+
             matches.forEach(modelId => {
                 const item = document.createElement('div');
                 item.className = 'suggestion-item';
@@ -863,7 +863,7 @@
                 });
                 searchSuggestions.appendChild(item);
             });
-            
+
             searchSuggestions.style.display = 'block';
         }
 
@@ -885,7 +885,7 @@
         // Handle model search change
         function onModelSearchChange() {
             const modelId = modelSearch.value.trim();
-            
+
             if (!modelId || !supportedModels[modelId]) {
                 clearModelSelection();
                 return;
@@ -903,10 +903,10 @@
 
             const model = supportedModels[modelId];
             currentSelectedModel = modelId;
-            
+
             // Show model information
             showModelInfo(model);
-            
+
             // Populate compatible options with auto-fill
             populateInstanceSelect(model.supported_instances, true);
             populateEngineSelect(model.supported_engines, true);
@@ -917,11 +917,11 @@
         function showModelInfo(model) {
             document.getElementById('modelInfoTitle').textContent = `${model.model_id} Information`;
             document.getElementById('modelInfoDescription').textContent = model.description;
-            
+
             // Create badges
             const badgesContainer = document.getElementById('modelInfoBadges');
             badgesContainer.innerHTML = '';
-            
+
             const badges = [
                 { label: 'Type', value: model.model_type.toUpperCase() },
                 { label: 'Series', value: model.model_series?.name || 'N/A' },
@@ -942,7 +942,7 @@
             // Add model links
             const linksContainer = document.getElementById('modelInfoLinks');
             linksContainer.innerHTML = '';
-            
+
             if (model.huggingface_model_id) {
                 const hfLink = document.createElement('a');
                 hfLink.href = `https://huggingface.co/${model.huggingface_model_id}`;
@@ -950,7 +950,7 @@
                 hfLink.textContent = '🤗 Hugging Face';
                 linksContainer.appendChild(hfLink);
             }
-            
+
             if (model.modelscope_model_id) {
                 const msLink = document.createElement('a');
                 msLink.href = `https://modelscope.cn/models/${model.modelscope_model_id}`;
@@ -968,7 +968,7 @@
             selectedModelInfo.style.display = 'none';
             instanceSelect.innerHTML = '<option value="">Select instance type...</option>';
             engineSelect.innerHTML = '<option value="">Select engine type...</option>';
-            
+
             // Clear table selection
             document.querySelectorAll('.models-table tbody tr').forEach(row => {
                 row.classList.remove('selected');
@@ -978,22 +978,22 @@
         // Populate instance select with real instance data
         function populateInstanceSelect(supportedInstanceTypes, autoFill = false) {
             instanceSelect.innerHTML = '<option value="">Select instance type...</option>';
-            
+
             supportedInstanceTypes.forEach((instanceType, index) => {
                 const instanceDef = window.EMD_HELPERS.getInstance(instanceType);
                 if (instanceDef) {
                     const option = document.createElement('option');
                     option.value = instanceType;
-                    
+
                     // Enhanced option text with real specifications
                     const specs = window.EMD_HELPERS.getInstanceSpecs(instanceType);
                     option.textContent = `${instanceType} (${specs.text})`;
-                    
+
                     // Auto-select first option if autoFill is true
                     if (autoFill && index === 0) {
                         option.selected = true;
                     }
-                    
+
                     instanceSelect.appendChild(option);
                 }
             });
@@ -1002,19 +1002,19 @@
         // Populate engine select with real engine data
         function populateEngineSelect(supportedEngineTypes, autoFill = false) {
             engineSelect.innerHTML = '<option value="">Select engine type...</option>';
-            
+
             supportedEngineTypes.forEach((engineType, index) => {
                 const engineDef = window.EMD_HELPERS.getEngine(engineType);
                 if (engineDef) {
                     const option = document.createElement('option');
                     option.value = engineType;
                     option.textContent = `${engineType} - ${engineDef.description}`;
-                    
+
                     // Auto-select first option if autoFill is true
                     if (autoFill && index === 0) {
                         option.selected = true;
                     }
-                    
+
                     engineSelect.appendChild(option);
                 }
             });
@@ -1024,20 +1024,20 @@
         function updateServiceSelect(supportedServiceTypes, autoFill = false) {
             const options = serviceSelect.querySelectorAll('option');
             let firstAvailableOption = null;
-            
+
             options.forEach(option => {
                 if (option.value === '') return;
-                
+
                 if (supportedServiceTypes.includes(option.value)) {
                     option.disabled = false;
                     option.style.display = 'block';
-                    
+
                     // Update option text with real service info
                     const serviceDef = window.EMD_HELPERS.getService(option.value);
                     if (serviceDef) {
                         option.textContent = serviceDef.name;
                     }
-                    
+
                     // Track first available option for auto-fill
                     if (!firstAvailableOption) {
                         firstAvailableOption = option;
@@ -1052,7 +1052,7 @@
             if (serviceSelect.value && !supportedServiceTypes.includes(serviceSelect.value)) {
                 serviceSelect.value = '';
             }
-            
+
             // Auto-select first available option if autoFill is true
             if (autoFill && firstAvailableOption && !serviceSelect.value) {
                 firstAvailableOption.selected = true;
@@ -1062,7 +1062,7 @@
         // Handle adding model to queue
         function handleAddModel(e) {
             e.preventDefault();
-            
+
             const modelId = currentSelectedModel;
             const instanceType = instanceSelect.value;
             const engineType = engineSelect.value;
@@ -1085,11 +1085,11 @@
 
             // Add to queue
             modelQueue.push(modelConfig);
-            
+
             // Update UI
             updateModelQueue();
             updateCommands();
-            
+
             // Reset form for next model
             resetForm();
         }
@@ -1174,17 +1174,17 @@
         function generateParallelCommandsFromQueue() {
             const commands = [];
             const modelIds = modelQueue.map(config => config.modelId);
-            
+
             // Add header comment
             const header = `# Parallel deployment of ${modelQueue.length} different models:\n# ${modelIds.join(', ')}\n`;
-            
+
             modelQueue.forEach((config, index) => {
                 // Generate unique tag for each model
                 const baseTag = 'parallel';
                 const uniqueTag = `${baseTag}-${index + 1}`;
-                
+
                 let baseCommand = `emd deploy --model-id ${config.modelId} --instance-type ${config.instanceType} --engine-type ${config.engineType} --service-type ${config.serviceType} --model-tag ${uniqueTag}`;
-                
+
                 // Always add --skip-confirm for parallel deployments
                 baseCommand += ` --skip-confirm`;
 
@@ -1214,13 +1214,13 @@
             const gpuMemoryUtilization = document.getElementById('gpuMemoryUtilization').value.trim();
 
             if (envVars) engineParams.environment_variables = envVars;
-            
+
             // Build default CLI args from basic parameters
             const defaultCliArgs = [];
             if (maxModelLen) defaultCliArgs.push(`--max_model_len ${maxModelLen}`);
             if (maxNumSeqs) defaultCliArgs.push(`--max_num_seqs ${maxNumSeqs}`);
             if (gpuMemoryUtilization) defaultCliArgs.push(`--gpu_memory_utilization ${gpuMemoryUtilization}`);
-            
+
             if (defaultCliArgs.length > 0) {
                 engineParams.default_cli_args = defaultCliArgs.join(' ');
             }
@@ -1284,7 +1284,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Wait a bit for the config script to load
             setTimeout(initializeDynamicConfig, 100);
-            
+
             // Initialize table resizing functionality
             initializeTableResize();
         });
@@ -1294,46 +1294,46 @@
             const tableSection = document.getElementById('modelsTableSection');
             const resizeHandle = document.getElementById('tableResizeHandle');
             const mainContent = document.querySelector('.main-content');
-            
+
             let isResizing = false;
             let startY = 0;
             let startHeight = 0;
-            
+
             // Mouse down on resize handle
             resizeHandle.addEventListener('mousedown', function(e) {
                 isResizing = true;
                 startY = e.clientY;
                 startHeight = tableSection.offsetHeight;
-                
+
                 resizeHandle.classList.add('dragging');
                 document.body.style.cursor = 'ns-resize';
                 document.body.style.userSelect = 'none';
-                
+
                 e.preventDefault();
             });
-            
+
             // Mouse move - resize table
             document.addEventListener('mousemove', function(e) {
                 if (!isResizing) return;
-                
+
                 const deltaY = e.clientY - startY;
                 const newHeight = startHeight + deltaY;
-                
+
                 // Enforce min and max height constraints
                 const minHeight = 200;
                 const maxHeight = window.innerHeight * 0.8;
-                
+
                 if (newHeight >= minHeight && newHeight <= maxHeight) {
                     tableSection.style.height = newHeight + 'px';
-                    
+
                     // Update main content to fill remaining space
                     const remainingHeight = window.innerHeight - newHeight - 120; // 120px for header
                     mainContent.style.height = remainingHeight + 'px';
                 }
-                
+
                 e.preventDefault();
             });
-            
+
             // Mouse up - stop resizing
             document.addEventListener('mouseup', function() {
                 if (isResizing) {
@@ -1343,48 +1343,48 @@
                     document.body.style.userSelect = '';
                 }
             });
-            
+
             // Touch events for mobile support
             resizeHandle.addEventListener('touchstart', function(e) {
                 isResizing = true;
                 startY = e.touches[0].clientY;
                 startHeight = tableSection.offsetHeight;
-                
+
                 resizeHandle.classList.add('dragging');
                 e.preventDefault();
             });
-            
+
             document.addEventListener('touchmove', function(e) {
                 if (!isResizing) return;
-                
+
                 const deltaY = e.touches[0].clientY - startY;
                 const newHeight = startHeight + deltaY;
-                
+
                 const minHeight = 200;
                 const maxHeight = window.innerHeight * 0.8;
-                
+
                 if (newHeight >= minHeight && newHeight <= maxHeight) {
                     tableSection.style.height = newHeight + 'px';
-                    
+
                     const remainingHeight = window.innerHeight - newHeight - 120;
                     mainContent.style.height = remainingHeight + 'px';
                 }
-                
+
                 e.preventDefault();
             });
-            
+
             document.addEventListener('touchend', function() {
                 if (isResizing) {
                     isResizing = false;
                     resizeHandle.classList.remove('dragging');
                 }
             });
-            
+
             // Handle window resize
             window.addEventListener('resize', function() {
                 const currentHeight = tableSection.offsetHeight;
                 const maxHeight = window.innerHeight * 0.8;
-                
+
                 if (currentHeight > maxHeight) {
                     tableSection.style.height = maxHeight + 'px';
                     const remainingHeight = window.innerHeight - maxHeight - 120;

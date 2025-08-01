@@ -19,7 +19,7 @@ def extract_models():
     """Extract all registered models with their configurations"""
     try:
         from emd.models import Model
-        
+
         models = {}
         for model_id, model in Model.model_map.items():
             try:
@@ -31,7 +31,7 @@ def extract_models():
                         "description": getattr(model.model_series, 'description', ''),
                         "reference_link": getattr(model.model_series, 'reference_link', '')
                     }
-                
+
                 models[model_id] = {
                     "model_id": model.model_id,
                     "model_type": getattr(model.model_type, 'value', str(model.model_type)) if hasattr(model, 'model_type') else 'unknown',
@@ -57,7 +57,7 @@ def extract_models():
             except Exception as e:
                 print(f"⚠️  Warning: Error extracting model {model_id}: {e}")
                 continue
-                
+
         return models
     except Exception as e:
         print(f"❌ Error importing models: {e}")
@@ -67,7 +67,7 @@ def extract_instances():
     """Extract all instance definitions"""
     try:
         from emd.models.instances import Instance
-        
+
         instances = {}
         for instance_type, instance in Instance.instance_map.items():
             try:
@@ -83,7 +83,7 @@ def extract_instances():
             except Exception as e:
                 print(f"⚠️  Warning: Error extracting instance {instance_type}: {e}")
                 continue
-                
+
         return instances
     except Exception as e:
         print(f"❌ Error importing instances: {e}")
@@ -98,7 +98,7 @@ def extract_engines():
             "support_inf2_instance": False
         },
         "huggingface": {
-            "engine_type": "huggingface", 
+            "engine_type": "huggingface",
             "description": "Hugging Face Transformers - Popular library for transformer models",
             "support_inf2_instance": False
         },
@@ -139,7 +139,7 @@ def extract_services():
     """Extract service definitions"""
     try:
         from emd.models.services import Service
-        
+
         services = {}
         for service_type, service in Service.service_type_maps.items():
             try:
@@ -153,7 +153,7 @@ def extract_services():
             except Exception as e:
                 print(f"⚠️  Warning: Error extracting service {service_type}: {e}")
                 continue
-                
+
         return services
     except Exception as e:
         print(f"❌ Error importing services: {e}")
@@ -163,7 +163,7 @@ def generate_javascript_config():
     """Generate JavaScript configuration file"""
     try:
         print("🔄 Extracting EMD model configurations...")
-        
+
         config = {
             "metadata": {
                 "generated_at": datetime.now().isoformat(),
@@ -171,11 +171,11 @@ def generate_javascript_config():
                 "source": "EMD Python Model Definitions"
             },
             "models": extract_models(),
-            "instances": extract_instances(), 
+            "instances": extract_instances(),
             "engines": extract_engines(),
             "services": extract_services()
         }
-        
+
         # Generate JavaScript file content
         js_content = f"""// EMD Model Configuration
 // Auto-generated from Python model definitions
@@ -188,11 +188,11 @@ window.EMD_HELPERS = {{
   getModel: function(modelId) {{
     return window.EMD_MODEL_CONFIG.models[modelId];
   }},
-  
+
   getAllModels: function() {{
     return window.EMD_MODEL_CONFIG.models;
   }},
-  
+
   getModelsByType: function(type) {{
     const models = {{}};
     for (const [id, model] of Object.entries(window.EMD_MODEL_CONFIG.models)) {{
@@ -202,42 +202,42 @@ window.EMD_HELPERS = {{
     }}
     return models;
   }},
-  
+
   getInstance: function(instanceType) {{
     return window.EMD_MODEL_CONFIG.instances[instanceType];
   }},
-  
+
   getEngine: function(engineType) {{
     return window.EMD_MODEL_CONFIG.engines[engineType];
   }},
-  
+
   getService: function(serviceType) {{
     return window.EMD_MODEL_CONFIG.services[serviceType];
   }},
-  
+
   getCompatibleInstances: function(modelId) {{
     const model = this.getModel(modelId);
     return model ? model.supported_instances : [];
   }},
-  
+
   getCompatibleEngines: function(modelId) {{
     const model = this.getModel(modelId);
     return model ? model.supported_engines : [];
   }},
-  
+
   getCompatibleServices: function(modelId) {{
     const model = this.getModel(modelId);
     return model ? model.supported_services : [];
   }},
-  
+
   getModelCount: function() {{
     return Object.keys(window.EMD_MODEL_CONFIG.models).length;
   }},
-  
+
   getGeneratedAt: function() {{
     return window.EMD_MODEL_CONFIG.metadata.generated_at;
   }},
-  
+
   // Additional utility functions
   getModelsByEngine: function(engineType) {{
     const models = {{}};
@@ -248,7 +248,7 @@ window.EMD_HELPERS = {{
     }}
     return models;
   }},
-  
+
   getModelsByInstance: function(instanceType) {{
     const models = {{}};
     for (const [id, model] of Object.entries(window.EMD_MODEL_CONFIG.models)) {{
@@ -258,7 +258,7 @@ window.EMD_HELPERS = {{
     }}
     return models;
   }},
-  
+
   getModelsByService: function(serviceType) {{
     const models = {{}};
     for (const [id, model] of Object.entries(window.EMD_MODEL_CONFIG.models)) {{
@@ -268,7 +268,7 @@ window.EMD_HELPERS = {{
     }}
     return models;
   }},
-  
+
   getChinaRegionModels: function() {{
     const models = {{}};
     for (const [id, model] of Object.entries(window.EMD_MODEL_CONFIG.models)) {{
@@ -278,17 +278,17 @@ window.EMD_HELPERS = {{
     }}
     return models;
   }},
-  
+
   getInstanceSpecs: function(instanceType) {{
     const instance = this.getInstance(instanceType);
     if (!instance) return null;
-    
+
     const specs = [];
     if (instance.gpu_num) specs.push(`${{instance.gpu_num}} GPU`);
     if (instance.neuron_core_num) specs.push(`${{instance.neuron_core_num}} Neuron`);
     specs.push(`${{instance.vcpu}} vCPU`);
     specs.push(`${{instance.memory}} GiB`);
-    
+
     return {{
       text: specs.join(', '),
       gpu_num: instance.gpu_num,
@@ -302,31 +302,31 @@ window.EMD_HELPERS = {{
 console.log(`✅ EMD Model Configuration loaded: ${{window.EMD_HELPERS.getModelCount()}} models available`);
 console.log(`📊 Model types: LLM (${{Object.keys(window.EMD_HELPERS.getModelsByType('llm')).length}}), VLM (${{Object.keys(window.EMD_HELPERS.getModelsByType('vlm')).length}}), Embedding (${{Object.keys(window.EMD_HELPERS.getModelsByType('embedding')).length}}), Whisper (${{Object.keys(window.EMD_HELPERS.getModelsByType('whisper')).length}})`);
 """
-        
+
         # Write JavaScript file
         output_file = project_root / "docs" / "model_config.js"
         output_file.parent.mkdir(exist_ok=True)
-        
+
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(js_content)
-        
+
         print(f"✅ Successfully extracted {len(config['models'])} models")
         print(f"✅ Successfully extracted {len(config['instances'])} instances")
         print(f"✅ Successfully extracted {len(config['engines'])} engines")
         print(f"✅ Successfully extracted {len(config['services'])} services")
         print(f"✅ JavaScript configuration saved to {output_file}")
-        
+
         # Print some sample data for verification
         if config['models']:
             print("\n📋 Sample models extracted:")
             for i, (model_id, model) in enumerate(list(config['models'].items())[:5]):
                 print(f"   {i+1}. {model_id} ({model['model_type']}) - {len(model['supported_instances'])} instances")
-        
+
         if config['instances']:
             print(f"\n🖥️  Instance types: {', '.join(list(config['instances'].keys())[:10])}{'...' if len(config['instances']) > 10 else ''}")
-        
+
         return True
-        
+
     except Exception as e:
         print(f"❌ Error generating model configuration: {e}")
         import traceback
@@ -337,16 +337,16 @@ def main():
     """Main function"""
     print("🚀 EMD Model Configuration Generator")
     print("=" * 50)
-    
+
     success = generate_javascript_config()
-    
+
     if success:
         print("\n🎉 Configuration generation completed successfully!")
         print("📁 Output file: docs/model_config.js")
         print("🔗 Ready for integration with HTML interface")
     else:
         print("\n💥 Configuration generation failed!")
-        
+
     return success
 
 if __name__ == "__main__":
