@@ -95,7 +95,7 @@ jobs:
         fi
 
     - name: Upload model config as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: model-config
         path: docs/model_config.js
