@@ -83,7 +83,7 @@ jobs:
         keep_files: true
         commit_message: |
           🤖 Auto-update model configuration
-          
+
           - Generated from EMD Python model definitions
           - Updated at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
           - Triggered by: ${{ github.event_name }}
