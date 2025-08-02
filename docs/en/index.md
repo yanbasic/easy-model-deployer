@@ -45,5 +45,6 @@ For a complete list, see [Supported Models](supported_models.md).
 - [Quick Start](installation.md)
 - [CLI Commands](commands.md)
 - [API Documentation](api.md)
+- [Model Generator](model-generator.html) - Interactive tool to explore and configure models
 - [Best Deployment Practices](best_deployment_practices.md)
 - [Architecture Overview](architecture.md)
