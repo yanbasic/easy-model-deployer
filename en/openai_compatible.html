@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/openai_compatible.html" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>OpenAI Compatible API - Easy Model Deployer</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="css/print-site.css" rel="stylesheet" />
+        <link href="css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "OpenAI Compatible API";
+        var mkdocs_page_input_path = "openai_compatible.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/openai_compatible.html";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="installation.html">Quick Start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="model-generator.html">Supported Models</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="best_deployment_practices.html">Best Deployment Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="commands.html">CLI Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_api.html">SDK API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_deployment.html">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_integration.html">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="swift_chat_integration.html">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="dify_integration.html">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="langflow_integration.html">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="flowise_integration.html">Flowise Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="ollama_integration.html">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="nextchat_integration.html">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Easy Model Deployer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">OpenAI Compatible API</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/openai_compatible.md">Edit on aws-samples/easy-model-deployer</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="openai-compatible-api">OpenAI Compatible API</h1>
+<p>EMD provides an OpenAI-compatible API interface for all deployed models, making it easy to integrate with existing tools and libraries that support the OpenAI API format.</p>
+<h2 id="overview">Overview</h2>
+<p>The OpenAI-compatible API allows you to:</p>
+<ul>
+<li>Use the familiar OpenAI API format for interacting with your deployed models</li>
+<li>Integrate with existing tools and libraries that support OpenAI's API</li>
+<li>Switch between OpenAI's services and your deployed models with minimal code changes</li>
+<li>Access advanced features like streaming responses and function calling</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>To use the OpenAI-compatible API with your deployed models:</p>
+<ol>
+<li>Deploy a model using EMD</li>
+<li>Retrieve the base URL and API key using <code>emd status</code></li>
+<li>Use the OpenAI client library or direct API calls to interact with your model</li>
+</ol>
+<h2 id="api-endpoints">API Endpoints</h2>
+<p>EMD's OpenAI-compatible API supports the following endpoints:</p>
+<ul>
+<li><code>/v1/models</code> - List available models</li>
+<li><code>/v1/chat/completions</code> - Create chat completions</li>
+<li><code>/v1/embeddings</code> - Generate embeddings</li>
+<li><code>/v1/rerank</code> - Rerank documents</li>
+<li><code>/v1/invocations</code> - General-purpose model invocations</li>
+<li><code>/v1/audio/transcriptions</code> - Transcribe audio (for supported models)</li>
+</ul>
+<h2 id="authentication">Authentication</h2>
+<p>All API requests require authentication using an API key. Include the API key in the <code>Authorization</code> header:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1">Authorization: Bearer YOUR_API_KEY
+</span></code></pre></div>
+<h2 id="examples">Examples</h2>
+<h3 id="chat-completions">Chat Completions</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+</span><span id="__span-1-2">
+</span><span id="__span-1-3"><span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">OpenAI</span><span class="p">(</span>
+</span><span id="__span-1-4">    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;YOUR_API_KEY&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5">    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://YOUR_EMD_ENDPOINT/v1&quot;</span>
+</span><span id="__span-1-6"><span class="p">)</span>
+</span><span id="__span-1-7">
+</span><span id="__span-1-8"><span class="c1"># Create a chat completion</span>
+</span><span id="__span-1-9"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span id="__span-1-10">    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;YOUR_MODEL_ID/dev&quot;</span><span class="p">,</span>  <span class="c1"># Model ID with tag</span>
+</span><span id="__span-1-11">    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-1-12">        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">},</span>
+</span><span id="__span-1-13">        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}</span>
+</span><span id="__span-1-14">    <span class="p">],</span>
+</span><span id="__span-1-15">    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+</span><span id="__span-1-16">    <span class="n">stream</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-1-17"><span class="p">)</span>
+</span><span id="__span-1-18">
+</span><span id="__span-1-19"><span class="c1"># Print the response</span>
+</span><span id="__span-1-20"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="streaming-example">Streaming Example</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+</span><span id="__span-2-2">
+</span><span id="__span-2-3"><span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+</span><span id="__span-2-4">    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;YOUR_API_KEY&quot;</span><span class="p">,</span>
+</span><span id="__span-2-5">    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://YOUR_EMD_ENDPOINT/v1&quot;</span>
+</span><span id="__span-2-6"><span class="p">)</span>
+</span><span id="__span-2-7">
+</span><span id="__span-2-8"><span class="c1"># Create a streaming chat completion</span>
+</span><span id="__span-2-9"><span class="n">stream</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span id="__span-2-10">    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;YOUR_MODEL_ID/dev&quot;</span><span class="p">,</span>  <span class="c1"># Model ID with tag</span>
+</span><span id="__span-2-11">    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-2-12">        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">},</span>
+</span><span id="__span-2-13">        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Write a short poem about AI.&quot;</span><span class="p">}</span>
+</span><span id="__span-2-14">    <span class="p">],</span>
+</span><span id="__span-2-15">    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-2-16"><span class="p">)</span>
+</span><span id="__span-2-17">
+</span><span id="__span-2-18"><span class="c1"># Process the stream</span>
+</span><span id="__span-2-19"><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="__span-2-20">    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-2-21">        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span id="__span-2-22"><span class="nb">print</span><span class="p">()</span>
+</span></code></pre></div>
+<h3 id="embeddings">Embeddings</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+</span><span id="__span-3-2">
+</span><span id="__span-3-3"><span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+</span><span id="__span-3-4">    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;YOUR_API_KEY&quot;</span><span class="p">,</span>
+</span><span id="__span-3-5">    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://YOUR_EMD_ENDPOINT/v1&quot;</span>
+</span><span id="__span-3-6"><span class="p">)</span>
+</span><span id="__span-3-7">
+</span><span id="__span-3-8"><span class="c1"># Get embeddings for a single text</span>
+</span><span id="__span-3-9"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span><span id="__span-3-10">    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;YOUR_EMBEDDING_MODEL_ID/dev&quot;</span><span class="p">,</span>  <span class="c1"># Embedding model ID with tag</span>
+</span><span id="__span-3-11">    <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;The food was delicious and the service was excellent.&quot;</span>
+</span><span id="__span-3-12"><span class="p">)</span>
+</span><span id="__span-3-13">
+</span><span id="__span-3-14"><span class="c1"># Print the embedding vector</span>
+</span><span id="__span-3-15"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">embedding</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="supported-features">Supported Features</h2>
+<p>Depending on the model and deployment configuration, the following features are supported:</p>
+<ul>
+<li><strong>Streaming responses</strong>: Real-time token generation</li>
+<li><strong>Function calling</strong>: For models that support it</li>
+<li><strong>Vision capabilities</strong>: For multimodal models</li>
+<li><strong>Custom parameters</strong>: Temperature, top_p, max_tokens, etc.</li>
+</ul>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li>Some advanced OpenAI API features may not be available depending on the model</li>
+<li>Performance characteristics may differ from OpenAI's models</li>
+<li>API response formats match OpenAI's but may include additional fields specific to EMD</li>
+</ul>
+<h2 id="additional-resources">Additional Resources</h2>
+<p>For more detailed information, see:</p>
+<ul>
+<li><a href="api.html">API Documentation</a></li>
+<li><a href="supported_models.html">Supported Models</a></li>
+<li><a href="sdk_integration.html">Integration Examples</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="js/print-site.js"></script>
+      <script src="copy-button.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/commands.html" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>CLI Commands - Easy Model Deployer</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="css/print-site.css" rel="stylesheet" />
+        <link href="css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "CLI Commands";
+        var mkdocs_page_input_path = "commands.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/commands.html";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="installation.html">Quick Start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="model-generator.html">Supported Models</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="best_deployment_practices.html">Best Deployment Practices</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">CLI Commands</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#command-details">Command Details</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#bootstrap">bootstrap</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deploy">deploy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#status">status</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#invoke">invoke</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example">example</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#destroy">destroy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#list-supported-models">list-supported-models</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#profile">profile</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#version">version</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#additional-resources">Additional Resources</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_api.html">SDK API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_deployment.html">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_integration.html">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="swift_chat_integration.html">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="dify_integration.html">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="langflow_integration.html">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="flowise_integration.html">Flowise Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="ollama_integration.html">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="nextchat_integration.html">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Easy Model Deployer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">CLI Commands</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/commands.md">Edit on aws-samples/easy-model-deployer</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cli-commands">CLI Commands</h1>
+<p>This document provides a comprehensive guide to the command-line interface (CLI) commands available in the Easy Model Deployer (EMD) tool.</p>
+<h2 id="overview">Overview</h2>
+<p>EMD provides the following main commands:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bootstrap</code></td>
+<td>Initialize AWS resources for model deployment</td>
+</tr>
+<tr>
+<td><code>deploy</code></td>
+<td>Deploy models to AWS infrastructure</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Display status of deployed models</td>
+</tr>
+<tr>
+<td><code>invoke</code></td>
+<td>Test deployed models with sample requests</td>
+</tr>
+<tr>
+<td><code>example</code></td>
+<td>Generate sample code for API integration</td>
+</tr>
+<tr>
+<td><code>destroy</code></td>
+<td>Remove deployed models and clean up resources</td>
+</tr>
+<tr>
+<td><code>list-supported-models</code></td>
+<td>Display available models</td>
+</tr>
+<tr>
+<td><code>profile</code></td>
+<td>Configure AWS profile credentials</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Display tool version information</td>
+</tr>
+</tbody>
+</table>
+<h2 id="command-details">Command Details</h2>
+<h3 id="bootstrap">bootstrap</h3>
+<p>Initialize AWS resources required for model deployment.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1">emd<span class="w"> </span>bootstrap<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</span></code></pre></div>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--skip-confirm</code></td>
+<td>Skip confirmation prompts</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1">emd<span class="w"> </span>bootstrap
+</span></code></pre></div>
+<p>This command creates the necessary AWS resources, including an S3 bucket and CloudFormation stack, required for model deployment.</p>
+<h3 id="deploy">deploy</h3>
+<p>Deploy models to AWS infrastructure.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1">emd<span class="w"> </span>deploy<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</span></code></pre></div>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--model-id TEXT</code></td>
+<td>Model ID to deploy</td>
+</tr>
+<tr>
+<td><code>-i, --instance-type TEXT</code></td>
+<td>The instance type to use</td>
+</tr>
+<tr>
+<td><code>-e, --engine-type TEXT</code></td>
+<td>The name of the inference engine</td>
+</tr>
+<tr>
+<td><code>-s, --service-type TEXT</code></td>
+<td>The name of the service</td>
+</tr>
+<tr>
+<td><code>--framework-type TEXT</code></td>
+<td>The name of the framework</td>
+</tr>
+<tr>
+<td><code>--model-tag TEXT</code></td>
+<td>Custom tag for the model deployment</td>
+</tr>
+<tr>
+<td><code>--extra-params TEXT</code></td>
+<td>Extra parameters in JSON format</td>
+</tr>
+<tr>
+<td><code>--skip-confirm</code></td>
+<td>Skip confirmation prompts</td>
+</tr>
+<tr>
+<td><code>--force-update-env-stack</code></td>
+<td>Force update environment stack</td>
+</tr>
+<tr>
+<td><code>--allow-local-deploy</code></td>
+<td>Allow local instance deployment</td>
+</tr>
+<tr>
+<td><code>--only-allow-local-deploy</code></td>
+<td>Only allow local instance deployment</td>
+</tr>
+<tr>
+<td><code>--dockerfile-local-path TEXT</code></td>
+<td>Custom Dockerfile path for building the model image</td>
+</tr>
+<tr>
+<td><code>--local-gpus TEXT</code></td>
+<td>Local GPU IDs to deploy the model (e.g., <code>0,1,2</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<p>Deploy a model with interactive prompts:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1">emd<span class="w"> </span>deploy
+</span></code></pre></div></p>
+<p>Deploy a specific model with parameters:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--instance-type<span class="w"> </span>g5.2xlarge<span class="w"> </span>--engine-type<span class="w"> </span>vllm<span class="w"> </span>--service-type<span class="w"> </span>sagemaker_realtime
+</span></code></pre></div></p>
+<p>Deploy a model locally:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1">emd<span class="w"> </span>deploy<span class="w"> </span>--allow-local-deploy
+</span></code></pre></div></p>
+<p>Deploy with custom parameters:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{&quot;engine_params&quot;: {&quot;cli_args&quot;: &quot;--max_model_len 16000 --max_num_seqs 4&quot;}}&#39;</span>
+</span></code></pre></div></p>
+<h3 id="status">status</h3>
+<p>Display the status of deployed models.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1">emd<span class="w"> </span>status<span class="w"> </span><span class="o">[</span>MODEL_ID<span class="o">]</span><span class="w"> </span><span class="o">[</span>MODEL_TAG<span class="o">]</span>
+</span></code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MODEL_ID</code></td>
+<td>Optional model ID to check status for</td>
+</tr>
+<tr>
+<td><code>MODEL_TAG</code></td>
+<td>Optional model tag (defaults to "dev")</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<p>Check status of all deployed models:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1">emd<span class="w"> </span>status
+</span></code></pre></div></p>
+<p>Check status of a specific model:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1">emd<span class="w"> </span>status<span class="w"> </span>Qwen2.5-7B-Instruct
+</span></code></pre></div></p>
+<p>Check status of a specific model with a custom tag:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1">emd<span class="w"> </span>status<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>custom-tag
+</span></code></pre></div></p>
+<h3 id="invoke">invoke</h3>
+<p>Test deployed models with sample requests.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1">emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span><span class="o">[</span>MODEL_TAG<span class="o">]</span>
+</span></code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MODEL_ID</code></td>
+<td>Model ID to invoke</td>
+</tr>
+<tr>
+<td><code>MODEL_TAG</code></td>
+<td>Optional model tag (defaults to "dev")</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<p>Invoke a model:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1">emd<span class="w"> </span>invoke<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B
+</span></code></pre></div></p>
+<p>Invoke a model with a custom tag:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1">emd<span class="w"> </span>invoke<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>custom-tag
+</span></code></pre></div></p>
+<h3 id="example">example</h3>
+<p>Generate sample code for API integration with a deployed model.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1">emd<span class="w"> </span>example<span class="w"> </span>MODEL_ID/MODEL_TAG
+</span></code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MODEL_ID/MODEL_TAG</code></td>
+<td>Model ID and optional tag (separated by "/")</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<p>Generate examples for a model:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1">emd<span class="w"> </span>example<span class="w"> </span>Qwen2.5-7B-Instruct
+</span></code></pre></div></p>
+<p>Generate examples for a model with a custom tag:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1">emd<span class="w"> </span>example<span class="w"> </span>Qwen2.5-7B-Instruct/custom-tag
+</span></code></pre></div></p>
+<h3 id="destroy">destroy</h3>
+<p>Remove deployed models and clean up resources.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1">emd<span class="w"> </span>destroy<span class="w"> </span>MODEL_ID<span class="w"> </span><span class="o">[</span>MODEL_TAG<span class="o">]</span>
+</span></code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MODEL_ID</code></td>
+<td>Model ID to destroy</td>
+</tr>
+<tr>
+<td><code>MODEL_TAG</code></td>
+<td>Optional model tag (defaults to "dev")</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<p>Destroy a model:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1">emd<span class="w"> </span>destroy<span class="w"> </span>Qwen2.5-7B-Instruct
+</span></code></pre></div></p>
+<p>Destroy a model with a custom tag:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1">emd<span class="w"> </span>destroy<span class="w"> </span>Qwen2.5-7B-Instruct<span class="w"> </span>custom-tag
+</span></code></pre></div></p>
+<h3 id="list-supported-models">list-supported-models</h3>
+<p>Display available models that can be deployed.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1">emd<span class="w"> </span>list-supported-models<span class="w"> </span><span class="o">[</span>MODEL_ID<span class="o">]</span><span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</span></code></pre></div>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MODEL_ID</code></td>
+<td>Optional model ID to filter results</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-a, --detail</code></td>
+<td>Output model information in detail</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<p>List all supported models:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1">emd<span class="w"> </span>list-supported-models
+</span></code></pre></div></p>
+<p>List detailed information for all models:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1">emd<span class="w"> </span>list-supported-models<span class="w"> </span>--detail
+</span></code></pre></div></p>
+<p>List information for a specific model:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1">emd<span class="w"> </span>list-supported-models<span class="w"> </span>Qwen2.5-7B-Instruct
+</span></code></pre></div></p>
+<h3 id="profile">profile</h3>
+<p>Configure AWS profile credentials for deployment.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1">emd<span class="w"> </span>profile<span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>
+</span></code></pre></div>
+<p><strong>Commands:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>set-default-profile-name [NAME]</code></td>
+<td>Set the default profile name for deployment</td>
+</tr>
+<tr>
+<td><code>show-default-profile-name</code></td>
+<td>Show current default profile</td>
+</tr>
+<tr>
+<td><code>remove-default-profile-name</code></td>
+<td>Remove the default profile</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<p>Set a default AWS profile:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1">emd<span class="w"> </span>profile<span class="w"> </span>set-default-profile-name<span class="w"> </span>my-profile
+</span></code></pre></div></p>
+<p>Show the current default profile:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1">emd<span class="w"> </span>profile<span class="w"> </span>show-default-profile-name
+</span></code></pre></div></p>
+<p>Remove the default profile:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1">emd<span class="w"> </span>profile<span class="w"> </span>remove-default-profile-name
+</span></code></pre></div></p>
+<h3 id="version">version</h3>
+<p>Display the current version of the EMD tool.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1">emd<span class="w"> </span>version
+</span></code></pre></div>
+<p><strong>Example:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1">emd<span class="w"> </span>version
+</span></code></pre></div>
+<h2 id="environment-variables">Environment Variables</h2>
+<ul>
+<li><code>LOCAL_DEPLOY_PORT</code>: Local deployment port (default: <code>8080</code>)</li>
+</ul>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="installation.html">Installation Guide</a></li>
+<li><a href="best_deployment_practices.html">Best Deployment Practices</a></li>
+<li><a href="supported_models.html">Supported Models</a></li>
+<li><a href="langchain_interface.html">Langchain Interface</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="best_deployment_practices.html" class="btn btn-neutral float-left" title="Best Deployment Practices"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
+    
+    
+      <span><a href="best_deployment_practices.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="api.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="js/print-site.js"></script>
+      <script src="copy-button.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

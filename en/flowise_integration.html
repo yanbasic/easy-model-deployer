@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/flowise_integration.html" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Flowise Integration - Easy Model Deployer</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="css/print-site.css" rel="stylesheet" />
+        <link href="css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Flowise Integration";
+        var mkdocs_page_input_path = "flowise_integration.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/flowise_integration.html";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="installation.html">Quick Start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="model-generator.html">Supported Models</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="best_deployment_practices.html">Best Deployment Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="commands.html">CLI Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_api.html">SDK API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_deployment.html">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_integration.html">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="swift_chat_integration.html">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="dify_integration.html">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="langflow_integration.html">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Flowise Integration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#key-features-of-flowise">Key Features of Flowise</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#integrating-emd-models-with-flowise">Integrating EMD Models with Flowise</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-steps">Configuration Steps</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example-use-cases">Example Use Cases</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#additional-resources">Additional Resources</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="ollama_integration.html">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="nextchat_integration.html">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Easy Model Deployer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Flowise Integration</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/flowise_integration.md">Edit on aws-samples/easy-model-deployer</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="flowise-integration">Flowise Integration</h1>
+<p>This guide covers how to integrate EMD-deployed models with <a href="https://github.com/FlowiseAI/Flowise">Flowise</a>, an open-source UI for building LLM applications.</p>
+<h2 id="overview">Overview</h2>
+<p>Flowise is a powerful drag-and-drop interface for building custom AI workflows. It provides a visual way to connect various components like language models, embeddings, vector stores, and more to create complex LLM applications without writing code. By integrating EMD-deployed models with Flowise, you can leverage your custom models in sophisticated AI workflows.</p>
+<p>With Flowise, you can:
+- Build LLM applications using a visual interface
+- Connect your EMD-deployed models to various components
+- Create chatbots, document Q&amp;A systems, and other AI applications
+- Deploy your workflows as API endpoints
+- Share your workflows with others</p>
+<h2 id="key-features-of-flowise">Key Features of Flowise</h2>
+<ul>
+<li><strong>Visual Flow Builder</strong>: Drag-and-drop interface for creating AI workflows</li>
+<li><strong>Component Library</strong>: Pre-built components for various LLM operations</li>
+<li><strong>API Deployment</strong>: Deploy your workflows as API endpoints</li>
+<li><strong>Chatbot Interface</strong>: Built-in chatbot interface for testing</li>
+<li><strong>Custom Components</strong>: Add your own custom components</li>
+<li><strong>Marketplace</strong>: Share and discover workflows created by the community</li>
+</ul>
+<h2 id="integrating-emd-models-with-flowise">Integrating EMD Models with Flowise</h2>
+<p>EMD-deployed models can be integrated with Flowise through its OpenAI API compatibility. This allows you to use your custom models in various Flowise components that support OpenAI-compatible APIs.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ol>
+<li>You have successfully deployed a model using EMD with the OpenAI Compatible API enabled</li>
+<li>You have installed and set up Flowise (either <a href="https://github.com/FlowiseAI/Flowise#installation">locally</a> or using <a href="https://github.com/FlowiseAI/Flowise#docker">Docker</a>)</li>
+<li>You have the base URL and API key for your deployed model</li>
+</ol>
+<h3 id="configuration-steps">Configuration Steps</h3>
+<ol>
+<li>Launch Flowise and log in to the interface</li>
+<li>Create a new canvas or open an existing one</li>
+<li>From the components panel, search for and add the "ChatOpenAI" component to your canvas</li>
+<li>Configure the ChatOpenAI component with the following settings:</li>
+<li><strong>Base URL</strong>: The endpoint URL of your EMD-deployed model (e.g., <code>https://your-endpoint.execute-api.region.amazonaws.com</code>)</li>
+<li><strong>API Key</strong>: Your API key for accessing the model</li>
+<li><strong>Model Name</strong>: The ID of your deployed model</li>
+<li>Connect the ChatOpenAI component to other components in your workflow</li>
+<li>Test your workflow using the built-in chatbot interface</li>
+</ol>
+<h2 id="example-use-cases">Example Use Cases</h2>
+<p>With your EMD models integrated into Flowise, you can build various applications:</p>
+<ul>
+<li><strong>Conversational AI</strong>: Create chatbots and virtual assistants using your custom models</li>
+<li><strong>Document Q&amp;A</strong>: Build systems that can answer questions based on document content</li>
+<li><strong>Knowledge Bases</strong>: Create searchable knowledge bases with RAG (Retrieval-Augmented Generation)</li>
+<li><strong>Content Generation</strong>: Generate content based on specific inputs and constraints</li>
+<li><strong>Data Analysis</strong>: Extract insights from structured and unstructured data</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>If you encounter issues connecting to your EMD-deployed model:</p>
+<ol>
+<li>Verify that your model is properly deployed and running</li>
+<li>Check that the Base URL is correct and includes the full endpoint path</li>
+<li>Ensure your API key has the necessary permissions</li>
+<li>Confirm that your model ID exactly matches the deployed model's identifier</li>
+<li>Check the Flowise logs for any error messages</li>
+</ol>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://github.com/FlowiseAI/Flowise">Flowise GitHub Repository</a></li>
+<li><a href="https://docs.flowiseai.com">Flowise Documentation</a></li>
+<li><a href="supported_models.html">EMD Supported Models</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="langflow_integration.html" class="btn btn-neutral float-left" title="LangFlow Integration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="ollama_integration.html" class="btn btn-neutral float-right" title="Ollama Integration">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
+    
+    
+      <span><a href="langflow_integration.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="ollama_integration.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="js/print-site.js"></script>
+      <script src="copy-button.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

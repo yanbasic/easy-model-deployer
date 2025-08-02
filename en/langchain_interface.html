@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/langchain_interface.html" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Usse Langchain interface to invoke deployed models - Easy Model Deployer</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="css/print-site.css" rel="stylesheet" />
+        <link href="css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Usse Langchain interface to invoke deployed models";
+        var mkdocs_page_input_path = "langchain_interface.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/langchain_interface.html";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="installation.html">Quick Start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="model-generator.html">Supported Models</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="best_deployment_practices.html">Best Deployment Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="commands.html">CLI Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_api.html">SDK API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_deployment.html">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="sdk_integration.html">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="swift_chat_integration.html">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="dify_integration.html">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="langflow_integration.html">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="flowise_integration.html">Flowise Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="ollama_integration.html">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="nextchat_integration.html">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Easy Model Deployer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Usse Langchain interface to invoke deployed models</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/langchain_interface.md">Edit on aws-samples/easy-model-deployer</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="usse-langchain-interface-to-invoke-deployed-models">Usse Langchain interface to invoke deployed models</h1>
+<h2 id="llm-models">LLM models</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmChatModel</span>
+</span><span id="__span-0-2"><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+</span><span id="__span-0-3"><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">HumanMessage</span><span class="p">,</span><span class="n">AIMessage</span><span class="p">,</span><span class="n">SystemMessage</span>
+</span><span id="__span-0-4"><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.tools.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredTool</span>
+</span><span id="__span-0-5"><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.function_calling</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="__span-0-6">    <span class="n">convert_to_openai_function</span><span class="p">,</span>
+</span><span id="__span-0-7">    <span class="n">convert_to_openai_tool</span>
+</span><span id="__span-0-8"><span class="p">)</span>
+</span><span id="__span-0-9"><span class="n">chat_model</span> <span class="o">=</span> <span class="n">SageMakerVllmChatModel</span><span class="p">(</span>
+</span><span id="__span-0-10">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-0-11">    <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-0-12">        <span class="s2">&quot;temperature&quot;</span><span class="p">:</span><span class="mf">0.5</span><span class="p">,</span>
+</span><span id="__span-0-13">    <span class="p">}</span>
+</span><span id="__span-0-14"><span class="p">)</span>
+</span><span id="__span-0-15"><span class="n">chain</span> <span class="o">=</span> <span class="n">chat_model</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+</span><span id="__span-0-16"><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-0-17">        <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;9.11和9.9两个数字哪个更大？&quot;</span><span class="p">),</span>
+</span><span id="__span-0-18">    <span class="p">]</span>
+</span><span id="__span-0-19"><span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">))</span>
+</span></code></pre></div>
+<h2 id="vlm-models">VLM models</h2>
+<ol>
+<li>
+<p>upload image to a s3 path
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1">aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
+</span></code></pre></div></p>
+</li>
+<li>
+<p>invoke the model
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1">emd<span class="w"> </span>invoke<span class="w">  </span>Qwen2-VL-7B-Instruct
+</span><span id="__span-2-2">...
+</span><span id="__span-2-3">Invoking<span class="w"> </span>model<span class="w"> </span>Qwen2-VL-7B-Instruct<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+</span><span id="__span-2-4">Enter<span class="w"> </span>image<span class="w"> </span>path<span class="o">(</span><span class="nb">local</span><span class="w"> </span>or<span class="w"> </span>s3<span class="w"> </span>file<span class="o">)</span>:<span class="w"> </span>s3://your-bucket/image.jpg
+</span><span id="__span-2-5">Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err">&#39;</span>s<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>image?
+</span><span id="__span-2-6">...
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="videotxt2video-models">Video(Txt2Video) models</h3>
+<p>Not supported</p>
+<h2 id="embedding-models">Embedding models</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</span><span id="__span-3-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmEmbeddings</span>
+</span><span id="__span-3-3"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmRerank</span>
+</span><span id="__span-3-4"><span class="n">embedding_model</span> <span class="o">=</span> <span class="n">SageMakerVllmEmbeddings</span><span class="p">(</span>
+</span><span id="__span-3-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-m3&quot;</span><span class="p">,</span>
+</span><span id="__span-3-6"><span class="p">)</span>
+</span><span id="__span-3-7"><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;</span>
+</span><span id="__span-3-8"><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span id="__span-3-9"><span class="n">r1</span> <span class="o">=</span> <span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span id="__span-3-10"><span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span id="__span-3-11"><span class="n">embedding_model</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">([</span><span class="n">text</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+</span><span id="__span-3-12"><span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span id="__span-3-13"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_query: </span><span class="si">{</span><span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-3-14"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;embed_documents: </span><span class="si">{</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="rerank-models">Rerank models</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</span><span id="__span-4-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.integrations.langchain_clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerVllmRerank</span>
+</span><span id="__span-4-3"><span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;hi&quot;</span><span class="p">,</span><span class="s1">&#39;The giant panda (Ailuropoda melanoleuca), sometimes called a panda bear or simply panda, is a bear species endemic to China.&#39;</span><span class="p">]</span>
+</span><span id="__span-4-4"><span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;what is panda?&#39;</span>
+</span><span id="__span-4-5"><span class="n">rerank_model</span> <span class="o">=</span> <span class="n">SageMakerVllmRerank</span><span class="p">(</span>
+</span><span id="__span-4-6">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-reranker-v2-m3&quot;</span>
+</span><span id="__span-4-7"><span class="p">)</span>
+</span><span id="__span-4-8"><span class="nb">print</span><span class="p">(</span><span class="n">rerank_model</span><span class="o">.</span><span class="n">rerank</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span><span class="n">documents</span><span class="o">=</span><span class="n">docs</span><span class="p">))</span>
+</span></code></pre></div>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="js/print-site.js"></script>
+      <script src="copy-button.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
