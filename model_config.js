@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-08-02T08:09:04.368766
+// Generated at: 2025-08-03T12:58:44.641751
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-08-02T08:09:04.368766",
+    "generated_at": "2025-08-03T12:58:44.641751",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
@@ -978,6 +978,64 @@ window.EMD_MODEL_CONFIG = {
       "allow_china_region": true,
       "huggingface_model_id": "Qwen/Qwen3-30B-A3B",
       "modelscope_model_id": "Qwen/Qwen3-30B-A3B",
+      "model_series": {
+        "name": "qwen3",
+        "description": "the latest addition to the Qwen family of large language models. These models represent our most advanced and intelligent systems to date, improving from our experience in building QwQ and Qwen2.5. We are making the weights of Qwen3 available to the public, including both dense and Mixture-of-Expert (MoE) models.",
+        "reference_link": "https://github.com/QwenLM/Qwen3"
+      }
+    },
+    "Qwen3-30B-A3B-Instruct-2507": {
+      "model_id": "Qwen3-30B-A3B-Instruct-2507",
+      "model_type": "llm",
+      "description": "Qwen3-30B-A3B-Instruct-2507 is an updated instruction-tuned version featuring significant improvements in general capabilities, including instruction following, logical reasoning, text comprehension, mathematics, science, coding and tool usage, with enhanced 256K long-context understanding and better alignment with user preferences.",
+      "application_scenario": "Agent, tool use, translation, summary, instruction following, reasoning",
+      "supported_instances": [
+        "g5.12xlarge",
+        "g5.24xlarge",
+        "g5.48xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async",
+        "ecs",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "modelscope_model_id": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+      "model_series": {
+        "name": "qwen3",
+        "description": "the latest addition to the Qwen family of large language models. These models represent our most advanced and intelligent systems to date, improving from our experience in building QwQ and Qwen2.5. We are making the weights of Qwen3 available to the public, including both dense and Mixture-of-Expert (MoE) models.",
+        "reference_link": "https://github.com/QwenLM/Qwen3"
+      }
+    },
+    "Qwen3-30B-A3B-Thinking-2507": {
+      "model_id": "Qwen3-30B-A3B-Thinking-2507",
+      "model_type": "llm",
+      "description": "Qwen3-30B-A3B-Thinking-2507 is an enhanced thinking-enabled version featuring significantly improved performance on reasoning tasks, including logical reasoning, mathematics, science, coding, and academic benchmarks. This model supports only thinking mode with enhanced 256K long-context understanding and markedly better general capabilities for highly complex reasoning tasks.",
+      "application_scenario": "Advanced reasoning, mathematics, science, coding, logical reasoning, complex problem solving",
+      "supported_instances": [
+        "g5.12xlarge",
+        "g5.24xlarge",
+        "g5.48xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async",
+        "ecs",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "Qwen/Qwen3-30B-A3B-Thinking-2507",
+      "modelscope_model_id": "Qwen/Qwen3-30B-A3B-Thinking-2507",
       "model_series": {
         "name": "qwen3",
         "description": "the latest addition to the Qwen family of large language models. These models represent our most advanced and intelligent systems to date, improving from our experience in building QwQ and Qwen2.5. We are making the weights of Qwen3 available to the public, including both dense and Mixture-of-Expert (MoE) models.",
