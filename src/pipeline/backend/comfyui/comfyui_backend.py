@@ -67,7 +67,9 @@ class ComfyUIBackend(BackendBase):
     def start(self):
         # model_dir = f"emd_models/{self.model_id}"
         # logger.info(f"Downloading model from s3")
-        # sync_s3_files_or_folders_to_local(self.model_s3_bucket, model_dir, ROOT_PATH)
+        model_dir = "font_dir"
+        local_font_dir = "/home/ubuntu/ComfyUI/custom_nodes/Comfyui-PaddleOCR/nodes/font_dir"
+        sync_s3_files_or_folders_to_local(self.model_s3_bucket, model_dir, local_font_dir)
 
         os.system("bash backend/comfyui/start.sh > comfyui.log 2>&1 &")
         while True:
@@ -752,6 +754,7 @@ class ComfyUIBackend(BackendBase):
         return response_data
 
     def invoke(self, request):
+        print('@@@@@@@@@@ task type is', request['taskType'])
         if "taskType" in request:
             if request["taskType"] == "BACKGROUND_REMOVAL":
                 response = self._remove_background(request["backgroundRemovalParams"]["image"])
@@ -894,6 +897,7 @@ class ComfyUIBackend(BackendBase):
                     raise ValueError("Either maskPrompt or maskImage must be provided")
                 return self._get_response(response)   
             elif request["taskType"] == "WORKFLOW":
+                print('!!!!!!!!! request to comfyui for image generation')
                 return self._ainvoke_comfyui(request["workflow"])
             else:
                 raise ValueError("Invalid taskType")
