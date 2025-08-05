@@ -97,6 +97,12 @@ RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
 RUN cd /home/ubuntu/ComfyUI/custom_nodes/Comfyui-PaddleOCR && \
     git pull
 
+RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
+git clone https://github.com/2kpr/ComfyUI-PMRF.git
+
+RUN pip install natten==0.17.5+torch260cu126 -f https://whl.natten.org
+
+
 # Set the serve script as the entrypoint
 EXPOSE 8188
 ENTRYPOINT ["/usr/bin/serve"]
