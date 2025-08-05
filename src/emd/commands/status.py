@@ -8,6 +8,8 @@ from emd.utils.decorators import catch_aws_credential_errors, check_emd_env_exis
 from emd.utils.logger_utils import make_layout
 from rich.console import Console
 from rich.table import Table
+from rich.spinner import Spinner
+from rich.live import Live
 
 app = typer.Typer(pretty_exceptions_enable=False)
 console = Console()
@@ -26,24 +28,46 @@ def status(
         str, typer.Argument(help="Model tag")
     ] = MODEL_DEFAULT_TAG,
 ):
-    ret = get_model_status(model_id, model_tag=model_tag)
+    with console.status("[bold green]Fetching model deployment status. Please wait patiently", spinner="dots"):
+        ret = get_model_status(model_id, model_tag=model_tag)
+
     inprogress = ret['inprogress']
     completed = ret['completed']
 
     data = []
+    cli_messages = []  # Store CLI messages for display after the table
+
+    # Process all in-progress executions (now includes enhanced pipeline-stack logic)
     for d in inprogress:
         if d['status'] == "Stopped":
             continue
+
+        # Use enhanced status if available, otherwise fall back to original logic
+        if d.get('enhanced_status'):
+            display_status = d['enhanced_status']
+        else:
+            display_status = f"{d['status']} ({d['stage_name']})" if d.get('stage_name') else d['status']
+
         data.append({
             "model_id": d['model_id'],
             "model_tag": d['model_tag'],
-            "status": f"{d['status']} ({d['stage_name']})",
-            "service_type": d['service_type'],
-            "instance_type": d['instance_type'],
-            "create_time": d['create_time'],
-            "outputs": d['outputs'],
+            "status": display_status,
+            "service_type": d.get('service_type', ''),
+            "instance_type": d.get('instance_type', ''),
+            "create_time": d.get('create_time', ''),
+            "outputs": d.get('outputs', ''),  # Use .get() to handle missing outputs field
         })
 
+        # Collect CLI messages for this model
+        if d.get('cli_message'):
+            model_name = f"{d['model_id']}/{d['model_tag']}"
+            cli_messages.append({
+                'model_name': model_name,
+                'message_type': d['cli_message'],
+                'stack_name': d.get('stack_name', '')
+            })
+
+    # Process completed models
     for d in completed:
         data.append({
             "model_id": d['model_id'],
@@ -79,8 +103,6 @@ def status(
     # Display the Models section
     console.print("\nModels", style="bold")
 
-    # Create a custom box style without vertical lines
-
     # Create a single table for all models with normal horizontal lines but no vertical lines
     models_table = Table(show_header=False, expand=True)
 
@@ -88,7 +110,7 @@ def status(
     models_table.add_column(justify="left", style="cyan", width=22)
     models_table.add_column(justify="left", overflow="fold")
 
-    # Add each model to the table
+    # Add each model to the table (now shows ALL parallel executions)
     for model_data in data:
         # Add model name as a name/value pair with bold styling
         model_name = f"{model_data['model_id']}/{model_data['model_tag']}"
@@ -146,6 +168,29 @@ def status(
 
     # Display the table
     console.print(models_table)
+
+    # Display CLI messages for user guidance
+    if cli_messages:
+        console.print("\n" + "=" * 60, style="dim")
+        console.print("📋 Action Required", style="bold yellow")
+        console.print("=" * 60, style="dim")
+
+        for msg in cli_messages:
+            model_name = msg['model_name']
+            message_type = msg['message_type']
+
+            if message_type == 'cleanup_warning':
+                stack_name = msg['stack_name']
+                console.print(f"\n🔧 [bold]{model_name}[/bold]")
+                console.print("   [yellow]⚠️  Failed stack detected. Manual cleanup required:[/yellow]")
+                console.print(f"   [dim]aws cloudformation delete-stack --stack-name {stack_name}[/dim]")
+
+            elif message_type == 'codepipeline_console':
+                console.print(f"\n🔍 [bold]{model_name}[/bold]")
+                console.print("   [blue]💡 Check CodePipeline console for detailed logs:[/blue]")
+                console.print("   [dim]AWS Console → CodePipeline → EMD-Env-Pipeline[/dim]")
+
+        console.print()
 
     # Display the Base URL section after the Models
     console.print("\nBase URL", style="bold")

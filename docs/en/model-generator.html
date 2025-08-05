@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMD Model Deploy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Full screen model table */
+        .models-table-section {
+            flex: 1;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 8px 20px;
+            background: #34495e;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .table-stats {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .models-table-container {
+            flex: 1;
+            overflow: auto;
+            padding: 0;
+        }
+
+        .models-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .models-table th {
+            background: #495057;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .models-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        .models-table tbody tr:hover {
+            background: #e3f2fd;
+            cursor: pointer;
+        }
+
+        .models-table tbody tr.selected {
+            background: #bbdefb;
+        }
+
+        .model-type-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .model-type-llm { background: #e3f2fd; color: #1976d2; }
+        .model-type-vlm { background: #f3e5f5; color: #7b1fa2; }
+        .model-type-embedding { background: #e8f5e8; color: #388e3c; }
+        .model-type-whisper { background: #fff3e0; color: #f57c00; }
+        .model-type-rerank { background: #fce4ec; color: #c2185b; }
+
+        .china-region {
+            color: #d32f2f;
+            font-weight: 500;
+        }
+
+        .instances-list, .engines-list, .services-list {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Sliding panel - Right side */
+        .sliding-panel {
+            position: fixed;
+            right: -600px;
+            top: 0;
+            width: 600px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 20px rgba(0, 0, 0, 0.3);
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sliding-panel.open {
+            right: 0;
+        }
+
+        .panel-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .panel-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .panel-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Configuration section in panel */
+        .config-section {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .config-section h4 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Results section in panel */
+        .results-section {
+            height: 40%;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border-top: 2px solid #34495e;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-input {
+            position: relative;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+
+        .suggestion-item.highlighted {
+            background: #e3f2fd;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .config-flat {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .param-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .param-section h5 {
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .service-specific-params,
+        .engine-specific-params {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            margin-left: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+
+        .command-section {
+            margin: 20px;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .command-output {
+            background: #1a252f;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: white;
+            resize: none;
+            outline: none;
+        }
+
+        .command-output.empty {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .command-output:focus {
+            outline: 2px solid rgba(102, 126, 234, 0.5);
+            outline-offset: -2px;
+        }
+
+        .copy-button-side {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copy-button-side .btn {
+            writing-mode: initial;
+            text-orientation: initial;
+            padding: 10px;
+            min-height: 40px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: normal;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-transform: none;
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .copy-button-side .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .copy-button-side .btn:hover::before {
+            left: 100%;
+        }
+
+        .copy-button-side .btn svg {
+            margin-right: 0;
+            z-index: 1;
+            position: relative;
+        }
+
+        .copy-button-side .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-button-side .btn-primary {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: rgba(59, 130, 246, 1);
+        }
+
+        .copy-button-side .btn-primary:hover {
+            background: rgba(59, 130, 246, 0.5);
+            border-color: rgba(59, 130, 246, 0.6);
+            color: white;
+        }
+
+        .copy-button-side .btn-secondary {
+            background: rgba(107, 114, 128, 0.3);
+            border-color: rgba(107, 114, 128, 0.4);
+            color: rgba(107, 114, 128, 1);
+        }
+
+        .copy-button-side .btn-secondary:hover {
+            background: rgba(107, 114, 128, 0.5);
+            border-color: rgba(107, 114, 128, 0.6);
+            color: white;
+        }
+
+        /* Modern unified toggle switch */
+        .modern-toggle-container {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .modern-toggle-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .modern-toggle-container:hover::before {
+            left: 100%;
+        }
+
+        .modern-toggle-container:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modern-toggle {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+            margin-right: 8px;
+            pointer-events: none;
+        }
+
+        .modern-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.3);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .modern-toggle input:checked + .toggle-slider {
+            background-color: rgba(59, 130, 246, 0.8);
+            border-color: rgba(59, 130, 246, 1);
+        }
+
+        .modern-toggle input:checked + .toggle-slider:before {
+            transform: translateX(16px);
+        }
+
+        .toggle-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.75rem;
+            font-weight: 500;
+            z-index: 1;
+            position: relative;
+            pointer-events: none;
+        }
+
+        .model-info {
+            background: #34495e;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+
+        .model-info h4 {
+            margin-bottom: 6px;
+            color: #ecf0f1;
+            font-size: 0.9rem;
+        }
+
+        .model-info p {
+            color: #bdc3c7;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .model-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .model-badge {
+            display: inline-block;
+            padding: 3px 6px;
+            background: #667eea;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+
+        .model-links {
+            margin-top: 8px;
+        }
+
+        .model-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .model-links a:hover {
+            text-decoration: underline;
+        }
+
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            font-size: 0.9rem;
+        }
+
+        .copy-success.show {
+            transform: translateX(0);
+        }
+
+        /* Panel overlay */
+        .panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .panel-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .sliding-panel {
+                width: 100vw;
+                right: -100vw;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .models-table {
+                font-size: 0.8rem;
+            }
+
+            .models-table th, .models-table td {
+                padding: 8px 4px;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Panel Overlay -->
+    <div class="panel-overlay" id="panelOverlay"></div>
+
+    <!-- Sliding Panel -->
+    <div class="sliding-panel" id="slidingPanel">
+        <div class="panel-header">
+            <h3>CLI Generator</h3>
+            <button class="panel-close" id="panelClose">×</button>
+        </div>
+        <div class="panel-content">
+            <!-- Configuration Section -->
+            <div class="config-section">
+                <form id="modelConfigForm">
+                    <div class="form-group">
+                        <label for="modelSearch">Model ID (Fuzzy Search)</label>
+                        <div class="search-input">
+                            <input type="text" id="modelSearch" class="form-control"
+                                   placeholder="Type to search models (e.g., 'qwen', 'deep', 'glm')..."
+                                   autocomplete="off">
+                            <div id="searchSuggestions" class="search-suggestions"></div>
+                        </div>
+                    </div>
+
+                    <div id="selectedModelInfo" class="model-info" style="display: none;">
+                        <h4 id="modelInfoTitle">Model Information</h4>
+                        <p id="modelInfoDescription"></p>
+                        <div id="modelInfoBadges" class="model-badges"></div>
+                        <div id="modelInfoLinks" class="model-links"></div>
+                    </div>
+
+                    <div class="config-grid">
+                        <div class="form-group">
+                            <label for="instanceType">Instance Type</label>
+                            <select id="instanceType" class="form-control" required>
+                                <option value="">Select instance type...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="engineType">Engine Type</label>
+                            <select id="engineType" class="form-control" required>
+                                <option value="">Select engine type...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="config-grid">
+                        <div class="form-group">
+                            <label for="serviceType">Service Type</label>
+                            <select id="serviceType" class="form-control" required>
+                                <option value="sagemaker_realtime">SageMaker Realtime</option>
+                                <option value="sagemaker_async">SageMaker Async</option>
+                                <option value="ecs">ECS</option>
+                                <option value="local">Local</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="modelTag">Model Tag</label>
+                            <input type="text" id="modelTag" class="form-control" placeholder="dev" value="dev">
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 20px 0 15px 0; color: #2c3e50; font-size: 1rem;">Extra Parameters</h4>
+
+                    <div class="config-flat">
+                        <!-- Model Parameters Section -->
+                        <div class="param-section">
+                            <h5 style="color: #34495e; margin-bottom: 10px; font-size: 0.9rem; font-weight: 600;">📦 Model Parameters</h5>
+
+                            <div class="config-grid">
+                                <div class="form-group">
+                                    <label for="modelFilesS3Path">Model S3 Path</label>
+                                    <input type="text" id="modelFilesS3Path" class="form-control"
+                                           placeholder="s3://bucket/model-path"
+                                           title="Load model directly from S3 path">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modelFilesDownloadSource">Download Source</label>
+                                    <select id="modelFilesDownloadSource" class="form-control"
+                                            title="Specify the source for downloading model files">
+                                        <option value="">Auto (default)</option>
+                                        <option value="huggingface">Hugging Face</option>
+                                        <option value="modelscope">ModelScope</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="config-grid">
+                                <div class="form-group">
+                                    <label for="huggingfaceModelId">Hugging Face Model ID</label>
+                                    <input type="text" id="huggingfaceModelId" class="form-control"
+                                           placeholder="organization/model-name"
+                                           title="Custom Hugging Face model ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modelscopeModelId">ModelScope Model ID</label>
+                                    <input type="text" id="modelscopeModelId" class="form-control"
+                                           placeholder="organization/model-name"
+                                           title="Custom ModelScope model ID">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="needPrepareModel" style="margin-right: 8px;">
+                                    Skip model preparation (reduces deployment time)
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Service Parameters Section -->
+                        <div class="param-section">
+                            <h5 style="color: #34495e; margin-bottom: 10px; font-size: 0.9rem; font-weight: 600;">🔧 Service Parameters</h5>
+
+                            <div class="form-group">
+                                <label for="apiKey">API Key</label>
+                                <input type="text" id="apiKey" class="form-control"
+                                       placeholder="your-secure-api-key"
+                                       title="Custom API key for securing access to your model endpoint">
+                            </div>
+
+                            <!-- SageMaker-specific parameters -->
+                            <div id="sagemakerParams" class="service-specific-params" style="display: none;">
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="maxCapacity">Max Capacity</label>
+                                        <input type="number" id="maxCapacity" class="form-control"
+                                               placeholder="2" min="1"
+                                               title="Maximum number of instances for auto-scaling">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="minCapacity">Min Capacity</label>
+                                        <input type="number" id="minCapacity" class="form-control"
+                                               placeholder="1" min="1"
+                                               title="Minimum number of instances for auto-scaling">
+                                    </div>
+                                </div>
+
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="autoScalingTargetValue">Auto Scaling Target</label>
+                                        <input type="number" id="autoScalingTargetValue" class="form-control"
+                                               placeholder="15" min="1"
+                                               title="Target value for auto-scaling (requests per minute)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sagemakerEndpointName">Custom Endpoint Name</label>
+                                        <input type="text" id="sagemakerEndpointName" class="form-control"
+                                               placeholder="my-custom-endpoint"
+                                               title="Custom name for the SageMaker endpoint">
+                                    </div>
+                                </div>
+
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="sagemakerVpcId">VPC ID</label>
+                                        <input type="text" id="sagemakerVpcId" class="form-control"
+                                               placeholder="vpc-12345"
+                                               title="Custom VPC ID for SageMaker deployment">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sagemakerSubnetIds">Subnet IDs</label>
+                                        <input type="text" id="sagemakerSubnetIds" class="form-control"
+                                               placeholder="subnet-12345,subnet-67890"
+                                               title="Comma-separated list of subnet IDs for SageMaker">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ECS-specific parameters -->
+                            <div id="ecsParams" class="service-specific-params" style="display: none;">
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="desiredCapacity">Desired Capacity</label>
+                                        <input type="number" id="desiredCapacity" class="form-control"
+                                               placeholder="2" min="1"
+                                               title="Desired number of ECS tasks">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maxSize">Max Size</label>
+                                        <input type="number" id="maxSize" class="form-control"
+                                               placeholder="4" min="1"
+                                               title="Maximum number of ECS tasks for auto-scaling">
+                                    </div>
+                                </div>
+
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="vpcId">VPC ID</label>
+                                        <input type="text" id="vpcId" class="form-control"
+                                               placeholder="vpc-12345"
+                                               title="Custom VPC ID for deployment">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subnetIds">Subnet IDs</label>
+                                        <input type="text" id="subnetIds" class="form-control"
+                                               placeholder="subnet-12345,subnet-67890"
+                                               title="Comma-separated list of subnet IDs">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="useSpot" style="margin-right: 8px;">
+                                        Use Spot Instances (cost optimization)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Engine Parameters Section -->
+                        <div class="param-section">
+                            <h5 style="color: #34495e; margin-bottom: 10px; font-size: 0.9rem; font-weight: 600;">⚙️ Engine Parameters</h5>
+
+                            <div class="form-group">
+                                <label for="environmentVariables">Environment Variables</label>
+                                <textarea id="environmentVariables" class="form-control" rows="2"
+                                          placeholder="export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True"
+                                          title="Set environment variables for the engine"></textarea>
+                            </div>
+
+                            <!-- vLLM-specific parameters -->
+                            <div id="vllmParams" class="engine-specific-params" style="display: none;">
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="maxModelLen">Max Model Length</label>
+                                        <input type="number" id="maxModelLen" class="form-control"
+                                               placeholder="16000" min="1"
+                                               title="Maximum context length for vLLM">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maxNumSeqs">Max Number of Sequences</label>
+                                        <input type="number" id="maxNumSeqs" class="form-control"
+                                               placeholder="10" min="1"
+                                               title="Maximum number of sequences for vLLM">
+                                    </div>
+                                </div>
+
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="gpuMemoryUtilization">GPU Memory Utilization</label>
+                                        <input type="number" id="gpuMemoryUtilization" class="form-control"
+                                               step="0.1" min="0.1" max="1.0" placeholder="0.9"
+                                               title="GPU memory utilization ratio (0.1-1.0)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="toolCallParser">Tool Call Parser</label>
+                                        <select id="toolCallParser" class="form-control"
+                                                title="Specify tool call parser for vLLM">
+                                            <option value="">None</option>
+                                            <option value="hermes">Hermes</option>
+                                            <option value="pythonic">Pythonic</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="reasoningParser">Reasoning Parser</label>
+                                        <select id="reasoningParser" class="form-control"
+                                                title="Specify reasoning parser for vLLM">
+                                            <option value="">None</option>
+                                            <option value="deepseek_r1">DeepSeek R1</option>
+                                            <option value="granite">Granite</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="chatTemplate">Chat Template Path</label>
+                                        <input type="text" id="chatTemplate" class="form-control"
+                                               placeholder="emd/models/chat_templates/template.jinja"
+                                               title="Path to custom chat template file">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="disableLogStats" style="margin-right: 8px;">
+                                        Disable log statistics
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="enableAutoToolChoice" style="margin-right: 8px;">
+                                        Enable automatic tool choice
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="enableReasoning" style="margin-right: 8px;">
+                                        Enable reasoning capabilities
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- TGI-specific parameters -->
+                            <div id="tgiParams" class="engine-specific-params" style="display: none;">
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="maxTotalTokens">Max Total Tokens</label>
+                                        <input type="number" id="maxTotalTokens" class="form-control"
+                                               placeholder="30000" min="1"
+                                               title="Maximum total tokens for TGI">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maxConcurrentRequests">Max Concurrent Requests</label>
+                                        <input type="number" id="maxConcurrentRequests" class="form-control"
+                                               placeholder="30" min="1"
+                                               title="Maximum concurrent requests for TGI">
+                                    </div>
+                                </div>
+
+                                <div class="config-grid">
+                                    <div class="form-group">
+                                        <label for="maxBatchSize">Max Batch Size</label>
+                                        <input type="number" id="maxBatchSize" class="form-control"
+                                               placeholder="32" min="1"
+                                               title="Maximum batch size for TGI">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maxInputTokens">Max Input Tokens</label>
+                                        <input type="number" id="maxInputTokens" class="form-control"
+                                               placeholder="4096" min="1"
+                                               title="Maximum input tokens for TGI">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Framework Parameters Section -->
+                        <div class="param-section">
+                            <h5 style="color: #34495e; margin-bottom: 10px; font-size: 0.9rem; font-weight: 600;">🌐 Framework Parameters</h5>
+
+                            <div class="config-grid">
+                                <div class="form-group">
+                                    <label for="limitConcurrency">Limit Concurrency</label>
+                                    <input type="number" id="limitConcurrency" class="form-control"
+                                           placeholder="200" min="1"
+                                           title="Maximum number of concurrent connections">
+                                </div>
+                                <div class="form-group">
+                                    <label for="timeoutKeepAlive">Timeout Keep Alive</label>
+                                    <input type="number" id="timeoutKeepAlive" class="form-control"
+                                           placeholder="120" min="1"
+                                           title="Timeout for keeping connections alive (seconds)">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="uvicornLogLevel">Uvicorn Log Level</label>
+                                <select id="uvicornLogLevel" class="form-control"
+                                        title="Log level for Uvicorn server">
+                                    <option value="">Default</option>
+                                    <option value="debug">Debug</option>
+                                    <option value="info">Info</option>
+                                    <option value="warning">Warning</option>
+                                    <option value="error">Error</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- General Options -->
+                        <div class="param-section">
+                            <h5 style="color: #34495e; margin-bottom: 10px; font-size: 0.9rem; font-weight: 600;">🔧 General Options</h5>
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="skipConfirm" style="margin-right: 8px;">
+                                    Skip confirmation prompts (--skip-confirm)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="command-section">
+                    <textarea id="commandOutput" class="command-output empty" placeholder="Select a model from the table to generate deployment command" spellcheck="false">Select a model from the table to generate deployment command</textarea>
+                    <div class="copy-button-side">
+                        <button id="copyCommand" class="btn btn-primary" style="display: none;" title="Copy command to clipboard">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                        <button type="button" id="resetForm" class="btn btn-secondary" title="Reset form">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                            </svg>
+                        </button>
+                        <div class="modern-toggle-container" title="Run command in background with nohup">
+                            <div class="modern-toggle">
+                                <input type="checkbox" id="runInBackground">
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <span class="toggle-label">Background</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Full Screen Models Table -->
+        <div class="models-table-section" id="modelsTableSection">
+            <div class="table-header">
+                <div>
+                    <p style="margin: 5px 0 0 0; font-size: 0.85rem; opacity: 0.8; font-style: italic;">Click any model to open CLI generator</p>
+                </div>
+                <div class="table-stats" id="tableStats">
+                    Loading models...
+                </div>
+            </div>
+            <div class="models-table-container">
+                <table class="models-table" id="modelsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%">Model ID</th>
+                            <th style="width: 6%">Type</th>
+                            <th style="width: 25%">Description</th>
+                            <th style="width: 18%">Instances</th>
+                            <th style="width: 12%">Engines</th>
+                            <th style="width: 14%">Services</th>
+                            <th style="width: 5%">China</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modelsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <span class="loading"></span> Loading models...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="copySuccess" class="copy-success">
+        Commands copied to clipboard!
+    </div>
+
+    <!-- Load the dynamic model configuration -->
+    <script src="../model_config.js"></script>
+
+    <script>
+        // Global variables
+        let supportedModels = {};
+        let instanceDefinitions = {};
+        let engineDefinitions = {};
+        let serviceDefinitions = {};
+        let currentSelectedModel = null;
+        let isPanelOpen = false;
+
+        // DOM elements
+        const slidingPanel = document.getElementById('slidingPanel');
+        const panelOverlay = document.getElementById('panelOverlay');
+        const panelClose = document.getElementById('panelClose');
+        const modelSearch = document.getElementById('modelSearch');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        const instanceSelect = document.getElementById('instanceType');
+        const engineSelect = document.getElementById('engineType');
+        const serviceSelect = document.getElementById('serviceType');
+        const modelConfigForm = document.getElementById('modelConfigForm');
+        const resetButton = document.getElementById('resetForm');
+        const commandOutput = document.getElementById('commandOutput');
+        const copyButton = document.getElementById('copyCommand');
+        const copySuccess = document.getElementById('copySuccess');
+        const modelsTable = document.getElementById('modelsTable');
+        const modelsTableBody = document.getElementById('modelsTableBody');
+        const selectedModelInfo = document.getElementById('selectedModelInfo');
+
+        // Panel toggle functionality
+        function openPanel() {
+            if (!isPanelOpen) {
+                isPanelOpen = true;
+                slidingPanel.classList.add('open');
+                panelOverlay.classList.add('show');
+            }
+        }
+
+        function closePanel() {
+            if (isPanelOpen) {
+                isPanelOpen = false;
+                slidingPanel.classList.remove('open');
+                panelOverlay.classList.remove('show');
+            }
+        }
+
+        // Event listeners for panel
+        panelClose.addEventListener('click', closePanel);
+        panelOverlay.addEventListener('click', closePanel);
+
+        // Prevent panel from closing when clicking inside
+        slidingPanel.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Initialize with dynamic configuration
+        function initializeDynamicConfig() {
+            if (typeof window.EMD_MODEL_CONFIG !== 'undefined') {
+                supportedModels = window.EMD_MODEL_CONFIG.models;
+                instanceDefinitions = window.EMD_MODEL_CONFIG.instances;
+                engineDefinitions = window.EMD_MODEL_CONFIG.engines;
+                serviceDefinitions = window.EMD_MODEL_CONFIG.services;
+
+                // Update status
+                const configStatus = document.getElementById('tableStats');
+                const modelCount = window.EMD_HELPERS.getModelCount();
+                const generatedAt = new Date(window.EMD_HELPERS.getGeneratedAt()).toLocaleString();
+                configStatus.innerHTML = `✅ Loaded ${modelCount} models (Updated: ${generatedAt})`;
+
+                // Initialize UI
+                populateModelsTable();
+                setupEventListeners();
+
+                console.log('✅ Dynamic model configuration initialized');
+            } else {
+                console.error('❌ EMD model configuration not loaded');
+                document.getElementById('tableStats').innerHTML = '❌ Failed to load model configurations';
+            }
+        }
+
+        // Populate models table
+        function populateModelsTable() {
+            const tbody = modelsTableBody;
+            tbody.innerHTML = '';
+
+            Object.entries(supportedModels).forEach(([modelId, model]) => {
+                const row = document.createElement('tr');
+                row.dataset.modelId = modelId;
+                row.addEventListener('click', () => selectModelFromTable(modelId));
+
+                row.innerHTML = `
+                    <td><strong>${modelId}</strong></td>
+                    <td><span class="model-type-badge model-type-${model.model_type}">${model.model_type}</span></td>
+                    <td>${model.description.substring(0, 100)}${model.description.length > 100 ? '...' : ''}</td>
+                    <td class="instances-list">${model.supported_instances.join(', ')}</td>
+                    <td class="engines-list">${model.supported_engines.join(', ')}</td>
+                    <td class="services-list">${model.supported_services.join(', ')}</td>
+                    <td>${model.allow_china_region ? '<span class="china-region">✓</span>' : '✗'}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Select model from table
+        function selectModelFromTable(modelId) {
+            // Open panel
+            openPanel();
+
+            // Update search input
+            modelSearch.value = modelId;
+
+            // Clear previous selection
+            document.querySelectorAll('.models-table tbody tr').forEach(row => {
+                row.classList.remove('selected');
+            });
+
+            // Highlight selected row
+            const selectedRow = document.querySelector(`tr[data-model-id="${modelId}"]`);
+            if (selectedRow) {
+                selectedRow.classList.add('selected');
+            }
+
+            // Update model configuration directly without calling onModelSearchChange
+            updateModelConfiguration(modelId);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            modelSearch.addEventListener('input', onModelSearchInput);
+            modelSearch.addEventListener('focus', onModelSearchFocus);
+            modelSearch.addEventListener('blur', onModelSearchBlur);
+            resetButton.addEventListener('click', resetForm);
+            copyButton.addEventListener('click', copyCommands);
+
+            // Auto-generate command when form fields change
+            instanceSelect.addEventListener('change', () => {
+                generateCommand();
+            });
+            engineSelect.addEventListener('change', () => {
+                updateEngineSpecificParams();
+                generateCommand();
+            });
+            serviceSelect.addEventListener('change', () => {
+                updateServiceSpecificParams();
+                generateCommand();
+            });
+
+            // Add event listeners for all parameter fields
+            const paramFields = [
+                'modelTag', 'skipConfirm', 'runInBackground', 'apiKey', 'environmentVariables',
+                // Model params
+                'modelFilesS3Path', 'modelFilesDownloadSource', 'huggingfaceModelId', 'modelscopeModelId', 'needPrepareModel',
+                // Service params - SageMaker
+                'maxCapacity', 'minCapacity', 'autoScalingTargetValue', 'sagemakerEndpointName', 'sagemakerVpcId', 'sagemakerSubnetIds',
+                // Service params - ECS
+                'desiredCapacity', 'maxSize', 'vpcId', 'subnetIds', 'useSpot',
+                // Engine params - vLLM
+                'maxModelLen', 'maxNumSeqs', 'gpuMemoryUtilization', 'toolCallParser', 'reasoningParser', 'chatTemplate',
+                'disableLogStats', 'enableAutoToolChoice', 'enableReasoning',
+                // Engine params - TGI
+                'maxTotalTokens', 'maxConcurrentRequests', 'maxBatchSize', 'maxInputTokens',
+                // Framework params
+                'limitConcurrency', 'timeoutKeepAlive', 'uvicornLogLevel'
+            ];
+
+            paramFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    const eventType = field.type === 'checkbox' ? 'change' : 'input';
+                    field.addEventListener(eventType, generateCommand);
+                }
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-input')) {
+                    searchSuggestions.style.display = 'none';
+                }
+            });
+
+            // Handle toggle container click
+            const toggleContainer = document.querySelector('.modern-toggle-container');
+            if (toggleContainer) {
+                toggleContainer.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const checkbox = document.getElementById('runInBackground');
+                    checkbox.checked = !checkbox.checked;
+                    // Trigger change event to update command
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+            }
+        }
+
+        // Update service-specific parameters visibility
+        function updateServiceSpecificParams() {
+            const serviceType = serviceSelect.value;
+            const sagemakerParams = document.getElementById('sagemakerParams');
+            const ecsParams = document.getElementById('ecsParams');
+
+            // Hide all service-specific params first
+            sagemakerParams.style.display = 'none';
+            ecsParams.style.display = 'none';
+
+            // Show relevant params based on service type
+            if (serviceType === 'sagemaker_realtime' || serviceType === 'sagemaker_async') {
+                sagemakerParams.style.display = 'block';
+            } else if (serviceType === 'ecs') {
+                ecsParams.style.display = 'block';
+            }
+        }
+
+        // Update engine-specific parameters visibility
+        function updateEngineSpecificParams() {
+            const engineType = engineSelect.value;
+            const vllmParams = document.getElementById('vllmParams');
+            const tgiParams = document.getElementById('tgiParams');
+
+            // Hide all engine-specific params first
+            vllmParams.style.display = 'none';
+            tgiParams.style.display = 'none';
+
+            // Show relevant params based on engine type
+            if (engineType === 'vllm') {
+                vllmParams.style.display = 'block';
+            } else if (engineType === 'tgi') {
+                tgiParams.style.display = 'block';
+            }
+        }
+
+// Handle model search input
+function onModelSearchInput() {
+const query = modelSearch.value.toLowerCase().trim();
+
+if (query.length === 0) {
+    searchSuggestions.style.display = 'none';
+    clearModelSelection();
+    return;
+}
+
+// Fuzzy search
+const matches = Object.keys(supportedModels).filter(modelId =>
+    modelId.toLowerCase().includes(query)
+).slice(0, 10);
+
+if (matches.length > 0) {
+    showSearchSuggestions(matches);
+
+    // If exact match, select it
+    if (matches.includes(modelSearch.value)) {
+        onModelSearchChange();
+    }
+} else {
+    searchSuggestions.style.display = 'none';
+    clearModelSelection();
+}
+}
+
+// Show search suggestions
+function showSearchSuggestions(matches) {
+searchSuggestions.innerHTML = '';
+
+matches.forEach(modelId => {
+    const item = document.createElement('div');
+    item.className = 'suggestion-item';
+    item.textContent = modelId;
+    item.addEventListener('click', () => {
+        modelSearch.value = modelId;
+        searchSuggestions.style.display = 'none';
+        onModelSearchChange();
+    });
+    searchSuggestions.appendChild(item);
+});
+
+searchSuggestions.style.display = 'block';
+}
+
+// Handle model search focus
+function onModelSearchFocus() {
+if (modelSearch.value.trim()) {
+    onModelSearchInput();
+}
+}
+
+// Handle model search blur
+function onModelSearchBlur() {
+// Delay hiding to allow click on suggestions
+setTimeout(() => {
+    searchSuggestions.style.display = 'none';
+}, 200);
+}
+
+// Handle model search change
+function onModelSearchChange() {
+const modelId = modelSearch.value.trim();
+
+if (!modelId || !supportedModels[modelId]) {
+    clearModelSelection();
+    return;
+}
+
+updateModelConfiguration(modelId);
+}
+
+// Update model configuration (shared function)
+function updateModelConfiguration(modelId) {
+    if (!modelId || !supportedModels[modelId]) {
+        clearModelSelection();
+        return;
+    }
+
+    const model = supportedModels[modelId];
+    currentSelectedModel = modelId;
+
+    // Show model information
+    showModelInfo(model);
+
+    // Populate compatible options with auto-fill
+    populateInstanceSelect(model.supported_instances, true);
+    populateEngineSelect(model.supported_engines, true);
+    updateServiceSelect(model.supported_services, true);
+
+    // Update conditional parameter visibility and generate command
+    setTimeout(() => {
+        updateServiceSpecificParams();
+        updateEngineSpecificParams();
+        generateCommand();
+    }, 100); // Small delay to ensure selects are populated
+}
+
+// Show model information
+function showModelInfo(model) {
+document.getElementById('modelInfoTitle').textContent = `${model.model_id} Information`;
+document.getElementById('modelInfoDescription').textContent = model.description;
+
+// Create badges
+const badgesContainer = document.getElementById('modelInfoBadges');
+badgesContainer.innerHTML = '';
+
+const badges = [
+    { label: 'Type', value: model.model_type.toUpperCase() },
+    { label: 'Series', value: model.model_series?.name || 'N/A' },
+    { label: 'China Region', value: model.allow_china_region ? 'Yes' : 'No' }
+];
+
+if (model.application_scenario) {
+    badges.push({ label: 'Use Cases', value: model.application_scenario });
+}
+
+badges.forEach(badge => {
+    const span = document.createElement('span');
+    span.className = 'model-badge';
+    span.textContent = `${badge.label}: ${badge.value}`;
+    badgesContainer.appendChild(span);
+});
+
+// Add model links
+const linksContainer = document.getElementById('modelInfoLinks');
+linksContainer.innerHTML = '';
+
+if (model.huggingface_model_id) {
+    const hfLink = document.createElement('a');
+    hfLink.href = `https://huggingface.co/${model.huggingface_model_id}`;
+    hfLink.target = '_blank';
+    hfLink.textContent = '🤗 Hugging Face';
+    linksContainer.appendChild(hfLink);
+}
+
+if (model.modelscope_model_id) {
+    const msLink = document.createElement('a');
+    msLink.href = `https://modelscope.cn/models/${model.modelscope_model_id}`;
+    msLink.target = '_blank';
+    msLink.textContent = '🔬 ModelScope';
+    linksContainer.appendChild(msLink);
+}
+
+selectedModelInfo.style.display = 'block';
+}
+
+// Clear model selection
+function clearModelSelection() {
+    currentSelectedModel = null;
+    selectedModelInfo.style.display = 'none';
+    instanceSelect.innerHTML = '<option value="">Select instance type...</option>';
+    engineSelect.innerHTML = '<option value="">Select engine type...</option>';
+
+    // Clear table selection
+    document.querySelectorAll('.models-table tbody tr').forEach(row => {
+        row.classList.remove('selected');
+    });
+
+    // Clear command output
+    commandOutput.value = 'Select a model from the table to generate deployment command';
+    commandOutput.className = 'command-output empty';
+    copyButton.style.display = 'none';
+}
+
+// Populate instance select with real instance data
+function populateInstanceSelect(supportedInstanceTypes, autoFill = false) {
+instanceSelect.innerHTML = '<option value="">Select instance type...</option>';
+
+supportedInstanceTypes.forEach((instanceType, index) => {
+    const instanceDef = window.EMD_HELPERS.getInstance(instanceType);
+    if (instanceDef) {
+        const option = document.createElement('option');
+        option.value = instanceType;
+
+        // Enhanced option text with real specifications
+        const specs = window.EMD_HELPERS.getInstanceSpecs(instanceType);
+        option.textContent = `${instanceType} (${specs.text})`;
+
+        // Auto-select first option if autoFill is true
+        if (autoFill && index === 0) {
+            option.selected = true;
+        }
+
+        instanceSelect.appendChild(option);
+    }
+});
+}
+
+// Populate engine select with real engine data
+function populateEngineSelect(supportedEngineTypes, autoFill = false) {
+engineSelect.innerHTML = '<option value="">Select engine type...</option>';
+
+supportedEngineTypes.forEach((engineType, index) => {
+    const engineDef = window.EMD_HELPERS.getEngine(engineType);
+    if (engineDef) {
+        const option = document.createElement('option');
+        option.value = engineType;
+        option.textContent = `${engineType} - ${engineDef.description}`;
+
+        // Auto-select first option if autoFill is true
+        if (autoFill && index === 0) {
+            option.selected = true;
+        }
+
+        engineSelect.appendChild(option);
+    }
+});
+}
+
+// Update service select with real service data
+function updateServiceSelect(supportedServiceTypes, autoFill = false) {
+const options = serviceSelect.querySelectorAll('option');
+let firstAvailableOption = null;
+
+options.forEach(option => {
+    if (option.value === '') return;
+
+    if (supportedServiceTypes.includes(option.value)) {
+        option.disabled = false;
+        option.style.display = 'block';
+
+        // Update option text with real service info
+        const serviceDef = window.EMD_HELPERS.getService(option.value);
+        if (serviceDef) {
+            option.textContent = serviceDef.name;
+        }
+
+        // Track first available option for auto-fill
+        if (!firstAvailableOption) {
+            firstAvailableOption = option;
+        }
+    } else {
+        option.disabled = true;
+        option.style.display = 'none';
+    }
+});
+
+// Reset selection if current value is not supported
+if (serviceSelect.value && !supportedServiceTypes.includes(serviceSelect.value)) {
+    serviceSelect.value = '';
+}
+
+// Auto-select first available option if autoFill is true
+if (autoFill && firstAvailableOption && !serviceSelect.value) {
+    firstAvailableOption.selected = true;
+}
+}
+
+
+// Generate single command
+function generateCommand() {
+    const modelId = currentSelectedModel;
+    const instanceType = instanceSelect.value;
+    const engineType = engineSelect.value;
+    const serviceType = serviceSelect.value;
+
+    if (!modelId || !instanceType || !engineType || !serviceType) {
+        commandOutput.value = 'Please select all required parameters to generate deployment command';
+        commandOutput.className = 'command-output empty';
+        copyButton.style.display = 'none';
+        return;
+    }
+
+    let command = `emd deploy --model-id ${modelId} --instance-type ${instanceType} --engine-type ${engineType} --service-type ${serviceType}`;
+
+    // Add command-line arguments
+    const modelTag = document.getElementById('modelTag').value.trim();
+    if (modelTag) {
+        command += ` --model-tag ${modelTag}`;
+    }
+
+    // Add skip-confirm if checked
+    const skipConfirm = document.getElementById('skipConfirm').checked;
+    if (skipConfirm) {
+        command += ` --skip-confirm`;
+    }
+
+    // Build extra parameters
+    const extraParams = buildExtraParams();
+    if (Object.keys(extraParams).length > 0) {
+        command += ` --extra-params '${JSON.stringify(extraParams, null, 2)}'`;
+    }
+
+    // Check if run in background is enabled
+    const runInBackground = document.getElementById('runInBackground').checked;
+    if (runInBackground) {
+        command = `nohup ${command} > /dev/null 2>&1 &`;
+    }
+
+    // Update command output
+    commandOutput.value = command;
+    commandOutput.className = 'command-output';
+    copyButton.style.display = 'inline-block';
+}
+
+// Build extra parameters object
+function buildExtraParams() {
+    const extraParams = {};
+
+    // Model parameters
+    const modelParams = {};
+    const modelFilesS3Path = document.getElementById('modelFilesS3Path').value.trim();
+    const modelFilesDownloadSource = document.getElementById('modelFilesDownloadSource').value.trim();
+    const huggingfaceModelId = document.getElementById('huggingfaceModelId').value.trim();
+    const modelscopeModelId = document.getElementById('modelscopeModelId').value.trim();
+    const needPrepareModel = document.getElementById('needPrepareModel').checked;
+
+    if (modelFilesS3Path) modelParams.model_files_s3_path = modelFilesS3Path;
+    if (modelFilesDownloadSource) modelParams.model_files_download_source = modelFilesDownloadSource;
+    if (huggingfaceModelId) modelParams.huggingface_model_id = huggingfaceModelId;
+    if (modelscopeModelId) modelParams.modelscope_model_id = modelscopeModelId;
+    if (needPrepareModel) modelParams.need_prepare_model = false; // Checkbox is "skip preparation"
+
+    if (Object.keys(modelParams).length > 0) {
+        extraParams.model_params = modelParams;
+    }
+
+    // Service parameters
+    const serviceParams = {};
+    const apiKey = document.getElementById('apiKey').value.trim();
+
+    // SageMaker-specific parameters
+    const maxCapacity = document.getElementById('maxCapacity').value.trim();
+    const minCapacity = document.getElementById('minCapacity').value.trim();
+    const autoScalingTargetValue = document.getElementById('autoScalingTargetValue').value.trim();
+    const sagemakerEndpointName = document.getElementById('sagemakerEndpointName').value.trim();
+    const sagemakerVpcId = document.getElementById('sagemakerVpcId').value.trim();
+    const sagemakerSubnetIds = document.getElementById('sagemakerSubnetIds').value.trim();
+
+    // ECS-specific parameters
+    const desiredCapacity = document.getElementById('desiredCapacity').value.trim();
+    const maxSize = document.getElementById('maxSize').value.trim();
+    const vpcId = document.getElementById('vpcId').value.trim();
+    const subnetIds = document.getElementById('subnetIds').value.trim();
+    const useSpot = document.getElementById('useSpot').checked;
+
+    if (apiKey) serviceParams.api_key = apiKey;
+
+    // Add SageMaker params if service is SageMaker
+    const serviceType = serviceSelect.value;
+    if (serviceType === 'sagemaker_realtime' || serviceType === 'sagemaker_async') {
+        if (maxCapacity) serviceParams.max_capacity = parseInt(maxCapacity);
+        if (minCapacity) serviceParams.min_capacity = parseInt(minCapacity);
+        if (autoScalingTargetValue) serviceParams.auto_scaling_target_value = parseInt(autoScalingTargetValue);
+        if (sagemakerEndpointName) serviceParams.sagemaker_endpoint_name = sagemakerEndpointName;
+        if (sagemakerVpcId) serviceParams.vpc_id = sagemakerVpcId;
+        if (sagemakerSubnetIds) serviceParams.subnet_ids = sagemakerSubnetIds.split(',').map(s => s.trim());
+    }
+
+    // Add ECS params if service is ECS
+    if (serviceType === 'ecs') {
+        if (desiredCapacity) serviceParams.desired_capacity = parseInt(desiredCapacity);
+        if (maxSize) serviceParams.max_size = parseInt(maxSize);
+        if (vpcId) serviceParams.vpc_id = vpcId;
+        if (subnetIds) serviceParams.subnet_ids = subnetIds.split(',').map(s => s.trim());
+        if (useSpot) serviceParams.use_spot = true;
+    }
+
+    if (Object.keys(serviceParams).length > 0) {
+        extraParams.service_params = serviceParams;
+    }
+
+    // Engine parameters
+    const engineParams = {};
+    const envVars = document.getElementById('environmentVariables').value.trim();
+
+    // vLLM-specific parameters
+    const maxModelLen = document.getElementById('maxModelLen').value.trim();
+    const maxNumSeqs = document.getElementById('maxNumSeqs').value.trim();
+    const gpuMemoryUtilization = document.getElementById('gpuMemoryUtilization').value.trim();
+    const toolCallParser = document.getElementById('toolCallParser').value.trim();
+    const reasoningParser = document.getElementById('reasoningParser').value.trim();
+    const chatTemplate = document.getElementById('chatTemplate').value.trim();
+    const disableLogStats = document.getElementById('disableLogStats').checked;
+    const enableAutoToolChoice = document.getElementById('enableAutoToolChoice').checked;
+    const enableReasoning = document.getElementById('enableReasoning').checked;
+
+    // TGI-specific parameters
+    const maxTotalTokens = document.getElementById('maxTotalTokens').value.trim();
+    const maxConcurrentRequests = document.getElementById('maxConcurrentRequests').value.trim();
+    const maxBatchSize = document.getElementById('maxBatchSize').value.trim();
+    const maxInputTokens = document.getElementById('maxInputTokens').value.trim();
+
+    if (envVars) engineParams.environment_variables = envVars;
+
+    // Build default CLI args based on engine type
+    const engineType = engineSelect.value;
+    const defaultCliArgs = [];
+
+    if (engineType === 'vllm') {
+        if (maxModelLen) defaultCliArgs.push(`--max_model_len ${maxModelLen}`);
+        if (maxNumSeqs) defaultCliArgs.push(`--max_num_seqs ${maxNumSeqs}`);
+        if (gpuMemoryUtilization) defaultCliArgs.push(`--gpu_memory_utilization ${gpuMemoryUtilization}`);
+        if (toolCallParser) defaultCliArgs.push(`--tool_call_parser ${toolCallParser}`);
+        if (reasoningParser) defaultCliArgs.push(`--reasoning_parser ${reasoningParser}`);
+        if (chatTemplate) defaultCliArgs.push(`--chat_template ${chatTemplate}`);
+        if (disableLogStats) defaultCliArgs.push(`--disable_log_stats`);
+        if (enableAutoToolChoice) defaultCliArgs.push(`--enable_auto_tool_choice`);
+        if (enableReasoning) defaultCliArgs.push(`--enable_reasoning`);
+    } else if (engineType === 'tgi') {
+        if (maxTotalTokens) defaultCliArgs.push(`--max_total_tokens ${maxTotalTokens}`);
+        if (maxConcurrentRequests) defaultCliArgs.push(`--max_concurrent_requests ${maxConcurrentRequests}`);
+        if (maxBatchSize) defaultCliArgs.push(`--max_batch_size ${maxBatchSize}`);
+        if (maxInputTokens) defaultCliArgs.push(`--max_input_tokens ${maxInputTokens}`);
+    }
+
+    if (defaultCliArgs.length > 0) {
+        engineParams.default_cli_args = defaultCliArgs.join(' ');
+    }
+
+    if (Object.keys(engineParams).length > 0) {
+        extraParams.engine_params = engineParams;
+    }
+
+    // Framework parameters
+    const frameworkParams = {};
+    const limitConcurrency = document.getElementById('limitConcurrency').value.trim();
+    const timeoutKeepAlive = document.getElementById('timeoutKeepAlive').value.trim();
+    const uvicornLogLevel = document.getElementById('uvicornLogLevel').value.trim();
+
+    if (limitConcurrency) frameworkParams.limit_concurrency = parseInt(limitConcurrency);
+    if (timeoutKeepAlive) frameworkParams.timeout_keep_alive = parseInt(timeoutKeepAlive);
+    if (uvicornLogLevel) frameworkParams.uvicorn_log_level = uvicornLogLevel;
+
+    if (Object.keys(frameworkParams).length > 0) {
+        extraParams.framework_params = frameworkParams;
+    }
+
+    return extraParams;
+}
+
+// Copy commands to clipboard
+function copyCommands() {
+const commands = commandOutput.value;
+navigator.clipboard.writeText(commands).then(() => {
+    showCopySuccess();
+}).catch(err => {
+    console.error('Failed to copy commands: ', err);
+    // Fallback for older browsers
+    const textArea = document.createElement('textarea');
+    textArea.value = commands;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    showCopySuccess();
+});
+}
+
+// Show copy success message
+function showCopySuccess() {
+copySuccess.classList.add('show');
+setTimeout(() => {
+    copySuccess.classList.remove('show');
+}, 3000);
+}
+
+// Reset form
+function resetForm() {
+    modelConfigForm.reset();
+    modelSearch.value = '';
+    clearModelSelection();
+    searchSuggestions.style.display = 'none';
+
+    // Reset service type to default
+    serviceSelect.value = 'sagemaker_realtime';
+
+    // Hide all conditional parameter sections
+    document.getElementById('sagemakerParams').style.display = 'none';
+    document.getElementById('ecsParams').style.display = 'none';
+    document.getElementById('vllmParams').style.display = 'none';
+    document.getElementById('tgiParams').style.display = 'none';
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+// Wait a bit for the config script to load
+setTimeout(initializeDynamicConfig, 100);
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // ESC to close panel
+    if (e.key === 'Escape' && isPanelOpen) {
+        closePanel();
+    }
+});
+</script>
+</body>
+</html>
+
