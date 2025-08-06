@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/sdk_api/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>SDK API - Easy Model Deployer</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="../css/print-site.css" rel="stylesheet" />
+        <link href="../css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="../custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "SDK API";
+        var mkdocs_page_input_path = "sdk_api.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/sdk_api/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Quick Start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../supported_models/">Supported Models</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../best_deployment_practices/">Best Deployment Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../commands/">CLI Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">SDK API</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#bootstrap-infrastructure">Bootstrap Infrastructure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy-models">Deploy Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#model-status">Model Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sagemaker-client">SageMaker Client</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ecs-client">ECS Client</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#conversation-interface">Conversation Interface</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#destroy-deployments">Destroy Deployments</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#embedding-models">Embedding Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reranking-models">Reranking Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vision-models">Vision Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#aws-lambda-integration">AWS Lambda Integration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#complete-workflow-example">Complete Workflow Example</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local_deployment/">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../sdk_integration/">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../swift_chat_integration/">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dify_integration/">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../langflow_integration/">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../flowise_integration/">Flowise Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ollama_integration/">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../nextchat_integration/">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Easy Model Deployer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">SDK API</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/sdk_api.md">Edit on aws-samples/easy-model-deployer</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="sdk-api-documentation">SDK API Documentation</h1>
+<blockquote>
+<p><strong>Getting Started</strong>: The EMD SDK provides a comprehensive Python interface for deploying, managing, and invoking machine learning models on AWS infrastructure. Install the SDK with <code>pip install easy-model-deployer</code> and import the modules you need.</p>
+<p>Quick example:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">bootstrap</span><span class="p">,</span> <span class="n">deploy</span><span class="p">,</span> <span class="n">destroy</span>
+</span><span id="__span-0-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-0-3">
+</span><span id="__span-0-4"><span class="c1"># Bootstrap infrastructure</span>
+</span><span id="__span-0-5"><span class="n">bootstrap</span><span class="p">()</span>
+</span><span id="__span-0-6">
+</span><span id="__span-0-7"><span class="c1"># Deploy a model</span>
+</span><span id="__span-0-8"><span class="n">result</span> <span class="o">=</span> <span class="n">deploy</span><span class="p">(</span>
+</span><span id="__span-0-9">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-0-10">    <span class="n">instance_type</span><span class="o">=</span><span class="s2">&quot;ml.g5.xlarge&quot;</span><span class="p">,</span>
+</span><span id="__span-0-11">    <span class="n">engine_type</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+</span><span id="__span-0-12">    <span class="n">service_type</span><span class="o">=</span><span class="s2">&quot;sagemaker&quot;</span>
+</span><span id="__span-0-13"><span class="p">)</span>
+</span><span id="__span-0-14">
+</span><span id="__span-0-15"><span class="c1"># Use the deployed model</span>
+</span><span id="__span-0-16"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span><span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">)</span>
+</span><span id="__span-0-17"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-0-18">    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}]</span>
+</span><span id="__span-0-19"><span class="p">})</span>
+</span></code></pre></div></p>
+</blockquote>
+<h2 id="bootstrap-infrastructure">Bootstrap Infrastructure</h2>
+<p>Initialize AWS resources required for model deployment.</p>
+<p><strong>Function:</strong> <code>bootstrap()</code></p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.bootstrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">bootstrap</span>
+</span><span id="__span-1-2">
+</span><span id="__span-1-3"><span class="c1"># Initialize AWS infrastructure</span>
+</span><span id="__span-1-4"><span class="n">bootstrap</span><span class="p">()</span>
+</span></code></pre></div></p>
+<p><strong>Advanced Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.bootstrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_env_stack</span>
+</span><span id="__span-2-2">
+</span><span id="__span-2-3"><span class="c1"># Create environment stack with custom parameters</span>
+</span><span id="__span-2-4"><span class="n">create_env_stack</span><span class="p">(</span>
+</span><span id="__span-2-5">    <span class="n">region</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6">    <span class="n">stack_name</span><span class="o">=</span><span class="s2">&quot;my-emd-env-stack&quot;</span><span class="p">,</span>
+</span><span id="__span-2-7">    <span class="n">bucket_name</span><span class="o">=</span><span class="s2">&quot;my-emd-bucket&quot;</span><span class="p">,</span>
+</span><span id="__span-2-8">    <span class="n">force_update</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-2-9"><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="deploy-models">Deploy Models</h2>
+<p>Deploy machine learning models to AWS services.</p>
+<p><strong>Function:</strong> <code>deploy(model_id, instance_type, engine_type, service_type, **kwargs)</code></p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>model_id</code> (required): Model identifier (e.g., "Qwen2.5-7B-Instruct", "DeepSeek-R1-Distill-Llama-8B")</li>
+<li><code>instance_type</code> (required): AWS instance type (e.g., "ml.g5.xlarge", "g5.2xlarge")</li>
+<li><code>engine_type</code> (required): Inference engine ("vllm", "tgi", "huggingface")</li>
+<li><code>service_type</code> (required): AWS service ("sagemaker", "ecs", "ec2")</li>
+<li><code>framework_type</code>: API framework (default: "fastapi")</li>
+<li><code>model_tag</code>: Model version tag (default: "dev")</li>
+<li><code>waiting_until_deploy_complete</code>: Wait for completion (default: True)</li>
+<li><code>extra_params</code>: Additional deployment parameters</li>
+</ul>
+<p><strong>Basic Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.deploy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deploy</span>
+</span><span id="__span-3-2">
+</span><span id="__span-3-3"><span class="c1"># Deploy a model to SageMaker</span>
+</span><span id="__span-3-4"><span class="n">result</span> <span class="o">=</span> <span class="n">deploy</span><span class="p">(</span>
+</span><span id="__span-3-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-3-6">    <span class="n">instance_type</span><span class="o">=</span><span class="s2">&quot;ml.g5.xlarge&quot;</span><span class="p">,</span>
+</span><span id="__span-3-7">    <span class="n">engine_type</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+</span><span id="__span-3-8">    <span class="n">service_type</span><span class="o">=</span><span class="s2">&quot;sagemaker&quot;</span>
+</span><span id="__span-3-9"><span class="p">)</span>
+</span><span id="__span-3-10">
+</span><span id="__span-3-11"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deployment ID: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;pipeline_execution_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-3-12"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model Stack: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;model_stack_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>Advanced Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.deploy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deploy</span>
+</span><span id="__span-4-2">
+</span><span id="__span-4-3"><span class="c1"># Deploy with custom parameters</span>
+</span><span id="__span-4-4"><span class="n">result</span> <span class="o">=</span> <span class="n">deploy</span><span class="p">(</span>
+</span><span id="__span-4-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;DeepSeek-R1-Distill-Llama-8B&quot;</span><span class="p">,</span>
+</span><span id="__span-4-6">    <span class="n">instance_type</span><span class="o">=</span><span class="s2">&quot;ml.g5.2xlarge&quot;</span><span class="p">,</span>
+</span><span id="__span-4-7">    <span class="n">engine_type</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+</span><span id="__span-4-8">    <span class="n">service_type</span><span class="o">=</span><span class="s2">&quot;sagemaker&quot;</span><span class="p">,</span>
+</span><span id="__span-4-9">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;production&quot;</span><span class="p">,</span>
+</span><span id="__span-4-10">    <span class="n">extra_params</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-4-11">        <span class="s2">&quot;engine_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-4-12">            <span class="s2">&quot;cli_args&quot;</span><span class="p">:</span> <span class="s2">&quot;--max_model_len 16000 --max_num_seqs 4&quot;</span>
+</span><span id="__span-4-13">        <span class="p">},</span>
+</span><span id="__span-4-14">        <span class="s2">&quot;service_params&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-4-15">            <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;your-secure-api-key&quot;</span>
+</span><span id="__span-4-16">        <span class="p">}</span>
+</span><span id="__span-4-17">    <span class="p">}</span>
+</span><span id="__span-4-18"><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>Local Deployment Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.deploy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deploy_local</span>
+</span><span id="__span-5-2">
+</span><span id="__span-5-3"><span class="c1"># Deploy locally for testing</span>
+</span><span id="__span-5-4"><span class="n">deploy_local</span><span class="p">(</span>
+</span><span id="__span-5-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-5-6">    <span class="n">instance_type</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+</span><span id="__span-5-7">    <span class="n">service_type</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8">    <span class="n">engine_type</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+</span><span id="__span-5-9">    <span class="n">extra_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}</span>
+</span><span id="__span-5-10"><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="model-status">Model Status</h2>
+<p>Check the deployment status of models.</p>
+<p><strong>Function:</strong> <code>get_model_status(model_id, model_tag)</code></p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.status</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_model_status</span>
+</span><span id="__span-6-2">
+</span><span id="__span-6-3"><span class="c1"># Check status of a specific model</span>
+</span><span id="__span-6-4"><span class="n">status</span> <span class="o">=</span> <span class="n">get_model_status</span><span class="p">(</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span>
+</span><span id="__span-6-5">
+</span><span id="__span-6-6"><span class="c1"># Check in-progress deployments</span>
+</span><span id="__span-6-7"><span class="k">for</span> <span class="n">deployment</span> <span class="ow">in</span> <span class="n">status</span><span class="p">[</span><span class="s2">&quot;inprogress&quot;</span><span class="p">]:</span>
+</span><span id="__span-6-8">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model: </span><span class="si">{</span><span class="n">deployment</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-6-9">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Status: </span><span class="si">{</span><span class="n">deployment</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-6-10">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stage: </span><span class="si">{</span><span class="n">deployment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;stage_name&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-6-11">
+</span><span id="__span-6-12"><span class="c1"># Check completed deployments</span>
+</span><span id="__span-6-13"><span class="k">for</span> <span class="n">deployment</span> <span class="ow">in</span> <span class="n">status</span><span class="p">[</span><span class="s2">&quot;completed&quot;</span><span class="p">]:</span>
+</span><span id="__span-6-14">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model: </span><span class="si">{</span><span class="n">deployment</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-6-15">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Service: </span><span class="si">{</span><span class="n">deployment</span><span class="p">[</span><span class="s1">&#39;service_type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-6-16">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Endpoint: </span><span class="si">{</span><span class="n">deployment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endpoint_name&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>Pipeline Status Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.status</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pipeline_execution_status</span>
+</span><span id="__span-7-2">
+</span><span id="__span-7-3"><span class="c1"># Check specific pipeline execution</span>
+</span><span id="__span-7-4"><span class="n">status</span> <span class="o">=</span> <span class="n">get_pipeline_execution_status</span><span class="p">(</span>
+</span><span id="__span-7-5">    <span class="n">pipeline_execution_id</span><span class="o">=</span><span class="s2">&quot;execution-123&quot;</span><span class="p">,</span>
+</span><span id="__span-7-6">    <span class="n">region</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+</span><span id="__span-7-7"><span class="p">)</span>
+</span><span id="__span-7-8">
+</span><span id="__span-7-9"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Status: </span><span class="si">{</span><span class="n">status</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-7-10"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Succeeded: </span><span class="si">{</span><span class="n">status</span><span class="p">[</span><span class="s1">&#39;is_succeeded&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="sagemaker-client">SageMaker Client</h2>
+<p>Interact with models deployed on Amazon SageMaker.</p>
+<p><strong>Initialization:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-8-2">
+</span><span id="__span-8-3"><span class="c1"># Initialize with model ID</span>
+</span><span id="__span-8-4"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
+</span><span id="__span-8-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-8-6">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+</span><span id="__span-8-7">    <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+</span><span id="__span-8-8"><span class="p">)</span>
+</span><span id="__span-8-9">
+</span><span id="__span-8-10"><span class="c1"># Or initialize with endpoint name directly</span>
+</span><span id="__span-8-11"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
+</span><span id="__span-8-12">    <span class="n">endpoint_name</span><span class="o">=</span><span class="s2">&quot;my-sagemaker-endpoint&quot;</span><span class="p">,</span>
+</span><span id="__span-8-13">    <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-1&quot;</span>
+</span><span id="__span-8-14"><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>Synchronous Invocation:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><span class="c1"># Basic chat completion</span>
+</span><span id="__span-9-2"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-9-3">    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="__span-9-4">        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">},</span>
+</span><span id="__span-9-5">        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;What is machine learning?&quot;</span><span class="p">}</span>
+</span><span id="__span-9-6">    <span class="p">],</span>
+</span><span id="__span-9-7">    <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+</span><span id="__span-9-8">    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.7</span>
+</span><span id="__span-9-9"><span class="p">})</span>
+</span><span id="__span-9-10">
+</span><span id="__span-9-11"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</span></code></pre></div></p>
+<p><strong>Streaming Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><span class="c1"># Stream response tokens</span>
+</span><span id="__span-10-2"><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-10-3">    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a story&quot;</span><span class="p">}],</span>
+</span><span id="__span-10-4">    <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-10-5">    <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="mi">500</span>
+</span><span id="__span-10-6"><span class="p">}):</span>
+</span><span id="__span-10-7">    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;choices&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">chunk</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">):</span>
+</span><span id="__span-10-8">        <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;delta&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>Asynchronous Invocation:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><span class="c1"># For long-running tasks</span>
+</span><span id="__span-11-2"><span class="n">async_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke_async</span><span class="p">({</span>
+</span><span id="__span-11-3">    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Write a detailed analysis&quot;</span><span class="p">}],</span>
+</span><span id="__span-11-4">    <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="mi">2000</span>
+</span><span id="__span-11-5"><span class="p">})</span>
+</span><span id="__span-11-6">
+</span><span id="__span-11-7"><span class="c1"># Wait for result</span>
+</span><span id="__span-11-8"><span class="n">result</span> <span class="o">=</span> <span class="n">async_response</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
+</span><span id="__span-11-9"><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="ecs-client">ECS Client</h2>
+<p>Interact with models deployed on Amazon ECS.</p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECSClient</span>
+</span><span id="__span-12-2">
+</span><span id="__span-12-3"><span class="c1"># Initialize client</span>
+</span><span id="__span-12-4"><span class="n">client</span> <span class="o">=</span> <span class="n">ECSClient</span><span class="p">(</span>
+</span><span id="__span-12-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-12-6">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span>
+</span><span id="__span-12-7"><span class="p">)</span>
+</span><span id="__span-12-8">
+</span><span id="__span-12-9"><span class="c1"># Invoke model</span>
+</span><span id="__span-12-10"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-12-11">    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span><span class="p">}],</span>
+</span><span id="__span-12-12">    <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-12-13">    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.8</span>
+</span><span id="__span-12-14"><span class="p">})</span>
+</span><span id="__span-12-15">
+</span><span id="__span-12-16"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</span></code></pre></div></p>
+<p><strong>Streaming Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><span class="c1"># Stream response from ECS deployment</span>
+</span><span id="__span-13-2"><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-13-3">    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain quantum physics&quot;</span><span class="p">}],</span>
+</span><span id="__span-13-4">    <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="kc">True</span>
+</span><span id="__span-13-5"><span class="p">}):</span>
+</span><span id="__span-13-6">    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="conversation-interface">Conversation Interface</h2>
+<p>High-level interface for conversational AI interactions.</p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.invoke</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationInvoker</span>
+</span><span id="__span-14-2">
+</span><span id="__span-14-3"><span class="c1"># Initialize conversation</span>
+</span><span id="__span-14-4"><span class="n">conversation</span> <span class="o">=</span> <span class="n">ConversationInvoker</span><span class="p">(</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span> <span class="s2">&quot;dev&quot;</span><span class="p">)</span>
+</span><span id="__span-14-5">
+</span><span id="__span-14-6"><span class="c1"># Set system message</span>
+</span><span id="__span-14-7"><span class="n">conversation</span><span class="o">.</span><span class="n">add_system_message</span><span class="p">(</span><span class="s2">&quot;You are a helpful AI assistant.&quot;</span><span class="p">)</span>
+</span><span id="__span-14-8">
+</span><span id="__span-14-9"><span class="c1"># Add user message and get response</span>
+</span><span id="__span-14-10"><span class="n">conversation</span><span class="o">.</span><span class="n">add_user_message</span><span class="p">(</span><span class="s2">&quot;What is artificial intelligence?&quot;</span><span class="p">)</span>
+</span><span id="__span-14-11"><span class="n">response</span> <span class="o">=</span> <span class="n">conversation</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
+</span><span id="__span-14-12"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</span><span id="__span-14-13">
+</span><span id="__span-14-14"><span class="c1"># Continue conversation</span>
+</span><span id="__span-14-15"><span class="n">conversation</span><span class="o">.</span><span class="n">add_assistant_message</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</span><span id="__span-14-16"><span class="n">conversation</span><span class="o">.</span><span class="n">add_user_message</span><span class="p">(</span><span class="s2">&quot;Can you give me examples?&quot;</span><span class="p">)</span>
+</span><span id="__span-14-17"><span class="n">response</span> <span class="o">=</span> <span class="n">conversation</span><span class="o">.</span><span class="n">invoke</span><span class="p">()</span>
+</span><span id="__span-14-18"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>Streaming Conversation:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><span class="c1"># Stream conversation response</span>
+</span><span id="__span-15-2"><span class="n">conversation</span><span class="o">.</span><span class="n">add_user_message</span><span class="p">(</span><span class="s2">&quot;Tell me about the future of AI&quot;</span><span class="p">)</span>
+</span><span id="__span-15-3"><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">conversation</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+</span><span id="__span-15-4">    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="destroy-deployments">Destroy Deployments</h2>
+<p>Remove deployed models and clean up resources.</p>
+<p><strong>Function:</strong> <code>destroy(model_id, model_tag, waiting_until_complete)</code></p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.destroy</span><span class="w"> </span><span class="kn">import</span> <span class="n">destroy</span>
+</span><span id="__span-16-2">
+</span><span id="__span-16-3"><span class="c1"># Destroy a deployed model</span>
+</span><span id="__span-16-4"><span class="n">destroy</span><span class="p">(</span>
+</span><span id="__span-16-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-16-6">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+</span><span id="__span-16-7">    <span class="n">waiting_until_complete</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-16-8"><span class="p">)</span>
+</span></code></pre></div></p>
+<p><strong>Stop Pipeline Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.destroy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stop_pipeline_execution</span>
+</span><span id="__span-17-2">
+</span><span id="__span-17-3"><span class="c1"># Stop an active deployment pipeline</span>
+</span><span id="__span-17-4"><span class="n">stop_pipeline_execution</span><span class="p">(</span>
+</span><span id="__span-17-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-17-6">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+</span><span id="__span-17-7">    <span class="n">waiting_until_complete</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-17-8"><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="embedding-models">Embedding Models</h2>
+<p>Work with text embedding models.</p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-18-2">
+</span><span id="__span-18-3"><span class="c1"># Initialize embedding model client</span>
+</span><span id="__span-18-4"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
+</span><span id="__span-18-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-m3&quot;</span><span class="p">,</span>
+</span><span id="__span-18-6">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span>
+</span><span id="__span-18-7"><span class="p">)</span>
+</span><span id="__span-18-8">
+</span><span id="__span-18-9"><span class="c1"># Get embeddings for single text</span>
+</span><span id="__span-18-10"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-18-11">    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Machine learning is transforming technology&quot;</span><span class="p">,</span>
+</span><span id="__span-18-12">    <span class="s2">&quot;normalize&quot;</span><span class="p">:</span> <span class="kc">True</span>
+</span><span id="__span-18-13"><span class="p">})</span>
+</span><span id="__span-18-14">
+</span><span id="__span-18-15"><span class="n">embedding</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;embedding&quot;</span><span class="p">]</span>
+</span><span id="__span-18-16"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding dimension: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-18-17">
+</span><span id="__span-18-18"><span class="c1"># Get embeddings for multiple texts</span>
+</span><span id="__span-18-19"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-18-20">    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="__span-18-21">        <span class="s2">&quot;First document text&quot;</span><span class="p">,</span>
+</span><span id="__span-18-22">        <span class="s2">&quot;Second document text&quot;</span><span class="p">,</span>
+</span><span id="__span-18-23">        <span class="s2">&quot;Third document text&quot;</span>
+</span><span id="__span-18-24">    <span class="p">]</span>
+</span><span id="__span-18-25"><span class="p">})</span>
+</span><span id="__span-18-26">
+</span><span id="__span-18-27"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> embeddings&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="reranking-models">Reranking Models</h2>
+<p>Rerank documents based on relevance to a query.</p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-19-2">
+</span><span id="__span-19-3"><span class="c1"># Initialize reranking model client</span>
+</span><span id="__span-19-4"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
+</span><span id="__span-19-5">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;bge-reranker-v2-m3&quot;</span><span class="p">,</span>
+</span><span id="__span-19-6">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span>
+</span><span id="__span-19-7"><span class="p">)</span>
+</span><span id="__span-19-8">
+</span><span id="__span-19-9"><span class="c1"># Rerank documents</span>
+</span><span id="__span-19-10"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-19-11">    <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;What is machine learning?&quot;</span><span class="p">,</span>
+</span><span id="__span-19-12">    <span class="s2">&quot;documents&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="__span-19-13">        <span class="s2">&quot;Machine learning is a subset of artificial intelligence.&quot;</span><span class="p">,</span>
+</span><span id="__span-19-14">        <span class="s2">&quot;Paris is the capital of France.&quot;</span><span class="p">,</span>
+</span><span id="__span-19-15">        <span class="s2">&quot;Deep learning uses neural networks.&quot;</span>
+</span><span id="__span-19-16">    <span class="p">],</span>
+</span><span id="__span-19-17">    <span class="s2">&quot;max_rerank&quot;</span><span class="p">:</span> <span class="mi">3</span>
+</span><span id="__span-19-18"><span class="p">})</span>
+</span><span id="__span-19-19">
+</span><span id="__span-19-20"><span class="c1"># Print ranked results</span>
+</span><span id="__span-19-21"><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]):</span>
+</span><span id="__span-19-22">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rank </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-19-23">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Score: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;relevance_score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-19-24">    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="vision-models">Vision Models</h2>
+<p>Process images with vision-language models.</p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-20-2"><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+</span><span id="__span-20-3">
+</span><span id="__span-20-4"><span class="c1"># Function to encode image</span>
+</span><span id="__span-20-5"><span class="k">def</span><span class="w"> </span><span class="nf">encode_image</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+</span><span id="__span-20-6">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+</span><span id="__span-20-7">        <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span><span id="__span-20-8">
+</span><span id="__span-20-9"><span class="c1"># Initialize vision model client</span>
+</span><span id="__span-20-10"><span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
+</span><span id="__span-20-11">    <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2-VL-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-20-12">    <span class="n">model_tag</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span>
+</span><span id="__span-20-13"><span class="p">)</span>
+</span><span id="__span-20-14">
+</span><span id="__span-20-15"><span class="c1"># Process image with text</span>
+</span><span id="__span-20-16"><span class="n">base64_image</span> <span class="o">=</span> <span class="n">encode_image</span><span class="p">(</span><span class="s2">&quot;path/to/image.jpg&quot;</span><span class="p">)</span>
+</span><span id="__span-20-17"><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-20-18">    <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="__span-20-19">        <span class="p">{</span>
+</span><span id="__span-20-20">            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+</span><span id="__span-20-21">            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="__span-20-22">                <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;What&#39;s in this image?&quot;</span><span class="p">},</span>
+</span><span id="__span-20-23">                <span class="p">{</span>
+</span><span id="__span-20-24">                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image_url&quot;</span><span class="p">,</span>
+</span><span id="__span-20-25">                    <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-20-26">                        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;data:image/jpeg;base64,</span><span class="si">{</span><span class="n">base64_image</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-20-27">                    <span class="p">}</span>
+</span><span id="__span-20-28">                <span class="p">}</span>
+</span><span id="__span-20-29">            <span class="p">]</span>
+</span><span id="__span-20-30">        <span class="p">}</span>
+</span><span id="__span-20-31">    <span class="p">]</span>
+</span><span id="__span-20-32"><span class="p">})</span>
+</span><span id="__span-20-33">
+</span><span id="__span-20-34"><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+</span></code></pre></div></p>
+<h2 id="aws-lambda-integration">AWS Lambda Integration</h2>
+<p>Use the SDK in AWS Lambda functions.</p>
+<p><strong>Lambda Function Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-21-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-21-3">
+</span><span id="__span-21-4"><span class="k">def</span><span class="w"> </span><span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span id="__span-21-5">    <span class="c1"># Initialize client</span>
+</span><span id="__span-21-6">    <span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span>
+</span><span id="__span-21-7">        <span class="n">model_id</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">],</span>
+</span><span id="__span-21-8">        <span class="n">region_name</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">invoked_function_arn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+</span><span id="__span-21-9">    <span class="p">)</span>
+</span><span id="__span-21-10">
+</span><span id="__span-21-11">    <span class="c1"># Invoke model</span>
+</span><span id="__span-21-12">    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-21-13">        <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;messages&#39;</span><span class="p">],</span>
+</span><span id="__span-21-14">        <span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_tokens&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-21-15">    <span class="p">})</span>
+</span><span id="__span-21-16">
+</span><span id="__span-21-17">    <span class="k">return</span> <span class="p">{</span>
+</span><span id="__span-21-18">        <span class="s1">&#39;statusCode&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+</span><span id="__span-21-19">        <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</span><span id="__span-21-20">    <span class="p">}</span>
+</span></code></pre></div></p>
+<p><strong>Model Management Lambda:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-22-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">deploy</span><span class="p">,</span> <span class="n">destroy</span><span class="p">,</span> <span class="n">get_model_status</span>
+</span><span id="__span-22-3">
+</span><span id="__span-22-4"><span class="k">def</span><span class="w"> </span><span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span><span id="__span-22-5">    <span class="n">action</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;action&#39;</span><span class="p">]</span>
+</span><span id="__span-22-6">    <span class="n">model_id</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;model_id&#39;</span><span class="p">]</span>
+</span><span id="__span-22-7">
+</span><span id="__span-22-8">    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;deploy&#39;</span><span class="p">:</span>
+</span><span id="__span-22-9">        <span class="n">result</span> <span class="o">=</span> <span class="n">deploy</span><span class="p">(</span>
+</span><span id="__span-22-10">            <span class="n">model_id</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span>
+</span><span id="__span-22-11">            <span class="n">instance_type</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;instance_type&#39;</span><span class="p">],</span>
+</span><span id="__span-22-12">            <span class="n">engine_type</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;engine_type&#39;</span><span class="p">],</span>
+</span><span id="__span-22-13">            <span class="n">service_type</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;service_type&#39;</span><span class="p">],</span>
+</span><span id="__span-22-14">            <span class="n">waiting_until_deploy_complete</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-22-15">        <span class="p">)</span>
+</span><span id="__span-22-16">        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;statusCode&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)}</span>
+</span><span id="__span-22-17">
+</span><span id="__span-22-18">    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;destroy&#39;</span><span class="p">:</span>
+</span><span id="__span-22-19">        <span class="n">destroy</span><span class="p">(</span><span class="n">model_id</span><span class="p">,</span> <span class="n">waiting_until_complete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-22-20">        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;statusCode&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;initiated&#39;</span><span class="p">})}</span>
+</span><span id="__span-22-21">
+</span><span id="__span-22-22">    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span>
+</span><span id="__span-22-23">        <span class="n">status</span> <span class="o">=</span> <span class="n">get_model_status</span><span class="p">(</span><span class="n">model_id</span><span class="p">)</span>
+</span><span id="__span-22-24">        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;statusCode&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">status</span><span class="p">)}</span>
+</span></code></pre></div></p>
+<h2 id="error-handling">Error Handling</h2>
+<p>Handle common errors when using the SDK.</p>
+<p><strong>Python Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">deploy</span>
+</span><span id="__span-23-2"><span class="kn">from</span><span class="w"> </span><span class="nn">emd.sdk.clients.sagemaker_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SageMakerClient</span>
+</span><span id="__span-23-3"><span class="kn">from</span><span class="w"> </span><span class="nn">botocore.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClientError</span>
+</span><span id="__span-23-4">
+</span><span id="__span-23-5"><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-23-6">    <span class="c1"># Deploy model</span>
+</span><span id="__span-23-7">    <span class="n">result</span> <span class="o">=</span> <span class="n">deploy</span><span class="p">(</span>
+</span><span id="__span-23-8">        <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-23-9">        <span class="n">instance_type</span><span class="o">=</span><span class="s2">&quot;ml.g5.xlarge&quot;</span><span class="p">,</span>
+</span><span id="__span-23-10">        <span class="n">engine_type</span><span class="o">=</span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+</span><span id="__span-23-11">        <span class="n">service_type</span><span class="o">=</span><span class="s2">&quot;sagemaker&quot;</span>
+</span><span id="__span-23-12">    <span class="p">)</span>
+</span><span id="__span-23-13">
+</span><span id="__span-23-14">    <span class="c1"># Initialize client</span>
+</span><span id="__span-23-15">    <span class="n">client</span> <span class="o">=</span> <span class="n">SageMakerClient</span><span class="p">(</span><span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;Qwen2.5-7B-Instruct&quot;</span><span class="p">)</span>
+</span><span id="__span-23-16">
+</span><span id="__span-23-17">    <span class="c1"># Invoke model</span>
+</span><span id="__span-23-18">    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+</span><span id="__span-23-19">        <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello&quot;</span><span class="p">}]</span>
+</span><span id="__span-23-20">    <span class="p">})</span>
+</span><span id="__span-23-21">
+</span><span id="__span-23-22"><span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-23-23">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deployment error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-23-24"><span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-23-25">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Configuration error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-23-26"><span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-23-27">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AWS error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-23-28"><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-23-29">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<h2 id="complete-workflow-example">Complete Workflow Example</h2>
+<p>End-to-end example of deploying and using a model.</p>
+<p><strong>Python Example:</strong>
+```python
+from emd.sdk import bootstrap, deploy, get_model_status, destroy
+from emd.sdk.clients.sagemaker_client import SageMakerClient
+import time</p>
+<h1 id="1-bootstrap-infrastructure">1. Bootstrap infrastructure</h1>
+<p>print("Setting up AWS infrastructure...")
+bootstrap()</p>
+<h1 id="2-deploy-model">2. Deploy model</h1>
+<p>print("Deploying model...")
+deployment = deploy(
+    model_id="Qwen2.5-7B-Instruct",
+    instance_type="ml.g5.xlarge",
+    engine_type="vllm",
+    service_type="sagemaker",
+    extra_params={
+        "engine_params": {
+            "cli_args": "--max_model_len 8000 --max_num_seqs 10"
+        }
+    }
+)</p>
+<p>print(f"Deployment started: {deployment['pipeline_execution_id']}")</p>
+<h1 id="3-wait-for-deployment-to-complete">3. Wait for deployment to complete</h1>
+<p>print("Waiting for deployment...")
+while True:
+    status = get_model_status("Qwen2.5-7B-Instruct")
+    if status["completed"]:
+        print("Deployment completed!")
+        break
+    elif status["inprogress"]:
+        print("Still deploying...")
+        time.sleep(30)
+    else:
+        print("No deployment found")
+        break</p>
+<h1 id="4-use-the-deployed-model">4. Use the deployed model</h1>
+<p>client = SageMakerClient(model_id="Qwen2.5-7B-Instruct")</p>
+<h1 id="test-basic-functionality">Test basic functionality</h1>
+<p>response = client.invoke({
+    "messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Explain machine learning in simple terms."}
+    ],
+    "max_tokens": 200,
+    "temperature": 0.7
+})</p>
+<p>print("Model response:")
+print(response["choices"][0]["message"]["content"])</p>
+<h1 id="test-streaming">Test streaming</h1>
+<p>print("\nStreaming response:")
+for chunk in client.invoke({
+    "messages": [{"role": "user", "content": "Count from 1 to 10"}],
+    "stream": True
+}):
+    if chunk.get("choices") and chunk["choices"][0].get("delta", {}).get("content"):
+        print(chunk["choices"][0]["delta"]["content"], end="")</p>
+<h1 id="5-clean-up-optional">5. Clean up (optional)</h1>
+<h1 id="destroyqwen25-7b-instruct">destroy("Qwen2.5-7B-Instruct")</h1>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../api/" class="btn btn-neutral float-left" title="API Reference"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../local_deployment/" class="btn btn-neutral float-right" title="Local Deployment">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
+    
+    
+      <span><a href="../api/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../local_deployment/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

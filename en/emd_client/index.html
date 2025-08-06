@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/emd_client/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Usse EMD client to invoke deployed models - Easy Model Deployer</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="../css/print-site.css" rel="stylesheet" />
+        <link href="../css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="../custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Usse EMD client to invoke deployed models";
+        var mkdocs_page_input_path = "emd_client.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/emd_client/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Quick Start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../supported_models/">Supported Models</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../best_deployment_practices/">Best Deployment Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../commands/">CLI Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../sdk_api/">SDK API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local_deployment/">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../sdk_integration/">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../swift_chat_integration/">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dify_integration/">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../langflow_integration/">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../flowise_integration/">Flowise Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ollama_integration/">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../nextchat_integration/">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Easy Model Deployer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Usse EMD client to invoke deployed models</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/emd_client.md">Edit on aws-samples/easy-model-deployer</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="usse-emd-client-to-invoke-deployed-models">Usse EMD client to invoke deployed models</h1>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1">emd<span class="w"> </span>invoke<span class="w"> </span>MODEL_ID<span class="w"> </span>MODEL_TAG<span class="w"> </span><span class="o">(</span>Optional<span class="o">)</span>
+</span></code></pre></div>
+<h2 id="llm-models">LLM models</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1">emd<span class="w"> </span>invoke<span class="w">  </span>DeepSeek-R1-Distill-Qwen-7B
+</span><span id="__span-1-2">...
+</span><span id="__span-1-3">Invoking<span class="w"> </span>model<span class="w"> </span>DeepSeek-R1-Distill-Qwen-7B<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+</span><span id="__span-1-4">Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
+</span><span id="__span-1-5">User:<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>solve<span class="w"> </span>the<span class="w"> </span>problem<span class="w"> </span>of<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>profit
+</span><span id="__span-1-6">Assistant:&lt;think&gt;
+</span><span id="__span-1-7">
+</span><span id="__span-1-8">Okay,<span class="w"> </span>so<span class="w"> </span>I<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>figure<span class="w"> </span>out<span class="w"> </span>how<span class="w"> </span>to<span class="w"> </span>make<span class="w"> </span>more<span class="w"> </span>profit.<span class="w"> </span>Profit<span class="w"> </span>is<span class="w"> </span>basically<span class="w"> </span>the<span class="w"> </span>money<span class="w"> </span>left<span class="w"> </span>after<span class="w"> </span>subtracting<span class="w"> </span>costs<span class="w"> </span>from<span class="w"> </span>revenue,<span class="w"> </span>right?<span class="w"> </span>So,<span class="w"> </span>increasing<span class="w"> </span>profit<span class="w"> </span>means<span class="w"> </span>either<span class="w"> </span>making<span class="w"> </span>more<span class="w"> </span>money<span class="w"> </span>from<span class="w"> </span>sales<span class="w"> </span>or<span class="w"> </span>reducing<span class="w"> </span>the
+</span><span id="__span-1-9">expenses.<span class="w"> </span>Let<span class="w"> </span>me<span class="w"> </span>think<span class="w"> </span>about<span class="w"> </span>how<span class="w"> </span>I<span class="w"> </span>can<span class="w"> </span>approach<span class="w"> </span>this.
+</span><span id="__span-1-10">...
+</span></code></pre></div>
+<h2 id="vlm-models">VLM models</h2>
+<ol>
+<li>
+<p>upload image to a s3 path
+<img alt="alt text" src="../sample.png" />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1">aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>image.jpg<span class="w"> </span>s3://your-bucket/image.jpg
+</span></code></pre></div></p>
+</li>
+<li>
+<p>invoke the model
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1">emd<span class="w"> </span>invoke<span class="w">  </span>Qwen2-VL-7B-Instruct
+</span><span id="__span-3-2">...
+</span><span id="__span-3-3">Invoking<span class="w"> </span>model<span class="w"> </span>Qwen2-VL-7B-Instruct<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+</span><span id="__span-3-4">Enter<span class="w"> </span>image<span class="w"> </span>path<span class="o">(</span><span class="nb">local</span><span class="w"> </span>or<span class="w"> </span>s3<span class="w"> </span>file<span class="o">)</span>:<span class="w"> </span>s3://your-bucket/image.jpg
+</span><span id="__span-3-5">Enter<span class="w"> </span>prompt:<span class="w"> </span>What<span class="err">&#39;</span>s<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>image?
+</span><span id="__span-3-6">...
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="videotxt2video-models">Video(Txt2Video) models</h3>
+<ol>
+<li>input prompt for video generation
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1">emd<span class="w"> </span>invoke<span class="w"> </span>txt2video-LTX
+</span><span id="__span-4-2">...
+</span><span id="__span-4-3">Invoking<span class="w"> </span>model<span class="w"> </span>txt2video-LTX<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+</span><span id="__span-4-4">Write<span class="w"> </span>a<span class="w"> </span>prompt,<span class="w"> </span>press<span class="w"> </span>Enter<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>response<span class="w"> </span><span class="o">(</span>Ctrl+C<span class="w"> </span>to<span class="w"> </span>abort<span class="o">)</span>,
+</span><span id="__span-4-5">User:<span class="w"> </span>Two<span class="w"> </span>police<span class="w"> </span>officers<span class="w"> </span><span class="k">in</span><span class="w"> </span>dark<span class="w"> </span>blue<span class="w"> </span>uniforms<span class="w"> </span>and<span class="w"> </span>matching<span class="w"> </span>hats<span class="w"> </span>enter<span class="w"> </span>a<span class="w"> </span>dimly<span class="w"> </span>lit<span class="w"> </span>room<span class="w"> </span>through<span class="w"> </span>a<span class="w"> </span>doorway<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>left<span class="w"> </span>side<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>frame.<span class="w"> </span>The<span class="w"> </span>first<span class="w"> </span>officer,<span class="w"> </span>with<span class="w"> </span>short<span class="w"> </span>brown<span class="w"> </span>hair<span class="w"> </span>and<span class="w"> </span>a<span class="w"> </span>mustache,<span class="w"> </span>steps<span class="w"> </span>inside<span class="w"> </span>first,<span class="w"> </span>followed<span class="w"> </span>by<span class="w"> </span>his<span class="w"> </span>partner,<span class="w"> </span>who<span class="w"> </span>has<span class="w"> </span>a<span class="w"> </span>shaved<span class="w"> </span>head<span class="w"> </span>and<span class="w"> </span>a<span class="w"> </span>goatee.<span class="w"> </span>Both<span class="w"> </span>officers<span class="w"> </span>have<span class="w"> </span>serious<span class="w"> </span>expressions<span class="w"> </span>and<span class="w"> </span>maintain<span class="w"> </span>a<span class="w"> </span>steady<span class="w"> </span>pace<span class="w"> </span>as<span class="w"> </span>they<span class="w"> </span>move<span class="w"> </span>deeper<span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>room.<span class="w"> </span>The<span class="w"> </span>camera<span class="w"> </span>remains<span class="w"> </span>stationary,<span class="w"> </span>capturing<span class="w"> </span>them<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>slightly<span class="w"> </span>low<span class="w"> </span>angle<span class="w"> </span>as<span class="w"> </span>they<span class="w"> </span>enter.<span class="w"> </span>The<span class="w"> </span>room<span class="w"> </span>has<span class="w"> </span>exposed<span class="w"> </span>brick<span class="w"> </span>walls<span class="w"> </span>and<span class="w"> </span>a<span class="w"> </span>corrugated<span class="w"> </span>metal<span class="w"> </span>ceiling,<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>barred<span class="w"> </span>window<span class="w"> </span>visible<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>background.<span class="w"> </span>The<span class="w"> </span>lighting<span class="w"> </span>is<span class="w"> </span>low-key,<span class="w"> </span>casting<span class="w"> </span>shadows<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>officers<span class="err">&#39;</span><span class="w"> </span>faces<span class="w"> </span>and<span class="w"> </span>emphasizing<span class="w"> </span>the<span class="w"> </span>grim<span class="w"> </span>atmosphere.<span class="w"> </span>The<span class="w"> </span>scene<span class="w"> </span>appears<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>film<span class="w"> </span>or<span class="w"> </span>television<span class="w"> </span>show.
+</span><span id="__span-4-6">...
+</span></code></pre></div></li>
+<li>download generated video from <strong>output_path</strong></li>
+</ol>
+<h2 id="embedding-models">Embedding models</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1">emd<span class="w"> </span>invoke<span class="w"> </span>bge-base-en-v1.5
+</span><span id="__span-5-2">...
+</span><span id="__span-5-3">Invoking<span class="w"> </span>model<span class="w"> </span>bge-base-en-v1.5<span class="w"> </span>with<span class="w"> </span>tag<span class="w"> </span>dev
+</span><span id="__span-5-4">Enter<span class="w"> </span>the<span class="w"> </span>sentence:<span class="w"> </span>hello
+</span><span id="__span-5-5">...
+</span></code></pre></div>
+<h2 id="rerank-models">Rerank models</h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1">emd<span class="w"> </span>invoke<span class="w"> </span>bge-reranker-v2-m3
+</span><span id="__span-6-2">...
+</span><span id="__span-6-3">Enter<span class="w"> </span>the<span class="w"> </span>text_a<span class="w"> </span><span class="o">(</span>string<span class="o">)</span>:<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>capital<span class="w"> </span>of<span class="w"> </span>France?
+</span><span id="__span-6-4">Enter<span class="w"> </span>the<span class="w"> </span>text_b<span class="w"> </span><span class="o">(</span>string<span class="o">)</span>:<span class="w"> </span>The<span class="w"> </span>capital<span class="w"> </span>of<span class="w"> </span>France<span class="w"> </span>is<span class="w"> </span>Paris.
+</span><span id="__span-6-5">...
+</span></code></pre></div>
+<h2 id="asr-modelswhisper">ASR models(whisper)</h2>
+<ol>
+<li>
+<p>upload audio to a s3 path
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1">aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>xx.wav<span class="w"> </span>s3://your-bucket/xx.wav
+</span></code></pre></div></p>
+</li>
+<li>
+<p>invoke the model
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1">emd<span class="w"> </span>invoke<span class="w"> </span>whisper
+</span><span id="__span-8-2">...
+</span><span id="__span-8-3">Enter<span class="w"> </span>the<span class="w"> </span>s3<span class="w"> </span>path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>audio<span class="w"> </span>file:<span class="w"> </span>s3://your-bucket/xx.wav
+</span><span id="__span-8-4">Enter<span class="w"> </span>model<span class="w"> </span><span class="o">[</span>large-v3-turbo/large-v3<span class="o">]</span>:<span class="w"> </span>large-v3-turbo
+</span><span id="__span-8-5">...
+</span></code></pre></div></p>
+</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

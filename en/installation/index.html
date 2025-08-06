@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://github.com/aws-samples/easy-model-deployer/installation/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Quick Start - Easy Model Deployer</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/print-site-enum-headings1.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings2.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings3.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings4.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings5.css" rel="stylesheet" />
+        <link href="../css/print-site-enum-headings6.css" rel="stylesheet" />
+        <link href="../css/print-site.css" rel="stylesheet" />
+        <link href="../css/print-site-readthedocs.css" rel="stylesheet" />
+        <link href="../custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Quick Start";
+        var mkdocs_page_input_path = "installation.md";
+        var mkdocs_page_url = "/aws-samples/easy-model-deployer/installation/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Easy Model Deployer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Quick Start</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bootstrap">Bootstrap</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy-a-model">Deploy a Model</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#check-deployment-status">Check Deployment Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#invoke-the-model">Invoke the Model</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#integration-options">Integration Options</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#destroy-the-deployment">Destroy the Deployment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#advanced-options">Advanced Options</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../supported_models/">Supported Models</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../best_deployment_practices/">Best Deployment Practices</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../commands/">CLI Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../sdk_api/">SDK API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../local_deployment/">Local Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../sdk_integration/">LangChain Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../swift_chat_integration/">SwiftChat Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dify_integration/">Dify Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../langflow_integration/">LangFlow Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../flowise_integration/">Flowise Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../ollama_integration/">Ollama Integration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../nextchat_integration/">NextChat Integration</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Easy Model Deployer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Quick Start</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/aws-samples/easy-model-deployer/edit/master/docs/installation.md">Edit on aws-samples/easy-model-deployer</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="quick-start-guide">Quick Start Guide</h1>
+<p>This guide provides simple step-by-step instructions for using Easy Model Deployer (EMD).</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before installing Easy Model Deployer, ensure your environment meets the following requirements:</p>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python</strong></td>
+<td>Version 3.9 or higher required. EMD leverages modern Python features for optimal performance.</td>
+</tr>
+<tr>
+<td><strong>pip</strong></td>
+<td>The Python package installer must be available to install EMD and its dependencies.</td>
+</tr>
+<tr>
+<td><strong>AWS Account</strong></td>
+<td>Required for deploying models to AWS services (SageMaker, ECS, EC2).</td>
+</tr>
+<tr>
+<td><strong>AWS CLI</strong></td>
+<td>Configured with appropriate credentials and permissions for resource creation.</td>
+</tr>
+<tr>
+<td><strong>Internet Connection</strong></td>
+<td>Required for downloading model artifacts and dependencies.</td>
+</tr>
+</tbody>
+</table>
+<p>For local deployments, additional requirements apply. See the <a href="../local_deployment/">Local Deployment Guide</a> for details.</p>
+<h2 id="installation">Installation</h2>
+<p><strong>Optional: Create a Virtual Environment</strong></p>
+<p>It's recommended to install EMD in a virtual environment to avoid conflicts with other Python packages:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><span class="c1"># Create a virtual environment</span>
+</span><span id="__span-0-2">python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+</span><span id="__span-0-3">
+</span><span id="__span-0-4"><span class="c1"># Activate the virtual environment</span>
+</span><span id="__span-0-5"><span class="c1"># On macOS/Linux:</span>
+</span><span id="__span-0-6"><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</span><span id="__span-0-7"><span class="c1"># On Windows:</span>
+</span><span id="__span-0-8"><span class="c1"># .venv\Scripts\activate</span>
+</span></code></pre></div>
+<p>After activating the virtual environment, your terminal prompt should change to indicate the active environment. You can then proceed with installation.</p>
+<p>Easy Model Deployer can be installed using various package managers. Choose the method that best suits your workflow:</p>
+<p><strong>Using pip:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1">pip<span class="w"> </span>install<span class="w"> </span>easy-model-deployer
+</span></code></pre></div></p>
+<p><strong>Using pipx:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><span class="c1"># Install pipx if you don&#39;t have it</span>
+</span><span id="__span-2-2">pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>pipx
+</span><span id="__span-2-3">pipx<span class="w"> </span>ensurepath
+</span><span id="__span-2-4">
+</span><span id="__span-2-5"><span class="c1"># Install EMD</span>
+</span><span id="__span-2-6">pipx<span class="w"> </span>install<span class="w"> </span>easy-model-deployer
+</span></code></pre></div></p>
+<p><strong>Using uv:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><span class="c1"># Install uv if you don&#39;t have it</span>
+</span><span id="__span-3-2">pip<span class="w"> </span>install<span class="w"> </span>uv
+</span><span id="__span-3-3">
+</span><span id="__span-3-4"><span class="c1"># Install EMD</span>
+</span><span id="__span-3-5">uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>easy-model-deployer
+</span></code></pre></div></p>
+<p><strong>Verification:</strong>
+After installation, verify that EMD is working correctly by running:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1">emd<span class="w"> </span>version
+</span></code></pre></div>
+This should display the installed version of Easy Model Deployer.</p>
+<p><strong>Upgrading:</strong>
+To upgrade to the latest version:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><span class="c1"># Using pip</span>
+</span><span id="__span-5-2">pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>easy-model-deployer
+</span><span id="__span-5-3">
+</span><span id="__span-5-4"><span class="c1"># Using pipx</span>
+</span><span id="__span-5-5">pipx<span class="w"> </span>upgrade<span class="w"> </span>easy-model-deployer
+</span><span id="__span-5-6">
+</span><span id="__span-5-7"><span class="c1"># Using uv</span>
+</span><span id="__span-5-8">uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>easy-model-deployer
+</span></code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: After upgrading, you should run <code>emd bootstrap</code> again to ensure your environment is updated.</p>
+</blockquote>
+<h2 id="bootstrap">Bootstrap</h2>
+<p>Before deploying models, you need to bootstrap the environment:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1">emd<span class="w"> </span>bootstrap
+</span></code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: You need to run this command again after upgrading EMD with pip to update the environment.</p>
+</blockquote>
+<h2 id="deploy-a-model">Deploy a Model</h2>
+<p>Deploy a model using the interactive CLI:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1">emd<span class="w"> </span>deploy
+</span></code></pre></div>
+<p>The CLI will guide you through selecting:
+- Model series
+- Specific model
+- Deployment service (SageMaker, ECS, EC2, or Local)
+- Instance type or GPU IDs
+- Inference engine
+- Additional parameters</p>
+<p>You can also deploy models directly with command line parameters:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-series<span class="w"> </span>llama<span class="w"> </span>--model-name<span class="w"> </span>llama-3.3-70b-instruct-awq<span class="w"> </span>--service<span class="w"> </span>SageMaker
+</span></code></pre></div>
+<p>For secure API access, you can configure an API key during deployment using the <code>--extra-params</code> option:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1">emd<span class="w"> </span>deploy<span class="w"> </span>--model-id<span class="w"> </span>&lt;model-id&gt;<span class="w"> </span>--instance-type<span class="w"> </span>&lt;instance-type&gt;<span class="w"> </span>--engine-type<span class="w"> </span>&lt;engine-type&gt;<span class="w"> </span>--service-type<span class="w"> </span>&lt;service-type&gt;<span class="w"> </span>--extra-params<span class="w"> </span><span class="s1">&#39;{</span>
+</span><span id="__span-9-2"><span class="s1">  &quot;service_params&quot;: {</span>
+</span><span id="__span-9-3"><span class="s1">    &quot;api_key&quot;: &quot;your-secure-api-key&quot;</span>
+</span><span id="__span-9-4"><span class="s1">  }</span>
+</span><span id="__span-9-5"><span class="s1">}&#39;</span>
+</span></code></pre></div>
+<p>When using the interactive CLI (<code>emd deploy</code>), you can also provide this JSON configuration in the "Extra Parameters" step of the deployment process. Simply paste the JSON structure when prompted for additional parameters:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-10-1"><span class="p">{</span>
+</span><span id="__span-10-2"><span class="w">  </span><span class="nt">&quot;service_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-3"><span class="w">    </span><span class="nt">&quot;api_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-secure-api-key&quot;</span>
+</span><span id="__span-10-4"><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-10-5"><span class="p">}</span>
+</span></code></pre></div>
+<p>This API key will be required for authentication when accessing your deployed model's endpoint, enhancing security for your inference services.</p>
+<blockquote>
+<p><strong>Note</strong>: For local deployment options and detailed model configurations, see the <a href="../local_deployment/">Local Deployment Guide</a>.</p>
+</blockquote>
+<h2 id="check-deployment-status">Check Deployment Status</h2>
+<p>Monitor the status of your deployment:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1">emd<span class="w"> </span>status
+</span></code></pre></div>
+<p>This command shows all active deployments with their ModelIds, endpoints, and status.</p>
+<h2 id="invoke-the-model">Invoke the Model</h2>
+<p>Test your deployed model using the CLI:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1">emd<span class="w"> </span>invoke<span class="w"> </span>&lt;ModelId&gt;
+</span></code></pre></div>
+<p>Replace <code>&lt;ModelId&gt;</code> with the ID shown in the status output.</p>
+<h2 id="integration-options">Integration Options</h2>
+<p>EMD provides an OpenAI-compatible API that allows you to integrate with your deployed models using standard tools and libraries:</p>
+<ul>
+<li><strong>OpenAI Compatible API</strong>: The primary integration method using the OpenAI API format. Once you have the base URL and API key from the <code>emd status</code> command, you can access the API using the OpenAI SDK or any OpenAI-compatible client. <a href="../api/">API Documentation</a></li>
+<li><strong>EMD Client</strong>: For direct Python integration</li>
+<li><strong>LangChain Interface</strong>: For integration with LangChain applications</li>
+</ul>
+<p>The API uses an OpenAI-compatible format, making it easy to switch between OpenAI's services and your deployed models with minimal code changes.</p>
+<h2 id="destroy-the-deployment">Destroy the Deployment</h2>
+<p>When you no longer need the model, remove the deployment:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1">emd<span class="w"> </span>destroy<span class="w"> </span>&lt;ModelId&gt;
+</span></code></pre></div>
+<p>Replace <code>&lt;ModelId&gt;</code> with the ID shown in the status output.</p>
+<h2 id="advanced-options">Advanced Options</h2>
+<p>For more detailed information on:</p>
+<ul>
+<li>Advanced deployment parameters: See <a href="https://aws-samples.github.io/easy-model-deployer/en/best_deployment_practices/">Best Deployment Practices</a></li>
+<li>Architecture details: See <a href="https://aws-samples.github.io/easy-model-deployer/en/architecture/">Architecture</a></li>
+<li>Supported models: See <a href="https://aws-samples.github.io/easy-model-deployer/en/supported_models/">Supported Models</a></li>
+<li>Local deployment: See <a href="../local_deployment/">Local Deployment Guide</a></li>
+<li>CLI commands reference: See <a href="../commands/">CLI Commands</a></li>
+<li>API documentation: See <a href="../api/">API Documentation</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../supported_models/" class="btn btn-neutral float-right" title="Supported Models">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/aws-samples/easy-model-deployer/" class="fa fa-code-fork" style="color: #fcfcfc"> aws-samples/easy-model-deployer</a>
+        </span>
+    
+    
+    
+      <span><a href="../supported_models/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../copy-button.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
