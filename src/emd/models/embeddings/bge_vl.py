@@ -50,6 +50,7 @@ Model.register(
         model_id="bge-vl-large",
         supported_engines=[huggingface_embedding_engine449],
         supported_instances=[
+            g5dxlarge_instance,
             g5d2xlarge_instance,
             g5d4xlarge_instance,
             g5d8xlarge_instance,
