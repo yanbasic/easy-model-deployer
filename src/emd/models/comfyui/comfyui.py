@@ -12,6 +12,7 @@ from ..instances import (
     g5d24xlarge_instance,
     g5d48xlarge_instance,
     g6e2xlarge_instance,
+    local_instance,
 )
 from ..model_series import COMFYUI_SERIES
 
@@ -22,7 +23,8 @@ Model.register(
         supported_instances=[
             g5d4xlarge_instance,
             g5d8xlarge_instance,
-            g6e2xlarge_instance
+            g6e2xlarge_instance,
+            local_instance
         ],
         supported_services=[
             sagemaker_async_service,

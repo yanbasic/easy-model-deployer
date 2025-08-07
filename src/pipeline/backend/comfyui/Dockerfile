@@ -68,15 +68,11 @@ RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
     cd ComfyUI-TeaCache && \
     pip install -r requirements.txt
 
-# Clone and update Comfyui-PaddleOCR with timestamp-based cache busting
+# Clone Comfyui-PaddleOCR (this layer can be cached)
 RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
     git clone https://github.com/HappyXY/Comfyui-PaddleOCR.git && \
     cd Comfyui-PaddleOCR && \
-    git submodule update --init --recursive && \
-    git fetch --all && \
-    git reset --hard origin/main && \
-    git pull && \
-    echo "Updated Comfyui-PaddleOCR at $(date)"
+    git submodule update --init --recursive
 
 RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
     git clone https://github.com/HappyXY/ComfyUI-AmazonBedrock.git
@@ -102,6 +98,15 @@ RUN cd /home/ubuntu/ComfyUI/custom_nodes && \
 git clone https://github.com/2kpr/ComfyUI-PMRF.git
 
 RUN pip install natten==0.17.5+torch260cu126 -f https://whl.natten.org
+
+# Add cache-busting ARG at the very end to minimize impact
+ARG CACHE_BUST=1
+
+# Update Comfyui-PaddleOCR (this will always run and only affect the final layers)
+RUN cd /home/ubuntu/ComfyUI/custom_nodes/Comfyui-PaddleOCR && \
+    git fetch --all && \
+    git reset --hard origin/main && \
+    git pull
 
 # Remove the separate git pull command since it's now combined with the clone operation above
 
