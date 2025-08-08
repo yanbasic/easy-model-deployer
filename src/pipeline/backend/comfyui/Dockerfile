@@ -108,6 +108,11 @@ RUN cd /home/ubuntu/ComfyUI/custom_nodes/Comfyui-PaddleOCR && \
     git reset --hard origin/main && \
     git pull
 
+RUN cd /home/ubuntu/ComfyUI/custom_nodes/ComfyUI-AmazonBedrock && \
+    git fetch --all && \
+    git reset --hard origin/main && \
+    git pull
+
 # Remove the separate git pull command since it's now combined with the clone operation above
 
 
