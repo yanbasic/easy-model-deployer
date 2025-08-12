@@ -157,3 +157,9 @@ GME_SERIES = ModelSeries(
     description="General Multimodal Embedding (GME) models based on Qwen2-VL architecture, designed for unified multimodal representation learning supporting text, image, and image-text pair inputs for retrieval and search applications.",
     reference_link="https://huggingface.co/Alibaba-NLP/gme-Qwen2-VL-7B-Instruct"
 )
+
+GPTOSS_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.GPTOSS,
+    description="GPT-OSS (GPT Open Source Software) is OpenAI's initiative to provide open-source AI models, making advanced language models accessible to developers, researchers, and organizations for building, experimenting, and scaling generative AI applications. These models are designed to foster innovation and collaboration in the open-source AI community.",
+    reference_link="https://openai.com/index/introducing-gpt-oss/"
+)
