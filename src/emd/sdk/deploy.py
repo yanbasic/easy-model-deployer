@@ -2,6 +2,7 @@ import json
 import os
 import io
 import time
+import shlex
 from typing import Optional
 
 import boto3
@@ -404,7 +405,7 @@ def deploy_local(
         f" --backend_type {engine_type}"
         f" --framework_type {framework_type}"
         f" --region '{LOCAL_REGION}'"
-        f" --extra_params '{extra_params}'"
+        f" --extra_params {shlex.quote(extra_params)}"
     )
     logger.info(f"pipeline cmd: {pipeline_cmd}")
     assert (
