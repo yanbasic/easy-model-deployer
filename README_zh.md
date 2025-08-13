@@ -23,7 +23,7 @@
 
 ## 简介
 
-还在为大模型部署而头疼吗？Easy Model Deployer 让你告别复杂的环境配置，轻松将**开源大模型**（[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models.html)）部署到 AWS 云端。
+还在为大模型部署而头疼吗？Easy Model Deployer 让你告别复杂的环境配置，轻松将**开源大模型**（[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models)）部署到 AWS 云端。
 
 无论是大语言模型、视觉模型还是自定义模型，一条命令即可搞定部署。更棒的是，部署完成后直接获得 **OpenAI 兼容 API** 和 [**LangChain 接口**](https://github.com/langchain-ai/langchain)，让你的 AI 应用开发如虎添翼。
 
@@ -50,7 +50,7 @@ Easy Model Deployer 支持广泛的模型类型，包括：
 - **语音识别模型**: Whisper 变体
 - **自定义模型**: 支持自定义 Docker 镜像
 
-完整的支持模型列表和部署配置，请参见[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models.html)。
+完整的支持模型列表和部署配置，请参见[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models)。
 
 ## 🔧 快速开始
 
@@ -119,7 +119,7 @@ emd invoke <ModelId>
 
 ### 列出支持的模型
 
-快速查看支持哪些模型，此命令将输出与部署相关的所有信息。（更多信息请浏览[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models.html)。）
+快速查看支持哪些模型，此命令将输出与部署相关的所有信息。（更多信息请浏览[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models)。）
 
 ```bash
 emd list-supported-models
