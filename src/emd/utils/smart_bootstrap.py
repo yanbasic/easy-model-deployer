@@ -121,7 +121,7 @@ class SmartBootstrapManager:
         self.console.print()  # Empty line for spacing
 
 
-    def auto_bootstrap_if_needed(self, region: str) -> bool:
+    def auto_bootstrap_if_needed(self, region: str, skip_confirm: bool = False) -> bool:
         """
         Automatically run bootstrap if needed based on comprehensive infrastructure check
         Returns: True if bootstrap was run, False otherwise
@@ -145,18 +145,19 @@ class SmartBootstrapManager:
             # Infrastructure missing/incomplete OR version mismatch - ask for confirmation
             self.show_bootstrap_notification(current_version, deployed_version)
 
-            # Ask for user confirmation
-            if deployed_version:
-                # Update scenario
-                confirm_msg = f"Update infrastructure from {deployed_version} to {current_version}?"
-            else:
-                # Initialize scenario
-                confirm_msg = f"Initialize EMD infrastructure for version {current_version}?"
+            # Ask for user confirmation unless skip_confirm is True
+            if not skip_confirm:
+                if deployed_version:
+                    # Update scenario
+                    confirm_msg = f"Update infrastructure from {deployed_version} to {current_version}?"
+                else:
+                    # Initialize scenario
+                    confirm_msg = f"Initialize EMD infrastructure for version {current_version}?"
 
-            if not typer.confirm(confirm_msg, default=False):
-                self.console.print("[yellow]Bootstrap cancelled. Infrastructure will not be updated.[/yellow]")
-                self.console.print("[red]Deployment cannot proceed without compatible infrastructure.[/red]")
-                raise typer.Exit(1)
+                if not typer.confirm(confirm_msg, default=False):
+                    self.console.print("[yellow]Bootstrap cancelled. Infrastructure will not be updated.[/yellow]")
+                    self.console.print("[red]Deployment cannot proceed without compatible infrastructure.[/red]")
+                    raise typer.Exit(1)
 
             # User confirmed - proceed with bootstrap
             try:

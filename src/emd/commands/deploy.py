@@ -254,7 +254,7 @@ def deploy(
         region = get_current_region()
 
     if region != LOCAL_REGION:
-        smart_bootstrap_manager.auto_bootstrap_if_needed(region)
+        smart_bootstrap_manager.auto_bootstrap_if_needed(region, skip_confirm)
 
     if dockerfile_local_path:
         response = sdk_deploy(
