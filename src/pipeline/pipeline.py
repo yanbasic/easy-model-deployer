@@ -5,6 +5,8 @@ import argparse
 import importlib
 import json
 import logging
+import urllib.request
+import zipfile
 from concurrent.futures import as_completed,ProcessPoolExecutor
 
 from utils.common import download_file_from_s3_by_s5cmd
@@ -23,6 +25,9 @@ from emd.models import ValueWithDefault
 from emd.utils.logger_utils import get_logger
 
 logger = get_logger(__name__)
+
+# Global constants
+S5CMD_PATH = "./s5cmd"
 
 
 def parse_args():
@@ -241,19 +246,46 @@ def get_executable_model(args):
     return execute_model
 
 def download_s5cmd():
-    assert os.system('curl https://github.com/peak/s5cmd/releases/download/v2.0.0/s5cmd_2.0.0_Linux-64bit.tar.gz -L -o /tmp/s5cmd.tar.gz') == 0
-    assert os.system("mkdir -p /tmp/s5cmd && tar -xvf /tmp/s5cmd.tar.gz -C /tmp/s5cmd") == 0
-    assert os.system(f"cp /tmp/s5cmd/s5cmd .") == 0
+    """Download s5cmd binary using S3 URL (always use us-east-1 for local deployment)"""
+    # Check if s5cmd already exists
+    if os.path.exists(S5CMD_PATH):
+        return S5CMD_PATH
+
+    s5cmd_url = "https://aws-gcr-solutions-us-east-1.s3.us-east-1.amazonaws.com/easy-model-deployer/pipeline/s5cmd.zip"
+
+    try:
+        # Download and extract
+        zip_path = S5CMD_PATH + ".zip"
+        urllib.request.urlretrieve(s5cmd_url, zip_path)
+
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(".")
+
+        os.remove(zip_path)  # Clean up zip file
+
+        # Make s5cmd executable
+        if os.path.exists(S5CMD_PATH):
+            os.chmod(S5CMD_PATH, os.stat(S5CMD_PATH).st_mode | 0o755)
+            return S5CMD_PATH
+        else:
+            raise FileNotFoundError("Required component(s5cmd) installation failed")
+
+    except Exception as e:
+        raise RuntimeError("Required component(s5cmd) download failed")
 
 if __name__ == "__main__":
     t0 = time.time()
     start_time = time.time()
     args = parse_args()
-    if not (check_cn_region(args.region) or args.region == LOCAL_REGION):
-        download_s5cmd()
 
-    s5_cmd_path = "./s5cmd"
-    os.chmod(s5_cmd_path, os.stat(s5_cmd_path).st_mode | 0o100)
+    # Download s5cmd
+    download_s5cmd()
+
+    if not os.path.exists(S5CMD_PATH):
+        logger.error("Required component(s5cmd) not found")
+        sys.exit(1)
+
+    os.chmod(S5CMD_PATH, os.stat(S5CMD_PATH).st_mode | 0o100)
     extra_params = args.extra_params
     for k,v in extra_params.items():
         setattr(args,k,v)
