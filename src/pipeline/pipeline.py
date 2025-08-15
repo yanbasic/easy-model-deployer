@@ -250,26 +250,26 @@ def download_s5cmd():
     # Check if s5cmd already exists
     if os.path.exists(S5CMD_PATH):
         return S5CMD_PATH
-    
+
     s5cmd_url = "https://aws-gcr-solutions-us-east-1.s3.us-east-1.amazonaws.com/easy-model-deployer/pipeline/s5cmd.zip"
-    
+
     try:
         # Download and extract
         zip_path = S5CMD_PATH + ".zip"
         urllib.request.urlretrieve(s5cmd_url, zip_path)
-        
+
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(".")
-        
+
         os.remove(zip_path)  # Clean up zip file
-        
+
         # Make s5cmd executable
         if os.path.exists(S5CMD_PATH):
             os.chmod(S5CMD_PATH, os.stat(S5CMD_PATH).st_mode | 0o755)
             return S5CMD_PATH
         else:
             raise FileNotFoundError("Required component(s5cmd) installation failed")
-            
+
     except Exception as e:
         raise RuntimeError("Required component(s5cmd) download failed")
 
@@ -277,14 +277,14 @@ if __name__ == "__main__":
     t0 = time.time()
     start_time = time.time()
     args = parse_args()
-    
+
     # Download s5cmd
     download_s5cmd()
 
     if not os.path.exists(S5CMD_PATH):
         logger.error("Required component(s5cmd) not found")
         sys.exit(1)
-    
+
     os.chmod(S5CMD_PATH, os.stat(S5CMD_PATH).st_mode | 0o100)
     extra_params = args.extra_params
     for k,v in extra_params.items():
