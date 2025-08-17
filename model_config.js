@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-08-07T07:44:14.121550
+// Generated at: 2025-08-17T04:29:40.735515
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-08-07T07:44:14.121550",
+    "generated_at": "2025-08-17T04:29:40.735515",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
@@ -2122,6 +2122,36 @@ window.EMD_MODEL_CONFIG = {
         "name": "mistral",
         "description": "LLMs and VLMs provided by MISTRAL AI.",
         "reference_link": "https://huggingface.co/mistralai"
+      }
+    },
+    "dotsocr": {
+      "model_id": "dotsocr",
+      "model_type": "vlm",
+      "description": "dots.ocr is a powerful, multilingual document parser that unifies layout detection and content recognition within a single vision-language model. Built on a compact 1.7B-parameter LLM foundation, it achieves state-of-the-art performance on text, tables, and reading order tasks with support for over 100 languages including English, Chinese, and many others.",
+      "application_scenario": "multilingual document layout parsing, OCR, document understanding, table extraction, formula recognition, reading order detection",
+      "supported_instances": [
+        "g5.xlarge",
+        "g5.2xlarge",
+        "g5.4xlarge",
+        "g5.8xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async",
+        "ecs",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "rednote-hilab/dots.ocr",
+      "modelscope_model_id": "rednote-hilab/dots.ocr",
+      "model_series": {
+        "name": "dots_ocr",
+        "description": "dots.ocr is a powerful, multilingual document parser that unifies layout detection and content recognition within a single vision-language model while maintaining good reading order. Despite its compact 1.7B-parameter LLM foundation, it achieves state-of-the-art(SOTA) performance on text, tables, and reading order tasks with multilingual support for over 100 languages.",
+        "reference_link": "https://github.com/rednote-hilab/dots.ocr"
       }
     },
     "txt2video-LTX": {
