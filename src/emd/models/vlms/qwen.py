@@ -22,6 +22,9 @@ from ..instances import (
     g5d24xlarge_instance,
     g5d48xlarge_instance,
     g6e2xlarge_instance,
+    g6e12xlarge_instance,
+    g6e24xlarge_instance,
+    g6e48xlarge_instance,
     local_instance
 )
 from emd.models.utils.constants import ModelType
@@ -77,6 +80,36 @@ Model.register(
         allow_china_region=True,
         huggingface_model_id="Qwen/Qwen2.5-VL-72B-Instruct-AWQ",
         modelscope_model_id="Qwen/Qwen2.5-VL-72B-Instruct-AWQ",
+        require_huggingface_token=False,
+        application_scenario="vision llms for image understanding",
+        description="The latest series of Qwen2.5 VL",
+        model_type=ModelType.VLM,
+        model_series=QWEN2VL_SERIES
+    )
+)
+
+Model.register(
+    dict(
+        model_id = "Qwen2.5-VL-72B-Instruct",
+        supported_engines=[vllm_qwen25vl72b_engine084],
+        supported_instances=[
+            g5d48xlarge_instance,
+            g6e12xlarge_instance,
+            g6e24xlarge_instance,
+            g6e48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        huggingface_model_id="Qwen/Qwen2.5-VL-72B-Instruct",
+        modelscope_model_id="Qwen/Qwen2.5-VL-72B-Instruct",
         require_huggingface_token=False,
         application_scenario="vision llms for image understanding",
         description="The latest series of Qwen2.5 VL",
