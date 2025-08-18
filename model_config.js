@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-08-17T04:29:40.735515
+// Generated at: 2025-08-18T06:20:50.120124
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-08-17T04:29:40.735515",
+    "generated_at": "2025-08-18T06:20:50.120124",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
@@ -350,6 +350,65 @@ window.EMD_MODEL_CONFIG = {
         "name": "internlm2.5",
         "description": "InternLM2.5 has open-sourced a 20 billion parameter base model and a chat model tailored for practical scenarios. The model has the following characteristics:\n- Outstanding reasoning capability: State-of-the-art performance on Math reasoning, surpassing models like Llama3 and Gemma2-27B.\n\n- Stronger tool use: InternLM2.5 supports gathering information from more than 100 web pages, corresponding implementation has be released in MindSearch. InternLM2.5 has better tool utilization-related capabilities in instruction following, tool selection and reflection. See examples.",
         "reference_link": "https://github.com/InternLM/InternLM"
+      }
+    },
+    "gpt-oss-20b": {
+      "model_id": "gpt-oss-20b",
+      "model_type": "llm",
+      "description": "GPT-OSS (GPT Open Source Software) is OpenAI's initiative to provide open-source AI models, making advanced language models accessible to developers, researchers, and organizations. These models are designed for building, experimenting, and scaling generative AI applications while fostering innovation and collaboration in the open-source AI community.",
+      "application_scenario": "Agent, tool use, translation, summary",
+      "supported_instances": [
+        "g5.2xlarge",
+        "g5.4xlarge",
+        "g5.8xlarge",
+        "g5.16xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async",
+        "ecs",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "openai/gpt-oss-20b",
+      "modelscope_model_id": "openai/gpt-oss-20b",
+      "model_series": {
+        "name": "gptoss",
+        "description": "GPT-OSS (GPT Open Source Software) is OpenAI's initiative to provide open-source AI models, making advanced language models accessible to developers, researchers, and organizations for building, experimenting, and scaling generative AI applications. These models are designed to foster innovation and collaboration in the open-source AI community.",
+        "reference_link": "https://openai.com/index/introducing-gpt-oss/"
+      }
+    },
+    "gpt-oss-120b": {
+      "model_id": "gpt-oss-120b",
+      "model_type": "llm",
+      "description": "GPT-OSS (GPT Open Source Software) is OpenAI's initiative to provide open-source AI models, making advanced language models accessible to developers, researchers, and organizations. These models are designed for building, experimenting, and scaling generative AI applications while fostering innovation and collaboration in the open-source AI community.",
+      "application_scenario": "Agent, tool use, translation, summary",
+      "supported_instances": [
+        "g5.12xlarge",
+        "g5.24xlarge",
+        "g5.48xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async",
+        "ecs",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "openai/gpt-oss-120b",
+      "modelscope_model_id": "openai/gpt-oss-120b",
+      "model_series": {
+        "name": "gptoss",
+        "description": "GPT-OSS (GPT Open Source Software) is OpenAI's initiative to provide open-source AI models, making advanced language models accessible to developers, researchers, and organizations for building, experimenting, and scaling generative AI applications. These models are designed to foster innovation and collaboration in the open-source AI community.",
+        "reference_link": "https://openai.com/index/introducing-gpt-oss/"
       }
     },
     "Qwen2.5-7B-Instruct": {
@@ -1815,6 +1874,35 @@ window.EMD_MODEL_CONFIG = {
       "allow_china_region": true,
       "huggingface_model_id": "Qwen/Qwen2.5-VL-72B-Instruct-AWQ",
       "modelscope_model_id": "Qwen/Qwen2.5-VL-72B-Instruct-AWQ",
+      "model_series": {
+        "name": "qwen2vl",
+        "description": "Qwen2-VL is the latest version of the vision language models in the Qwen model families.\n\nKey Enhancements:\n- SoTA understanding of images of various resolution & ratio: Qwen2-VL achieves state-of-the-art performance on visual understanding benchmarks, including MathVista, DocVQA, RealWorldQA, MTVQA, etc.\n\n- Understanding videos of 20min+: with the online streaming capabilities, Qwen2-VL can understand videos over 20 minutes by high-quality video-based question answering, dialog, content creation, etc.\n\n- Agent that can operate your mobiles, robots, etc.: with the abilities of complex reasoning and decision making, Qwen2-VL can be integrated with devices like mobile phones, robots, etc., for automatic operation based on visual environment and text instructions.\n\n- Multilingual Support: to serve global users, besides English and Chinese, Qwen2-VL now supports the understanding of texts in different languages inside images, including most European languages, Japanese, Korean, Arabic, Vietnamese, etc.",
+        "reference_link": "https://github.com/QwenLM/Qwen2-VL"
+      }
+    },
+    "Qwen2.5-VL-72B-Instruct": {
+      "model_id": "Qwen2.5-VL-72B-Instruct",
+      "model_type": "vlm",
+      "description": "The latest series of Qwen2.5 VL",
+      "application_scenario": "vision llms for image understanding",
+      "supported_instances": [
+        "g5.48xlarge",
+        "g6e.12xlarge",
+        "g6e.24xlarge",
+        "g6e.48xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "Qwen/Qwen2.5-VL-72B-Instruct",
+      "modelscope_model_id": "Qwen/Qwen2.5-VL-72B-Instruct",
       "model_series": {
         "name": "qwen2vl",
         "description": "Qwen2-VL is the latest version of the vision language models in the Qwen model families.\n\nKey Enhancements:\n- SoTA understanding of images of various resolution & ratio: Qwen2-VL achieves state-of-the-art performance on visual understanding benchmarks, including MathVista, DocVQA, RealWorldQA, MTVQA, etc.\n\n- Understanding videos of 20min+: with the online streaming capabilities, Qwen2-VL can understand videos over 20 minutes by high-quality video-based question answering, dialog, content creation, etc.\n\n- Agent that can operate your mobiles, robots, etc.: with the abilities of complex reasoning and decision making, Qwen2-VL can be integrated with devices like mobile phones, robots, etc., for automatic operation based on visual environment and text instructions.\n\n- Multilingual Support: to serve global users, besides English and Chinese, Qwen2-VL now supports the understanding of texts in different languages inside images, including most European languages, Japanese, Korean, Arabic, Vietnamese, etc.",
