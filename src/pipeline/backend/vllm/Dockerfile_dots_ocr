@@ -1,0 +1,18 @@
+FROM public.ecr.aws/aws-gcr-solutions/dmaa-vllm/vllm-openai:{{VERSION}} AS vllm-base
+
+WORKDIR /opt/ml/code
+
+COPY ./backend/vllm/requirements_dots_ocr.txt /opt/ml/code/
+
+RUN python3 -m pip install -r /opt/ml/code/requirements_dots_ocr.txt
+
+ENV PYTHONPATH="./emd_models:${PYTHONPATH}"
+
+# see https://github.com/rednote-hilab/dots.ocr/blob/master/README.md#vllm-inference
+RUN sed -i '/^from vllm\.entrypoints\.cli\.main import main$/a\
+import dotsocr.modeling_dots_ocr_vllm' `which vllm`
+
+EXPOSE 8080
+WORKDIR /opt/ml/code
+
+ENTRYPOINT ["/usr/bin/serve"]
