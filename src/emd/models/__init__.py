@@ -17,6 +17,7 @@ from . import (
     vlms,
     comfyui,
     asr,
+    audio,
     embeddings,
     reranks,
     custom,

@@ -1,0 +1,10 @@
+FROM public.ecr.aws/aws-gcr-solutions/dmaa/higgs-audio-vllm:latest AS base
+
+WORKDIR /opt/ml/code
+
+# Copy the workspace from the base image itself
+COPY /vllm-workspace/ /opt/ml/code/
+
+EXPOSE 8080
+
+ENTRYPOINT ["python3", "-m", "vllm.entrypoints.bosonai.api_server"]

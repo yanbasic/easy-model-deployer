@@ -142,6 +142,7 @@ class ModelType(ConstantBase):
     VLM = "vlm"
     EMBEDDING = "embedding"
     VIDEO = "video"
+    AUDIO = "audio"
 
 class ServiceCode(ConstantBase):
     SAGEMAKER = "sagemaker"
@@ -237,3 +238,4 @@ class ModelSeriesType(ConstantBase):
     BAICHUAN = "baichuan"
     GPTOSS = "gptoss"
     DOTS_OCR = "dots_ocr"
+    HIGGS_AUDIO = "higgs_audio"

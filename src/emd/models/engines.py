@@ -568,6 +568,17 @@ vllm_dots_ocr_engine091 = VllmEngine(**{
     "description": "VLLM v0.9.1 engine for dots.ocr multilingual document parsing model with flash-attn support and eager execution for custom models"
 })
 
+# VLLM Engine v0.9.1 for Higgs Audio
+vllm_higgs_audio_engine091 = VllmEngine(**{
+    **vllm_engine064.model_dump(),
+    "engine_dockerfile_config": {"VERSION":"v0.9.1"},
+    "dockerfile_name": "Dockerfile_higgs_audio",
+    "engine_cls": "vllm.higgs_audio_backend.HiggsAudioBackend",
+    "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+    "default_cli_args": " --shm-size=30gb",
+    "description": "VLLM v0.9.1 engine for Higgs Audio v2 Generation 3B Base multimodal audio generation model using native Docker entrypoint"
+})
+
 custom_engine = Engine(**{
             "engine_type":EngineType.CUSTOM,
 })

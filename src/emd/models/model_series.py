@@ -169,3 +169,9 @@ DOTS_OCR_SERIES = ModelSeries(
     description="dots.ocr is a powerful, multilingual document parser that unifies layout detection and content recognition within a single vision-language model while maintaining good reading order. Despite its compact 1.7B-parameter LLM foundation, it achieves state-of-the-art(SOTA) performance on text, tables, and reading order tasks with multilingual support for over 100 languages.",
     reference_link="https://github.com/rednote-hilab/dots.ocr"
 )
+
+HIGGS_AUDIO_SERIES = ModelSeries(
+    model_series_name=ModelSeriesType.HIGGS_AUDIO,
+    description="Higgs Audio v2 Generation is a powerful multimodal audio generation model that supports voice cloning, smart voice generation, and multi-speaker synthesis. Built on advanced neural architectures, it provides high-quality text-to-speech capabilities with support for various audio generation tasks including voice cloning and multi-speaker scenarios.",
+    reference_link="https://huggingface.co/bosonai/higgs-audio-v2-generation-3B-base"
+)
