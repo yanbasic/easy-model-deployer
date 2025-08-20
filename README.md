@@ -15,7 +15,7 @@
 <p align="center">
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellowgreen.svg" alt="MIT License"></a>
   <a href="https://pypi.org/project/easy_model_deployer"><img src="https://img.shields.io/pypi/v/easy_model_deployer.svg?logo=pypi&label=PyPI&logoColor=gold"></a>
-  <a href="https://pypi.org/project/easy_model_deployer"><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dw/easy_model_deployer"></a>
+  <a href="https://pepy.tech/projects/easy-model-deployer"><img src="https://static.pepy.tech/badge/easy-model-deployer" alt="PyPI Downloads"></a>
   <a href="https://github.com/aws-samples/easy-model-deployer/actions/workflows/release-package.yml"><img src="https://github.com/aws-samples/easy-model-deployer/actions/workflows/release-package.yml/badge.svg" alt="Build Status"></a>
 </p>
 
