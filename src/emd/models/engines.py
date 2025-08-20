@@ -222,6 +222,8 @@ vllm_qwen25vl72b_engine084 = VllmEngine(**{
             "default_cli_args": " --max_model_len 32000 --disable-log-stats --limit-mm-per-prompt image=1,video=1 --max_num_seq 1 --gpu_memory_utilization 0.7"
 })
 
+# "default_cli_args": " --max_model_len 32000 --disable-log-stats --limit-mm-per-prompt image=1,video=1 --max_num_seq 1 --gpu_memory_utilization 0.7"
+
 vllm_qwq_engine073 = VllmEngine(**{
             **vllm_qwen25vl72b_engine073.model_dump(),
             "environment_variables": "export VLLM_ATTENTION_BACKEND=FLASHINFER && export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
@@ -279,6 +281,17 @@ vllm_internlm2d5_engine064 = VllmEngine(
             "default_cli_args": " --chat-template emd/models/chat_templates/internlm2d5_add_prefill_chat_template.jinja --max_model_len 16000 --disable-log-stats --enable-auto-tool-choice --tool-call-parser internlm"
     }
 )
+
+vllm_gptoss_engine = VllmEngine(
+    **{
+        **vllm_engine064.model_dump(),
+        "engine_dockerfile_config": {"VERSION":"gptoss"},
+        "environment_variables": "export VLLM_ATTENTION_BACKEND=TRITON_ATTN_VLLM_V1",
+        "default_cli_args": " --async-scheduling --max_num_seq 5 --max_model_len 32000"
+
+    }
+)
+
 
 tgi_llama3d3_engine301 = TgiEngine(
     **{
@@ -553,6 +566,17 @@ vllm_dots_ocr_engine091 = VllmEngine(**{
     "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
     "default_cli_args": " --trust-remote-code --chat-template-content-format string --gpu-memory-utilization 0.95 --max_model_len 8192 --disable-log-stats --max_num_seq 5 --enforce-eager",
     "description": "VLLM v0.9.1 engine for dots.ocr multilingual document parsing model with flash-attn support and eager execution for custom models"
+})
+
+# VLLM Engine v0.9.1 for Higgs Audio
+vllm_higgs_audio_engine091 = VllmEngine(**{
+    **vllm_engine064.model_dump(),
+    "engine_dockerfile_config": {"VERSION":"v0.9.1"},
+    "dockerfile_name": "Dockerfile_higgs_audio",
+    "engine_cls": "vllm.higgs_audio_backend.HiggsAudioBackend",
+    "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+    "default_cli_args": " --shm-size=30gb",
+    "description": "VLLM v0.9.1 engine for Higgs Audio v2 Generation 3B Base multimodal audio generation model using native Docker entrypoint"
 })
 
 custom_engine = Engine(**{
