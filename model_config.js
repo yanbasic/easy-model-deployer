@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-08-18T06:20:50.120124
+// Generated at: 2025-08-20T09:03:38.777663
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-08-18T06:20:50.120124",
+    "generated_at": "2025-08-20T09:03:38.777663",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
@@ -2293,6 +2293,27 @@ window.EMD_MODEL_CONFIG = {
         "description": "Whisper includes both English-only and multilingual checkpoints for ASR and ST, ranging from 38M params for the tiny models to 1.5B params for large.",
         "reference_link": "https://github.com/openai/whisper"
       }
+    },
+    "bosonai-higgs-audio-v2-generation-3B-base": {
+      "model_id": "bosonai-higgs-audio-v2-generation-3B-base",
+      "model_type": "audio",
+      "description": "Higgs Audio v2 Generation 3B Base is a powerful multimodal audio generation model that supports voice cloning, smart voice generation, and multi-speaker synthesis. Built on vLLM engine with OpenAI-compatible API for text-to-speech and audio generation tasks.",
+      "application_scenario": "voice cloning, text-to-speech, audio generation, multi-speaker synthesis, smart voice generation",
+      "supported_instances": [
+        "g5.48xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "bosonai/higgs-audio-v2-generation-3B-base",
+      "modelscope_model_id": "",
+      "model_series": null
     },
     "bce-embedding-base_v1": {
       "model_id": "bce-embedding-base_v1",
