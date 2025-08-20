@@ -12,7 +12,7 @@ class HiggsAudioBackend(OpenAICompitableProxyBackendBase):
     """
     Higgs Audio Backend that uses the Docker image's native entrypoint
     instead of the standard vLLM serve command.
-    
+
     This backend is specifically designed for the Higgs Audio v2 Generation 3B Base model
     which provides its own API server via the pre-built Docker image with entrypoint:
     ["python3", "-m", "vllm.entrypoints.bosonai.api_server"]
@@ -42,9 +42,9 @@ class HiggsAudioBackend(OpenAICompitableProxyBackendBase):
         """
         # Transform input to Higgs Audio format
         request = self._transform_request(request)
-        
+
         logger.info(f"Higgs Audio request: {request}")
-        
+
         # Handle different model types - Higgs Audio is primarily for audio generation
         if self.model_type == ModelType.AUDIO:
             # Use chat completions endpoint for audio generation
@@ -52,7 +52,7 @@ class HiggsAudioBackend(OpenAICompitableProxyBackendBase):
         else:
             # Fallback to standard chat completions
             response = self.openai_create_helper(self.client.chat.completions.create, request)
-            
+
         logger.info(f"Higgs Audio response: {response}, request: {request}")
 
         if request.get("stream", False):
@@ -66,9 +66,9 @@ class HiggsAudioBackend(OpenAICompitableProxyBackendBase):
         """
         # Transform input to Higgs Audio format
         request = self._transform_request(request)
-        
+
         logger.info(f"Higgs Audio async request: {request}")
-        
+
         # Handle different model types - Higgs Audio is primarily for audio generation
         if self.model_type == ModelType.AUDIO:
             # Use chat completions endpoint for audio generation
@@ -76,7 +76,7 @@ class HiggsAudioBackend(OpenAICompitableProxyBackendBase):
         else:
             # Fallback to standard chat completions
             response = await self.openai_create_helper(self.async_client.chat.completions.create, request)
-            
+
         logger.info(f"Higgs Audio async response: {response}, request: {request}")
 
         if request.get("stream", False):
