@@ -100,7 +100,9 @@ git clone https://github.com/2kpr/ComfyUI-PMRF.git
 RUN pip install natten==0.17.5+torch260cu126 -f https://whl.natten.org
 
 # Add cache-busting ARG at the very end to minimize impact
-ARG CACHE_BUST=1
+#ARG CACHE_BUST=1
+RUN echo "Build time: $(date)"
+
 
 # Update Comfyui-PaddleOCR (this will always run and only affect the final layers)
 RUN cd /home/ubuntu/ComfyUI/custom_nodes/Comfyui-PaddleOCR && \
