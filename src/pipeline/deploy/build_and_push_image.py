@@ -238,7 +238,8 @@ def run(
     )
 
     docker_login_region = docker_login_region or region
-
+    import random
+    docker_randon_value = random.randint(10000, 99999)
     if build_image_host:
         build_image_script_cn = (
                 f"cd {execute_dir}"
@@ -247,7 +248,7 @@ def run(
         build_image_script_global = (
                 f"cd {execute_dir}"
                 f" && aws {ecr_name} get-login-password --region {docker_login_region} | docker login --username AWS --password-stdin {build_image_host}"
-                f' && docker build --platform linux/amd64 -f {dockerfile_name} -t "{ecr_repo_uri}" .'
+                f' && docker build --platform linux/amd64 -f {dockerfile_name} -t "{ecr_repo_uri}" --build-arg CACHEBUST={docker_randon_value} .'
             )
         if check_cn_region(region):
             build_image_scripts = [build_image_script_cn]
