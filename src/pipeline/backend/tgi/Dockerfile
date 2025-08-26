@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa/huggingface/text-generation-inference:{{VERSION}} AS tgi-base
+FROM quay.io/dmaa/huggingface/text-generation-inference:{{VERSION}} AS tgi-base
 
 # Create a new stage based on vllm-base
 FROM tgi-base AS sagemaker-serving

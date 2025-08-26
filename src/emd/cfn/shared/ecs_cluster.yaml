@@ -10,7 +10,7 @@ Parameters:
   APIRouterImageURI:
     Type: String
     Description: The URI of OpenAI compatbile API router image. If provided, the router will be deployed.
-    Default: "public.ecr.aws/aws-gcr-solutions/dmaa/api-router:latest"
+    Default: "quay.io/dmaa/api-router:latest"
   UseSpot:
     Type: String
     Description: Use Fargate Spot capacity?
