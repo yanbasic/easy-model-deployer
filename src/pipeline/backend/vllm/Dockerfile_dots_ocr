@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa-vllm/vllm-openai:{{VERSION}} AS vllm-base
+FROM quay.io/dmaa/vllm-openai:{{VERSION}} AS vllm-base
 
 WORKDIR /opt/ml/code
 

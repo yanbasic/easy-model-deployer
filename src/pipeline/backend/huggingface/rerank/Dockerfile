@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa/huggingface/transformers-pytorch-gpu:{{VERSION}} AS huggingface-base
+FROM quay.io/dmaa/huggingface/transformers-pytorch-gpu:{{VERSION}} AS huggingface-base
 
 # Create a new stage based on vllm-base
 FROM huggingface-base AS sagemaker-serving

@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa/ollama:{{VERSION}} AS ollama-base
+FROM quay.io/dmaa/ollama:{{VERSION}} AS ollama-base
 
 # Ensure the serve script has executable permissions
 # RUN chmod +x /usr/bin/serve

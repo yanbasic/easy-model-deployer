@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa/openmmlab/lmdeploy:{{VERSION}} AS lmdeploy-base
+FROM quay.io/dmaa/openmmlab/lmdeploy:{{VERSION}} AS lmdeploy-base
 
 # Create a new stage based on vllm-base
 FROM lmdeploy-base AS sagemaker-serving
