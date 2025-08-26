@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa/llama-cpp:{{VERSION}}
+FROM quay.io/dmaa/llama-cpp:{{VERSION}}
 
 # Ensure the serve script has executable permissions
 # RUN chmod +x /usr/bin/serve

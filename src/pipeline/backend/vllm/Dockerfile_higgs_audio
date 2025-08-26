@@ -1,4 +1,4 @@
-FROM public.ecr.aws/aws-gcr-solutions/dmaa/higgs-audio-vllm:latest AS base
+FROM quay.io/dmaa/higgs-audio-vllm:latest AS base
 
 WORKDIR /opt/ml/code
 
