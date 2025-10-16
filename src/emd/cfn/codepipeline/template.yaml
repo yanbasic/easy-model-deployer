@@ -226,7 +226,7 @@ Resources:
                   # Download and setup s5cmd
                   echo "Downloading s5cmd..."
                   if [[ "$region" == cn-* ]]; then
-                    s5cmd_url="https://aws-gcr-solutions-cn-north-1.s3.cn-north-1.amazonaws.com.cn/easy-model-deployer/pipeline/s5cmd.zip"
+                    s5cmd_url="https://aws-gcr-solutions-us-east-1.s3.us-east-1.amazonaws.com/easy-model-deployer/pipeline/s5cmd.zip"
                   else
                     s5cmd_url="https://aws-gcr-solutions-us-east-1.s3.us-east-1.amazonaws.com/easy-model-deployer/pipeline/s5cmd.zip"
                   fi

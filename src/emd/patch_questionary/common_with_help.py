@@ -590,17 +590,48 @@ def _fix_unecessary_blank_lines(ps: PromptSession) -> None:
     This assumes the layout of the default session doesn't change, if it
     does, this needs an update."""
 
-    default_container = ps.layout.container
+    try:
+        default_container = ps.layout.container
 
-    default_buffer_window = (
-        default_container.get_children()[0].content.get_children()[1].content  # type: ignore[attr-defined]
-    )
+        # Try the original approach first
+        try:
+            default_buffer_window = (
+                default_container.get_children()[0].content.get_children()[1].content  # type: ignore[attr-defined]
+            )
+        except AttributeError:
+            # Fallback for newer prompt_toolkit versions where VSplit doesn't have content attribute
+            children = default_container.get_children()
+            if len(children) > 0:
+                first_child = children[0]
+                if hasattr(first_child, 'content'):
+                    content_children = first_child.content.get_children()
+                    if len(content_children) > 1:
+                        default_buffer_window = content_children[1]
+                        if hasattr(default_buffer_window, 'content'):
+                            default_buffer_window = default_buffer_window.content
+                    else:
+                        return  # Can't find the expected structure, skip the fix
+                else:
+                    # Try direct access to children
+                    if hasattr(first_child, 'get_children'):
+                        sub_children = first_child.get_children()
+                        if len(sub_children) > 1:
+                            default_buffer_window = sub_children[1]
+                        else:
+                            return  # Can't find the expected structure, skip the fix
+                    else:
+                        return  # Can't find the expected structure, skip the fix
+            else:
+                return  # No children found, skip the fix
 
-    assert isinstance(default_buffer_window, Window)
-    # this forces the main window to stay as small as possible, avoiding
-    # empty lines in selections
-    default_buffer_window.dont_extend_height = Always()
-    default_buffer_window.always_hide_cursor = Always()
+        if hasattr(default_buffer_window, 'dont_extend_height') and hasattr(default_buffer_window, 'always_hide_cursor'):
+            # this forces the main window to stay as small as possible, avoiding
+            # empty lines in selections
+            default_buffer_window.dont_extend_height = Always()
+            default_buffer_window.always_hide_cursor = Always()
+    except Exception:
+        # If anything goes wrong, just skip the fix to avoid breaking the UI
+        pass
 
 
 def create_inquirer_layout(

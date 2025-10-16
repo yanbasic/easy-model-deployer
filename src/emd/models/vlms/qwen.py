@@ -4,7 +4,8 @@ from ..engines import (
     vllm_qwen2vl72b_engine064,
     vllm_qwen25vl72b_engine073,
     vllm_ui_tars_1_5_engin084,
-    vllm_qwen25vl72b_engine084
+    vllm_qwen25vl72b_engine084,
+    vllm_qwen3vl_engine091
 )
 from ..services import (
     sagemaker_service,
@@ -28,7 +29,7 @@ from ..instances import (
     local_instance
 )
 from emd.models.utils.constants import ModelType
-from ..model_series import QWEN2VL_SERIES,QWEN_REASONING_MODEL,AGENT_SERIES
+from ..model_series import QWEN2VL_SERIES,QWEN_REASONING_MODEL,AGENT_SERIES,QWEN3_SERIES
 
 
 Model.register(
@@ -246,6 +247,35 @@ Model.register(
     )
 )
 
+
+
+Model.register(
+    dict(
+        model_id = "Qwen3-VL-30B-A3B-Instruct",
+        supported_engines=[vllm_qwen3vl_engine091],
+        supported_instances=[
+            g5d12xlarge_instance,
+            g5d24xlarge_instance,
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        huggingface_model_id="Qwen/Qwen3-VL-30B-A3B-Instruct",
+        modelscope_model_id="Qwen/Qwen3-VL-30B-A3B-Instruct",
+        require_huggingface_token=False,
+        application_scenario="vision llms for advanced image understanding and reasoning",
+        description="Qwen3 VL 30B model with advanced vision-language capabilities, reasoning support, and enhanced multimodal understanding",
+        model_type=ModelType.VLM,
+        model_series=QWEN3_SERIES
+    )
+)
 
 
 Model.register(
