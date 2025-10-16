@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-08-20T09:03:38.777663
+// Generated at: 2025-10-16T11:10:40.195799
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-08-20T09:03:38.777663",
+    "generated_at": "2025-10-16T11:10:40.195799",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
@@ -2031,6 +2031,33 @@ window.EMD_MODEL_CONFIG = {
         "name": "qwen2vl",
         "description": "Qwen2-VL is the latest version of the vision language models in the Qwen model families.\n\nKey Enhancements:\n- SoTA understanding of images of various resolution & ratio: Qwen2-VL achieves state-of-the-art performance on visual understanding benchmarks, including MathVista, DocVQA, RealWorldQA, MTVQA, etc.\n\n- Understanding videos of 20min+: with the online streaming capabilities, Qwen2-VL can understand videos over 20 minutes by high-quality video-based question answering, dialog, content creation, etc.\n\n- Agent that can operate your mobiles, robots, etc.: with the abilities of complex reasoning and decision making, Qwen2-VL can be integrated with devices like mobile phones, robots, etc., for automatic operation based on visual environment and text instructions.\n\n- Multilingual Support: to serve global users, besides English and Chinese, Qwen2-VL now supports the understanding of texts in different languages inside images, including most European languages, Japanese, Korean, Arabic, Vietnamese, etc.",
         "reference_link": "https://github.com/QwenLM/Qwen2-VL"
+      }
+    },
+    "Qwen3-VL-30B-A3B-Instruct": {
+      "model_id": "Qwen3-VL-30B-A3B-Instruct",
+      "model_type": "vlm",
+      "description": "Qwen3 VL 30B model with advanced vision-language capabilities, reasoning support, and enhanced multimodal understanding",
+      "application_scenario": "vision llms for advanced image understanding and reasoning",
+      "supported_instances": [
+        "g5.12xlarge",
+        "g5.24xlarge",
+        "g5.48xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "modelscope_model_id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "model_series": {
+        "name": "qwen3",
+        "description": "the latest addition to the Qwen family of large language models. These models represent our most advanced and intelligent systems to date, improving from our experience in building QwQ and Qwen2.5. We are making the weights of Qwen3 available to the public, including both dense and Mixture-of-Expert (MoE) models.",
+        "reference_link": "https://github.com/QwenLM/Qwen3"
       }
     },
     "UI-TARS-1.5-7B": {
