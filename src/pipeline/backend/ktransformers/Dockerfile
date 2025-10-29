@@ -24,7 +24,7 @@ RUN /bin/bash -c 'source /opt/ml/code/venv/bin/activate && cd /opt/ml/code/ktran
 COPY backend/ktransformers/DeepSeek-R1/ /opt/ml/model/DeepSeek-R1
 
 # Download and extract tokenizer.zip
-RUN curl -L -o /tmp/tokenizer.zip https://aws-gcr-solutions-us-east-1.s3.us-east-1.amazonaws.com/easy-model-deployer/pipeline/ktransformers/tokenizer.zip && \
+RUN curl -L -o /tmp/tokenizer.zip https://easy-model-deployer-us-east-1.s3.us-east-1.amazonaws.com/pipeline/ktransformers/tokenizer.zip && \
     cd /opt/ml/model/DeepSeek-R1 && \
     unzip -o /tmp/tokenizer.zip && \
     rm /tmp/tokenizer.zip

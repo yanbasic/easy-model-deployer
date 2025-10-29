@@ -251,7 +251,7 @@ def download_s5cmd():
     if os.path.exists(S5CMD_PATH):
         return S5CMD_PATH
 
-    s5cmd_url = "https://aws-gcr-solutions-us-east-1.s3.us-east-1.amazonaws.com/easy-model-deployer/pipeline/s5cmd.zip"
+    s5cmd_url = "https://easy-model-deployer-us-east-1.s3.us-east-1.amazonaws.com/pipeline/s5cmd.zip"
 
     try:
         # Download and extract
