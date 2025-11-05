@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-11-05T07:02:14.912587
+// Generated at: 2025-11-05T07:02:42.524111
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-11-05T07:02:14.912587",
+    "generated_at": "2025-11-05T07:02:42.524111",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
