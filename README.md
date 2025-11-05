@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://aws-samples.github.io/easy-model-deployer/en/installation"><strong>Documentation</strong></a> ·
+  <a href="https://yanbasic.github.io/easy-model-deployer/en/installation"><strong>Documentation</strong></a> ·
   <a href="https://github.com/aws-samples/easy-model-deployer/releases"><strong>Changelog</strong></a>
 </p>
 
@@ -24,7 +24,7 @@
 
 ## Introduction
 
-Easy Model Deployer is a lightweight tool designed for simplify deploy **Open-Source LLMs** ([Supported Models](https://aws-samples.github.io/easy-model-deployer/en/supported_models)) and Custom Models on AWS. It provides **OpenAI's Completions API** and [**LangChain Interface**](https://github.com/langchain-ai/langchain). Built for developers who need reliable and scalable model serving without complex environment setup.
+Easy Model Deployer is a lightweight tool designed for simplify deploy **Open-Source LLMs** ([Supported Models](https://yanbasic.github.io/easy-model-deployer/en/supported_models)) and Custom Models on AWS. It provides **OpenAI's Completions API** and [**LangChain Interface**](https://github.com/langchain-ai/langchain). Built for developers who need reliable and scalable model serving without complex environment setup.
 
 ![deploy](docs/images/demo-deploy.avif)
 
@@ -47,7 +47,7 @@ Easy Model Deployer supports a wide range of models including:
 - **ASR Models**: Whisper variants
 - **Custom Models**: Support for custom Docker images
 
-For the complete list of supported models and deployment configurations, see [Supported Models](https://aws-samples.github.io/easy-model-deployer/en/supported_models).
+For the complete list of supported models and deployment configurations, see [Supported Models](https://yanbasic.github.io/easy-model-deployer/en/supported_models).
 
 ## 🔧 Get Started
 
@@ -65,7 +65,7 @@ emd
 
 Prepare the essential resources required for model deployment.
 
-For more information, please refer to [Architecture](https://aws-samples.github.io/easy-model-deployer/en/architecture/).
+For more information, please refer to [Architecture](https://yanbasic.github.io/easy-model-deployer/en/architecture/).
 
 ```bash
 emd bootstrap
@@ -107,7 +107,7 @@ emd invoke <ModelId>
 
 > **💡 Tip** You can find the *ModelId* in the output by `emd status`. For example: `emd invoke DeepSeek-R1-Distill-Qwen-1.5B`
 
-- [Integration examples](https://aws-samples.github.io/easy-model-deployer/)
+- [Integration examples](https://yanbasic.github.io/easy-model-deployer/)
 - [EMD client](docs/en/emd_client.md)
 - [Langchain interface](docs/en/langchain_interface.md)
 - [OpenAI compatible interface](docs/en/openai_compatiable.md).
@@ -116,7 +116,7 @@ emd invoke <ModelId>
 
 ### List Supported Models
 
-Quickly see what models are supported, this command will output all information related to deployment. (Please browse [Supported Models](https://aws-samples.github.io/easy-model-deployer/en/supported_models) for more information.)
+Quickly see what models are supported, this command will output all information related to deployment. (Please browse [Supported Models](https://yanbasic.github.io/easy-model-deployer/en/supported_models) for more information.)
 
 ```bash
 emd list-supported-models
@@ -135,7 +135,7 @@ emd destroy <ModelId>
 
 ## 📖 Documentation
 
-For advanced configurations and detailed guides, visit our [documentation site](https://aws-samples.github.io/easy-model-deployer/).
+For advanced configurations and detailed guides, visit our [documentation site](https://yanbasic.github.io/easy-model-deployer/).
 
 ## 🤝 Contributing
 

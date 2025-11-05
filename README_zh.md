@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://aws-samples.github.io/easy-model-deployer/en/installation"><strong>文档</strong></a> ·
+  <a href="https://yanbasic.github.io/easy-model-deployer/en/installation"><strong>文档</strong></a> ·
   <a href="https://github.com/aws-samples/easy-model-deployer/releases"><strong>更新日志</strong></a>
 </p>
 
@@ -23,7 +23,7 @@
 
 ## 简介
 
-还在为大模型部署而头疼吗？Easy Model Deployer 让你告别复杂的环境配置，轻松将**开源大模型**（[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models)）部署到 AWS 云端。
+还在为大模型部署而头疼吗？Easy Model Deployer 让你告别复杂的环境配置，轻松将**开源大模型**（[支持的模型](https://yanbasic.github.io/easy-model-deployer/en/supported_models)）部署到 AWS 云端。
 
 无论是大语言模型、视觉模型还是自定义模型，一条命令即可搞定部署。更棒的是，部署完成后直接获得 **OpenAI 兼容 API** 和 [**LangChain 接口**](https://github.com/langchain-ai/langchain)，让你的 AI 应用开发如虎添翼。
 
@@ -50,7 +50,7 @@ Easy Model Deployer 支持广泛的模型类型，包括：
 - **语音识别模型**: Whisper 变体
 - **自定义模型**: 支持自定义 Docker 镜像
 
-完整的支持模型列表和部署配置，请参见[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models)。
+完整的支持模型列表和部署配置，请参见[支持的模型](https://yanbasic.github.io/easy-model-deployer/en/supported_models)。
 
 ## 🔧 快速开始
 
@@ -68,7 +68,7 @@ emd
 
 准备模型部署所需的基础资源。
 
-更多信息请参考[架构说明](https://aws-samples.github.io/easy-model-deployer/en/architecture/)。
+更多信息请参考[架构说明](https://yanbasic.github.io/easy-model-deployer/en/architecture/)。
 
 ```bash
 emd bootstrap
@@ -110,7 +110,7 @@ emd invoke <ModelId>
 
 > **💡 提示** 您可以在 `emd status` 的输出中找到 *ModelId*。例如：`emd invoke DeepSeek-R1-Distill-Qwen-1.5B`
 
-- [集成示例](https://aws-samples.github.io/easy-model-deployer/)
+- [集成示例](https://yanbasic.github.io/easy-model-deployer/)
 - [EMD 客户端](docs/en/emd_client.md)
 - [Langchain 接口](docs/en/langchain_interface.md)
 - [OpenAI 兼容接口](docs/en/openai_compatiable.md)
@@ -119,7 +119,7 @@ emd invoke <ModelId>
 
 ### 列出支持的模型
 
-快速查看支持哪些模型，此命令将输出与部署相关的所有信息。（更多信息请浏览[支持的模型](https://aws-samples.github.io/easy-model-deployer/en/supported_models)。）
+快速查看支持哪些模型，此命令将输出与部署相关的所有信息。（更多信息请浏览[支持的模型](https://yanbasic.github.io/easy-model-deployer/en/supported_models)。）
 
 ```bash
 emd list-supported-models
@@ -137,7 +137,7 @@ emd destroy <ModelId>
 
 ## 📖 文档
 
-有关高级配置和详细指南，请访问我们的[文档网站](https://aws-samples.github.io/easy-model-deployer/)。
+有关高级配置和详细指南，请访问我们的[文档网站](https://yanbasic.github.io/easy-model-deployer/)。
 
 ## 🤝 贡献
 
