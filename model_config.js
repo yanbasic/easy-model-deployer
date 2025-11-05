@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-10-29T07:43:55.678547
+// Generated at: 2025-11-05T04:58:54.802287
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-10-29T07:43:55.678547",
+    "generated_at": "2025-11-05T04:58:54.802287",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
@@ -1145,6 +1145,35 @@ window.EMD_MODEL_CONFIG = {
         "name": "qwen3",
         "description": "the latest addition to the Qwen family of large language models. These models represent our most advanced and intelligent systems to date, improving from our experience in building QwQ and Qwen2.5. We are making the weights of Qwen3 available to the public, including both dense and Mixture-of-Expert (MoE) models.",
         "reference_link": "https://github.com/QwenLM/Qwen3"
+      }
+    },
+    "Qwen3-Coder-30B-A3B-Instruct": {
+      "model_id": "Qwen3-Coder-30B-A3B-Instruct",
+      "model_type": "llm",
+      "description": "",
+      "application_scenario": "Agentic Coding, Agentic Browser-Use, and other foundational coding tasks.",
+      "supported_instances": [
+        "g5.12xlarge",
+        "g5.24xlarge",
+        "g5.48xlarge",
+        "local"
+      ],
+      "supported_engines": [
+        "vllm"
+      ],
+      "supported_services": [
+        "sagemaker_realtime",
+        "sagemaker_async",
+        "ecs",
+        "local"
+      ],
+      "allow_china_region": true,
+      "huggingface_model_id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+      "modelscope_model_id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+      "model_series": {
+        "name": "qwen3_coder",
+        "description": "Qwen3-Coder is Alibaba's open-source agentic coding LLM, with its most powerful variant, Qwen3-Coder-480B-A35B-Instruct, having 480 billion parameters (35B active). It excels in agentic coding, browser use, and tool use, rivaling Claude Sonnet in performance. This model boasts native support for a 256K token context window, expandable to 1M tokens, making it suitable for handling large-scale projects and complex tasks. It's designed for advanced code generation, automation, intelligent code review, and can manage extensive codebases and pull requests.",
+        "reference_link": "https://github.com/QwenLM/Qwen3-Coder"
       }
     },
     "llama-3.3-70b-instruct-awq": {
