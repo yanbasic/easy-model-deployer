@@ -220,6 +220,7 @@ class ModelSeriesType(ConstantBase):
     MISTRAL = "mistral"
     QWEN2D5 = "qwen2.5"
     QWEN3 = "qwen3"
+    QWEN3_CODER = "qwen3_coder"
     GLM4 = "glm4"
     INTERLM2d5 = "internlm2.5"
     WHISPER = "whisper"

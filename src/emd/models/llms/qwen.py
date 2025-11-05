@@ -10,7 +10,8 @@ from ..engines import (
     vllm_qwq_engine073,
     vllm_qwq_engine082,
     vllm_qwen3_engin084,
-    vllm_qwen3_engin091
+    vllm_qwen3_engin091,
+    vllm_qwen3_coder_engin091
 )
 from ..services import (
     sagemaker_service,
@@ -36,7 +37,7 @@ from ..instances import (
 from emd.models.utils.constants import ModelType
 from emd.models.utils.constants import ModelType
 from emd.models import ModelSeries
-from ..model_series import QWEN2D5_SERIES,QWEN_REASONING_MODEL,QWEN3_SERIES
+from ..model_series import QWEN2D5_SERIES,QWEN_REASONING_MODEL,QWEN3_SERIES,QWEN3_CODER_SERIES
 
 Model.register(
     dict(
@@ -952,5 +953,36 @@ Model.register(
         description="The latest series of Qwen LLMs, offers base and tuned models from 0.5B to 72B\n parameters, featuring enhanced knowledge, improved coding and math skills, better instruction\n following, long-text generation, structured data handling, 128K token context support, and\n multilingual capabilities for 29+ languages.",
         model_type=ModelType.LLM,
         model_series=QWEN3_SERIES
+    )
+)
+
+
+
+Model.register(
+    dict(
+        model_id = "Qwen3-Coder-30B-A3B-Instruct",
+        supported_engines=[vllm_qwen3_coder_engin091],
+        supported_instances=[
+            g5d12xlarge_instance,
+            g5d24xlarge_instance,
+            g5d48xlarge_instance,
+            local_instance
+        ],
+        supported_services=[
+            sagemaker_service,
+            sagemaker_async_service,
+            ecs_service,
+            local_service
+        ],
+        supported_frameworks=[
+            fastapi_framework
+        ],
+        allow_china_region=True,
+        huggingface_model_id="Qwen/Qwen3-Coder-30B-A3B-Instruct",
+        modelscope_model_id="Qwen/Qwen3-Coder-30B-A3B-Instruct",
+        require_huggingface_token=False,
+        application_scenario="Agentic Coding, Agentic Browser-Use, and other foundational coding tasks.",
+        model_type=ModelType.LLM,
+        model_series=QWEN3_CODER_SERIES
     )
 )
