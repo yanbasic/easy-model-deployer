@@ -1,10 +1,10 @@
 // EMD Model Configuration
 // Auto-generated from Python model definitions
-// Generated at: 2025-11-05T07:02:42.524111
+// Generated at: 2025-11-11T09:24:26.984401
 
 window.EMD_MODEL_CONFIG = {
   "metadata": {
-    "generated_at": "2025-11-05T07:02:42.524111",
+    "generated_at": "2025-11-11T09:24:26.984401",
     "version": "1.0.0",
     "source": "EMD Python Model Definitions"
   },
@@ -2078,7 +2078,8 @@ window.EMD_MODEL_CONFIG = {
       ],
       "supported_services": [
         "sagemaker_realtime",
-        "sagemaker_async"
+        "sagemaker_async",
+        "local"
       ],
       "allow_china_region": true,
       "huggingface_model_id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
