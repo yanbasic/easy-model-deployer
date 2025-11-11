@@ -184,11 +184,11 @@ vllm_qwen3_coder_engin091 = VllmEngine(**{
 })
 
 vllm_qwen3vl_engine091 = VllmEngine(**{
-             **vllm_engine064.model_dump(),
-             "engine_dockerfile_config": {"VERSION":"v0.11.0"},
+            **vllm_engine064.model_dump(),
+            "engine_dockerfile_config": {"VERSION":"v0.11.0"},
             "dockerfile_name": "Dockerfile_qwen3_vl",
             "environment_variables": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-            "default_cli_args": " --max-model-len 32000 --disable-log-stats --limit-mm-per-prompt image=10,video=1 --max-num-seqs 5 --gpu-memory-utilization 0.8 --enable-reasoning --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser hermes --enable-prefix-caching"
+            "default_cli_args": " --disable-log-stats --max-model-len 32000 --gpu-memory-utilization 0.9 --dtype bfloat16 --enable-expert-parallel --async-scheduling --limit-mm-per-prompt.image=5 --limit-mm-per-prompt.video=0 --max-num-seqs 5"
 })
 
 vllm_embedding_engine091 = VllmEngine(**{

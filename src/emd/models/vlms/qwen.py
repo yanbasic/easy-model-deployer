@@ -261,7 +261,8 @@ Model.register(
         ],
         supported_services=[
             sagemaker_service,
-            sagemaker_async_service
+            sagemaker_async_service,
+            local_service
         ],
         supported_frameworks=[
             fastapi_framework
