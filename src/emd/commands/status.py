@@ -198,7 +198,7 @@ def status(
         console.print(base_url + "/v1")
         console.print("\nThe API uses an OpenAI-compatible format. Once you have the base URL and API key, you can access the API use the OpenAI SDK or any OpenAI-compatible client.")
         console.print(
-            "[dim]Examples: [link=https://aws-samples.github.io/easy-model-deployer/en/openai_compatiable]https://aws-samples.github.io/easy-model-deployer/en/openai_compatiable[/link][/dim]\n",
+            "[dim]Examples: [link=https://yanbasic.github.io/easy-model-deployer/en/openai_compatiable]https://yanbasic.github.io/easy-model-deployer/en/openai_compatiable[/link][/dim]\n",
         )
     else:
         console.print("No Base URL found")

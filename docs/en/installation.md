@@ -184,9 +184,9 @@ Replace `<ModelId>` with the ID shown in the status output.
 
 For more detailed information on:
 
-- Advanced deployment parameters: See [Best Deployment Practices](https://aws-samples.github.io/easy-model-deployer/en/best_deployment_practices/)
-- Architecture details: See [Architecture](https://aws-samples.github.io/easy-model-deployer/en/architecture/)
-- Supported models: See [Supported Models](https://aws-samples.github.io/easy-model-deployer/en/supported_models/)
+- Advanced deployment parameters: See [Best Deployment Practices](https://yanbasic.github.io/easy-model-deployer/en/best_deployment_practices/)
+- Architecture details: See [Architecture](https://yanbasic.github.io/easy-model-deployer/en/architecture/)
+- Supported models: See [Supported Models](https://yanbasic.github.io/easy-model-deployer/en/supported_models/)
 - Local deployment: See [Local Deployment Guide](local_deployment.md)
 - CLI commands reference: See [CLI Commands](commands.md)
 - API documentation: See [API Documentation](api.md)

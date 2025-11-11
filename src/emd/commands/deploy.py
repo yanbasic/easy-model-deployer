@@ -517,7 +517,7 @@ def deploy(
     if extra_params is None:
         while True:
             extra_params = questionary.text(
-                "(Optional) Additional parameters, usage (https://aws-samples.github.io/easy-model-deployer/en/best_deployment_practices/#extra-parameters-usage), you can skip by pressing Enter:",
+                "(Optional) Additional parameters, usage (https://yanbasic.github.io/easy-model-deployer/en/best_deployment_practices/#extra-parameters-usage), you can skip by pressing Enter:",
                 default="{}"
             ).ask()
 
