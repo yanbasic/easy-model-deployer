@@ -302,7 +302,7 @@ def run(
                     "Sid": "AllowAccountUserAccess",
                     "Effect": "Allow",
                     "Principal": {
-                        "AWS": f"arn:aws:iam::{push_image_account_id}:root"
+                        "AWS": f"arn:aws-cn:iam::{push_image_account_id}:root" if region.startswith("cn") else f"arn:aws:iam::{push_image_account_id}:root"
                     },
                     "Action": [
                         "ecr:BatchCheckLayerAvailability",
@@ -488,7 +488,7 @@ def run_custom(
                     "Sid": "AllowAccountUserAccess",
                     "Effect": "Allow",
                     "Principal": {
-                        "AWS": f"arn:aws:iam::{push_image_account_id}:root"
+                        "AWS": f"arn:aws-cn:iam::{push_image_account_id}:root" if region.startswith("cn") else f"arn:aws:iam::{push_image_account_id}:root"
                     },
                     "Action": [
                         "ecr:BatchCheckLayerAvailability",
