@@ -83,7 +83,7 @@ pyparsing==3.1.2
 pytorch-wpe==0.0.1
 PyYAML==6.0
 regex==2024.11.6
-requests==2.32.3
+requests==2.32.4
 scikit-learn==1.6.0
 sentencepiece==0.2.0
 silero-vad==5.1.2
