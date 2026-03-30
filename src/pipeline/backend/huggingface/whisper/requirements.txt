@@ -75,7 +75,7 @@ pure-eval==0.2.2
 pyarrow==15.0.2
 pycryptodome==3.21.0
 pydub==0.25.1
-Pygments==2.18.0
+Pygments==2.20.0
 pynndescent==0.5.13
 pynvml==11.5.0
 pyOpenSSL==24.3.0
