@@ -65,7 +65,7 @@ opencv-python==4.10.0.82
 oss2==2.19.1
 packaging==23.2
 pexpect==4.9.0
-pillow==10.3.0
+pillow==12.2.0
 pooch==1.8.2
 prompt-toolkit==3.0.38
 protobuf==4.25.8
